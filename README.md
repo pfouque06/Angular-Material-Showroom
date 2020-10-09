@@ -134,3 +134,67 @@ import { CoreModule } from './core/core.module';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+
+## Starters
+
+Generate header & footer components :
+ng g c core/header --module=app --skipTests=true
+ng g c core/footer --module=app --skipTests=true
+
+Generate home component 
+ng g c core/home --module=core --skipTests=true
+
+Update app.component.html:
+
+	  <app-header [title]="title"></app-header>
+    (..previous code..)
+	  <router-outlet></router-outlet>
+	  <app-footer></app-footer>
+
+Inject in core/header/header.component.ts :
+
+	  import { Component, OnInit, Input } from "@angular/core";
+	  (..)
+	  export class HeaderComponent implements OnInit {
+	 
+	    @Input() public title: string;
+	    public isNavbarCollapsed: boolean =true;
+	  (..)
+
+update core/header/header.compoenent.html :
+<header fxLayout="row" fxLayoutAlign="start center">
+    <p>{{ title }} - header works!</p>
+</header>    
+
+update core/footer/footer.compoenent.html :
+<footer fxLayout="row" fxLayoutAlign="start center">
+  Your footer
+</footer>
+
+
+## custom
+
+Create other project components
+According to your needs along your application design, those are just some instances to demo the prupose :
+
+	  ng g c core/sandbox --module=core --skipTests=true
+	  ng g c core/Themes/spinner --module=core --skipTests=true
+	  ng g c core/dashboard/sideBar --module=core --skipTests=true
+	  ng g c core/dashboard/userForm --module=core --skipTests=true
+	  ng g c core/dashboard/userList --module=core --skipTests=true
+
+Update core/core-routing.module.ts:
+
+	  (.. import missing components according to above routes ..)
+	  const routes: Routes = [
+	  { path: '', redirectTo: 'home', pathMatch: 'full' },
+	  { path: 'home', component: HomeComponent },
+	  { path: 'sandbox', component: SandboxComponent },
+	  { path: 'dashboard', component: dashboardComponent },
+	  { path: '**', component: HomeComponent },
+	  ];
+
+ng g class shared/class/person
+	  ng g interface shared/interface/user
+	  ng g service shared/service/user --skipTests=true
