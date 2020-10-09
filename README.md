@@ -1,3 +1,17 @@
+## Install
+ng new project_name --skipTests=true --routing=true --style=css
+cd project_name
+
+add in src/index.html/head section for window/tab title:
+<title>Angular Material Showroom</title>
+
+inject in src/app.component.html :
+export class AppComponent {
+  title = 'Angular Material Showroom';
+}
+
+# Imports
+
 install material for angular :
 npm i @angular/cdk @angular/forms @angular/material
 
@@ -24,16 +38,10 @@ npm cache clear --force
 npm install ??
 
 add in src/index.html/head section :
-<title>Angular Material Showroom</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 add in src/stylesheet.css :
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
-
-inject in src/app.component.html :
-export class AppComponent {
-  title = 'Angular Material Showroom';
-}
 
 inject in src/app.component.html :
 <div class="mat-app-background basic-container">
@@ -61,3 +69,68 @@ inject in src/app.component.html :
   <!-- <p><code>Fontawesome</code> works also !! <fa-icon icon="check"></fa-icon> ...<fa-icon icon="coffee"></fa-icon></p> -->
   <router-outlet></router-outlet>
 </div>
+
+
+## Foundations
+ng g module core --module=app --routing --route="**"
+ng g module core --module=app --routing --route="**"
+
+Please note that «core works!» mention appears at the bottom of the display. This is due to <router-outlet></router-outlet> instruction which injects core component. 
+
+Move Tierce Modules to shared module : Update app/shared/shared.module.ts file : 
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { MatSliderModule } from '@angular/material/slider';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
+const SHARED_ENTITIES = []
+
+const SHARED_MODULES = [
+  MatSliderModule,
+  MatCardModule,
+  MatDividerModule,
+  MatButtonModule,
+  MatIconModule,
+  MatTooltipModule,
+]
+
+@NgModule({
+  declarations: [
+    ...SHARED_ENTITIES
+  ],
+  imports: [
+    CommonModule,
+    ...SHARED_MODULES,
+
+  ],
+  exports: [
+    ...SHARED_MODULES
+  ]
+})
+export class SharedModule { }
+
+update src/app.module.ts :
+import { SharedModule } from './shared/shared.module';
+import { CoreModule } from './core/core.module';
+
+
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    SharedModule,
+    CoreModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
