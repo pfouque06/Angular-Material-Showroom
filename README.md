@@ -1,27 +1,63 @@
-# AngularMaterialSandbox01
+install material for angular :
+npm i @angular/cdk @angular/forms @angular/material
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.4.
+add in src/app.module.ts :
+import { MatSliderModule } from '@angular/material/slider';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+…
+@NgModule ({....
+  imports: [...,
+  MatSliderModule,
+  MatCardModule,
+  MatDividerModule,
+  MatButtonModule,
+  MatIconModule
+…]
+})
 
-## Development server
+npm update
+npm cache verify
+npm cache clear --force
+npm install ??
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+add in src/index.html/head section :
+<title>Angular Material Showroom</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-## Code scaffolding
+add in src/stylesheet.css :
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+inject in src/app.component.html :
+export class AppComponent {
+  title = 'Angular Material Showroom';
+}
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+inject in src/app.component.html :
+<div class="mat-app-background basic-container">
+  <!-- <hr> -->
+  <mat-divider></mat-divider>
+  <h2>{{ title }}</h2>
+  <h4>Angular works ! </h4>
+  <mat-divider></mat-divider>
+  <!-- <mat-slider min="1" max="100" step="1" value="1">material is loaded !</mat-slider> -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title><code>@angular/material</code></mat-card-title>
+      <mat-card-subtitle>Material for Angular</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <code>@angular/material</code> seems to be installed and operational as well !!
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-icon-button aria-label="Share"><mat-icon>share</mat-icon></button>
+      <button mat-icon-button aria-label="Like" color="primary"><mat-icon>thumb_up</mat-icon></button>
+      <button mat-icon-button aria-label="Love" color="warn"><mat-icon>favorite</mat-icon></button>
+    </mat-card-actions>
+  </mat-card>
+  <mat-divider></mat-divider>
+  <!-- <p><code>Fontawesome</code> works also !! <fa-icon icon="check"></fa-icon> ...<fa-icon icon="coffee"></fa-icon></p> -->
+  <router-outlet></router-outlet>
+</div>
