@@ -179,10 +179,8 @@ Create other project components
 According to your needs along your application design, those are just some instances to demo the prupose :
 
 	  ng g c core/sandbox --module=core --skipTests=true
-	  ng g c core/Themes/spinner --module=core --skipTests=true
-	  ng g c core/dashboard/sideBar --module=core --skipTests=true
-	  ng g c core/dashboard/userForm --module=core --skipTests=true
-	  ng g c core/dashboard/userList --module=core --skipTests=true
+	  ng g c core/themes/spinner --module=core --skipTests=true
+	  ng g c core/dashboard --module=core --skipTests=true
 
 Update core/core-routing.module.ts:
 
@@ -191,10 +189,22 @@ Update core/core-routing.module.ts:
 	  { path: '', redirectTo: 'home', pathMatch: 'full' },
 	  { path: 'home', component: HomeComponent },
 	  { path: 'sandbox', component: SandboxComponent },
+	  { path: 'themes/spinner ', component: SpinnerComponent },
 	  { path: 'dashboard', component: dashboardComponent },
 	  { path: '**', component: HomeComponent },
 	  ];
 
-ng g class shared/class/person
-	  ng g interface shared/interface/user
-	  ng g service shared/service/user --skipTests=true
+restful api helper and auth services
+    ng g service shared/services/api-helper --skipTests=true
+    ng g service shared/services/auth --skipTests=true
+    ng g interceptor shared/interceptors/jwt-http-inteceptor --skipTests=true
+
+user interface, class and service
+    ng g interface shared/models/interface/user
+    ng g class shared/models/class/user
+    ng g service shared/services/user --skipTests=true
+
+later ...
+	  ng g c core/dashboard/sideBar --module=core --skipTests=true
+	  ng g c core/dashboard/userForm --module=core --skipTests=true
+	  ng g c core/dashboard/userList --module=core --skipTests=true

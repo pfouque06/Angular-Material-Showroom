@@ -1,9 +1,27 @@
-<header fxLayout="row" fxLayoutAlign="start center">
-  {{ title }} - header works!
+<header fxLayout="row" fxLayoutAlign="center center">
+  <!-- <a [routerLink]="['/home']"><img src="../../../favicon.ico" alt="logo" style="height: 45px; width: 45px;"></a> -->
+  <a [routerLink]="['/home']">{{ title }}</a>
+  <a mat-icon-button color="skillful" [matMenuTriggerFor]="menu" class="buttonMenu"><mat-icon>menu</mat-icon></a>
+  <mat-menu #menu="matMenu">
+    <a mat-menu-item [routerLink]="['/home']"><mat-icon class="material-icons md-24">home</mat-icon>Home</a>
+    <a mat-menu-item [routerLink]="['/sandbox']"><mat-icon class="material-icons md-24">construction</mat-icon>Sanbox</a>
+    <a mat-menu-item [routerLink]="['/dashboard']"><mat-icon class="material-icons md-24">person</mat-icon>Dashboard</a>
+    <!-- <a mat-menu-item [routerLink]="['/theme']"><mat-icon class="material-icons md-24">person</mat-icon>Sanbox</a> -->
+    <!-- <a mat-menu-item [routerLink]="['/']"><mat-icon class="material-icons md-24">logout</mat-icon>Déconnexion</a> -->
+  </mat-menu>
+  <!-- <mat-toolbar fxLayout="row" fxLayoutAlign="center center"> -->
+  <mat-toolbar>
+    <a [routerLink]="['/home']" title="Home" mat-icon-button><mat-icon fxLayout="column" class="material-icons md-32">home</mat-icon></a>
+    <a [routerLink]="['/sandbox']" title="Sanbox" mat-icon-button><mat-icon fxLayout="column" class="material-icons md-32">construction</mat-icon></a>
+    <a [routerLink]="['/themes/spinner']" title="Themes/Spinner" mat-icon-button><mat-icon fxLayout="column" class="material-icons md-32">refresh</mat-icon></a>
+    <a [routerLink]="['/dashboard']" title="Dashboard" mat-icon-button><mat-icon fxLayout="column" class="material-icons md-32">dashboard</mat-icon></a>
+    <a href="http://www.pfouque.fr/" target="_blank" title="Contact" mat-icon-button><mat-icon fxLayout="column" class="material-icons md-32">contact_page</mat-icon></a>
+    <a (click)="login = !login" [title]="login? 'Logout':'Login'" [color]="login? '':'warn'" mat-mini-fab><mat-icon fxLayout="column" class="material-icons md-32">{{login? 'lock' : 'lock_open'}}</mat-icon></a>
+    <!-- <button mat-icon-button matTooltip="Login" aria-label="Login" color="warn"><mat-icon>lock_open</mat-icon></button> -->
+    <!-- <a color="skillful" [routerLink]="['/']" (click)="logout()" title="Déconnexion" mat-button><mat-icon fxLayout="column" class="material-icons md-32">logout</mat-icon>Déconnexion</a> -->
+  </mat-toolbar>
 </header>
 <!-- <header fxLayout="row" fxLayoutAlign="start center">
-    <a [routerLink]="['/home']"><img src="/src/favicon.ico " alt="logo" style="height: 45px; width: 45px;">
-    </a>
     <div class="recherche">
         <div>
             <form action=" " class="formulaire">
@@ -14,18 +32,4 @@
             </form>
         </div>
     </div>
-    <a mat-button color="skillful" [matMenuTriggerFor]="menu" class="buttonMenu"><mat-icon>menu</mat-icon></a>
-    <mat-menu #menu="matMenu">
-        <a class="mat-menu-item" [routerLink]="['/home']"><mat-icon class="material-icons md-24">home</mat-icon>Accueil</a>
-        <a mat-menu-item [routerLink]="['/home/profile']"><mat-icon class="material-icons md-24">person</mat-icon>Profil</a>
-        <a mat-menu-item (click)="hiddenBadgeNotifications" [routerLink]="['/home/notifications']"><mat-icon class="material-icons md-24" matBadge="{{countNotifications}}" matBadgeColor="warn" matBadgePosition="after" matBadgeSize="small" matBadgeHidden="{{hiddenBadgeNotifications}}">notifications</mat-icon>Notifications</a>
-        <a mat-menu-item [routerLink]="['/']"><mat-icon class="material-icons md-24">logout</mat-icon>Déconnexion</a>
-    </mat-menu>
-    <mat-toolbar fxLayout="row" fxLayoutAlign="center center">
-        <a style="cursor: pointer" color="skillful" [routerLink]="['/home']" title="Accueil" mat-button><mat-icon fxLayout="column" class="material-icons md-32">home</mat-icon>Accueil</a>
-        <a color="skillful" [routerLink]="['/home/profile']" title="Mon profil" mat-button><mat-icon fxLayout="column" class="material-icons md-32">person</mat-icon>Mon profil</a>
-        <a color="skillful" (click)="hiddenBadgeNotifications=true" [routerLink]="['/home/notifications']" title="Notifications" mat-button><mat-icon fxLayout="column" class="material-icons md-32" matBadge="{{countNotifications}}" matBadgeColor="warn" matBadgePosition="after" matBadgeSize="small" matBadgeHidden="{{hiddenBadgeNotifications}}">notifications</mat-icon>Notifications</a>
-        <a color="skillful" [routerLink]="['/']" (click)="logout()" title="Déconnexion" mat-button><mat-icon fxLayout="column" class="material-icons md-32">logout</mat-icon>Déconnexion</a>
-    </mat-toolbar>
-
 </header> -->

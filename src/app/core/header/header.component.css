@@ -1,0 +1,35 @@
+header {
+  background-color: #f5f5f5;
+}
+
+img {
+  padding-left: 5px;
+}
+
+@media screen and (max-width: 1024px) {
+  .buttonMenu {
+      display: block;
+  }
+  mat-toolbar {
+      display: none;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .buttonMenu {
+      display: none;
+  }
+  mat-toolbar {
+      height: 74px;
+  }
+  mat-toolbar a, button {
+      display: block;
+      margin: 40px;
+
+  }
+  mat-toolbar a mat-icon-button, a mini-fab , button mat-icon-button, button mini-fab {
+      margin: auto;
+      margin-top: 15px;
+
+  }
+}
