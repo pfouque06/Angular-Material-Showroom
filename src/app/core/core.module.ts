@@ -7,7 +7,6 @@ import { HomeComponent } from './home/home.component';
 import { SharedModule } from '../shared/shared.module';
 import { SandboxComponent } from './sandbox/sandbox.component';
 import { SpinnerComponent } from './themes/spinner/spinner.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 @NgModule({
@@ -16,7 +15,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     HomeComponent,
     SandboxComponent,
     SpinnerComponent,
-    DashboardComponent
   ],
   imports: [
     CommonModule,

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/shared/service/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  public ping: boolean = false;
+  public loading: boolean = true;
 
-  ngOnInit(): void {
+  constructor(private authService: AuthService) { }
+
+  async ngOnInit(): Promise<void> {
+    this.ping = await this.authService.ping();
+    this.loading = false;
   }
 
 }

@@ -12,6 +12,12 @@ export class AuthService {
 
   constructor(private api: ApiHelperService) { }
 
+  public async ping() : Promise<boolean> {
+    console.log('ping()');
+    const result: boolean = await this.api.get({ endpoint: "/ping" });
+    return result;
+  }
+
   public async register(email: string, password: string): Promise<User> {
     console.log('register(mail: ' + email + ', password: ' + password);
     return await this.api.post({ endpoint: '/register', data: { email: email, password: password } });
@@ -22,28 +28,27 @@ export class AuthService {
     console.log('login(mail: ' + email + ', password: ' + password);
     const user = await this.api.post({ endpoint: '/login', data: { email: email, password: password } });
     if (user) {
-      console.log(user.accessToken);
+      console.log('token: ' + user.accessToken);
       this._user = user;
       return user;
     }
     else return undefined;
   }
 
-  public async logout(): Promise<User> {
+  public async logout(): Promise<boolean> {
     console.log('logout(currentUser: ' + this._user.email + ')');
-    const user = await this.api.post({ endpoint: '/logout' });
-    if (user) {
-      console.log('token: ' + user.accessToken);
+    const result: boolean = await this.api.post({ endpoint: '/logout' });
+    if (result) {
+      console.log('logout: ' + result);
       this._user = undefined;
-      return user;
     }
-    else return undefined;
+    return result ;
   }
 
-  public async test() : Promise<string> {
-    const result = await this.api.get({ endpoint: "/test" });
-    console.log('test(): ' + result as string);
-    return result as string;
+  public async test() : Promise<any> {
+    const result: any = await this.api.get({ endpoint: "/test" });
+    console.log('test(): ' + result);
+    return result;
   }
 
   public async whoami() : Promise<User> {

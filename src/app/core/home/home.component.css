@@ -1,0 +1,21 @@
+.hello_spinner {
+  margin: 0px 0px 0px 10px;
+  /* display: flex; */
+  /* align-content: center; */
+  /* align-items: center; */
+  /* height: 15px!; */
+  /* width: 15px!; */
+}
+
+.check_request {
+  margin: -5px 10px 0px 0px;
+  /* height: 15px!; */
+  /* width: 15px!; */
+}
+
+.check_request .ok {
+  color: darkgreen;
+}
+.check_request .ko {
+  color: crimson;
+}

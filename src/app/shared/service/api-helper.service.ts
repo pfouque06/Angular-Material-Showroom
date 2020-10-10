@@ -10,8 +10,9 @@ export class ApiHelperService {
 
   constructor(private http: HttpClient) { }
 
-  public get({ endpoint, data = {}, queryParams = {} }: { endpoint: string, data?: any, queryParams?: any }): Promise<any> {
-    return this.request({ endpoint, method: 'GET', data, queryParams });
+  // public get({ endpoint, data = {}, queryParams = {} }: { endpoint: string, data?: any, queryParams?: any }): Promise<any> {
+  public get({ endpoint, queryParams = {} }: { endpoint: string, data?: any, queryParams?: any }): Promise<any> {
+    return this.request({ endpoint, method: 'GET', queryParams });
   }
 
   public post({ endpoint, data = {}, queryParams = {} }: { endpoint: string, data?: any, queryParams?: any }): Promise<any> {
@@ -63,9 +64,10 @@ export class ApiHelperService {
       throw new Error(`error calling ${url} with method ${methodWanted}`);
     }
 
-    console.log('response', req);
+    // console.log('response', req);
+
     return req.toPromise().then((res) => {
-      console.log('body: ', res.body);
+      // console.log('body: ', res.body);
       return res.body;
     });
   }

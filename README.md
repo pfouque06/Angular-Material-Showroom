@@ -74,7 +74,7 @@ inject in src/app.component.html :
 
 
 ## Foundations
-ng g module core --module=app --routing --route="**"
+ng g module shared --module=app
 ng g module core --module=app --routing --route="**"
 
 Please note that «core works!» mention appears at the bottom of the display. This is due to <router-outlet></router-outlet> instruction which injects core component. 
@@ -182,7 +182,7 @@ According to your needs along your application design, those are just some insta
 
 	  ng g c core/sandbox --module=core --skipTests=true
 	  ng g c core/themes/spinner --module=core --skipTests=true
-	  ng g c core/dashboard --module=core --skipTests=true
+    ng g module core/dashboard --module=core --routing --route="**"
 
 Update core/core-routing.module.ts:
 
@@ -207,6 +207,6 @@ user interface, class and service
     ng g service shared/services/user --skipTests=true
 
 later ...
-	  ng g c core/dashboard/sideBar --module=core --skipTests=true
-	  ng g c core/dashboard/userForm --module=core --skipTests=true
-	  ng g c core/dashboard/userList --module=core --skipTests=true
+	  ng g c core/dashboard/sideBar --module=dashboard --skipTests=true
+	  ng g c core/dashboard/userList --module=dashboard --skipTests=true
+	  ng g c core/dashboard/userForm --module=dashboard --skipTests=true

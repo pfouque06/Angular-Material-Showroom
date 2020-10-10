@@ -137,6 +137,7 @@
     <mat-expansion-panel hideToggle>
       <mat-expansion-panel-header>
         <mat-panel-title>
+          <mat-icon class="check_request" style="color: darkgreen">done</mat-icon>
           <code>@angular/material</code>
         </mat-panel-title>
         <mat-panel-description>
@@ -146,11 +147,15 @@
 
       <mat-card>
         <mat-card-header>
-          <mat-card-title><code>@angular/material</code></mat-card-title>
-          <mat-card-subtitle>Material for Angular</mat-card-subtitle>
+          <mat-card-title>
+            <code>@angular/material</code>
+          </mat-card-title>
+          <mat-card-subtitle>
+            Material for Angular
+          </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
-          <code>@angular/material</code> seems to be installed and operational as well !! check out this card and hereunder Icons coded as buttons.
+          <code>@angular/material</code> is be installed and operational !!
         </mat-card-content>
         <mat-card-actions>
           <button mat-icon-button matTooltip="Share" aria-label="Share"><mat-icon>share</mat-icon></button>
@@ -163,6 +168,8 @@
     <mat-expansion-panel  hideToggle>
       <mat-expansion-panel-header>
         <mat-panel-title>
+          <mat-spinner *ngIf="loading" class="hello_spinner" [diameter]="16" [strokeWidth]="2"></mat-spinner>
+          <mat-icon *ngIf="!loading" class="check_request" [style]="ping ? 'color: darkgreen':'color: crimson'">{{ping ? 'done' : 'warning'}}</mat-icon>
           <code>koa-typescript-restfull-api</code>
         </mat-panel-title>
         <mat-panel-description>
