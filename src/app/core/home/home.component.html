@@ -131,20 +131,47 @@
 
   <mat-divider></mat-divider>
   <!-- <mat-slider min="1" max="100" step="1" value="1">material is loaded !</mat-slider> -->
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title><code>@angular/material</code></mat-card-title>
-      <mat-card-subtitle>Material for Angular</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <code>@angular/material</code> seems to be installed and operational as well !! check out this card and hereunder Icons coded as buttons.
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-icon-button matTooltip="Share" aria-label="Share"><mat-icon>share</mat-icon></button>
-      <button mat-icon-button matTooltip="Like" aria-label="Like" color="primary"><mat-icon>thumb_up</mat-icon></button>
-      <button mat-icon-button matTooltip="Love" aria-label="Love" color="warn"><mat-icon>favorite</mat-icon></button>
-    </mat-card-actions>
-  </mat-card>
+
+
+  <mat-accordion>
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <code>@angular/material</code>
+        </mat-panel-title>
+        <mat-panel-description>
+          Material for Angular
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title><code>@angular/material</code></mat-card-title>
+          <mat-card-subtitle>Material for Angular</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <code>@angular/material</code> seems to be installed and operational as well !! check out this card and hereunder Icons coded as buttons.
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-icon-button matTooltip="Share" aria-label="Share"><mat-icon>share</mat-icon></button>
+          <button mat-icon-button matTooltip="Like" aria-label="Like" color="primary"><mat-icon>thumb_up</mat-icon></button>
+          <button mat-icon-button matTooltip="Love" aria-label="Love" color="warn"><mat-icon>favorite</mat-icon></button>
+        </mat-card-actions>
+      </mat-card>
+
+    </mat-expansion-panel >
+    <mat-expansion-panel  hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <code>koa-typescript-restfull-api</code>
+        </mat-panel-title>
+        <mat-panel-description>
+          Fullstack Restfull API
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      checking for koa server availability ... not available yet
+    </mat-expansion-panel>
+  </mat-accordion>
 
   <mat-divider></mat-divider>
   <!-- <p><code>Fontawesome</code> works also !! <fa-icon icon="check"></fa-icon> ...<fa-icon icon="coffee"></fa-icon></p> -->

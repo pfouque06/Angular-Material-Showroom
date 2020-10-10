@@ -14,6 +14,7 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { FormsModule } from "@angular/forms";
 import { MatInputModule } from "@angular/material/input";
 import { MatFormFieldModule } from "@angular/material/form-field";
+import {MatExpansionModule} from '@angular/material/expansion';
 import { UserModalComponent } from './modals/user-modal/user-modal.component';
 
 const SHARED_ENTITIES = []
@@ -31,7 +32,8 @@ const SHARED_MODULES = [
   MatDialogModule,
   FormsModule,
   MatInputModule,
-  MatFormFieldModule
+  MatFormFieldModule,
+  MatExpansionModule
 ]
 
 @NgModule({
