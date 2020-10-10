@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from '../service/auth.service';
 
 @Injectable()
-export class JwtHttpInteceptorInterceptor implements HttpInterceptor {
+export class JwtHttpInterceptorInterceptor implements HttpInterceptor {
 
   constructor(private auth: AuthService) {
   }
@@ -19,6 +19,7 @@ export class JwtHttpInteceptorInterceptor implements HttpInterceptor {
     if (!token) {
       return next.handle(request);
     }
+    console.log('intercept(): token= ' + token);
     const updatedRequest = request.clone({
       headers: request.headers.set('Authorization', `Bearer ${token}`)
     });

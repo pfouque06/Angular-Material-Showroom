@@ -13,9 +13,10 @@ export class AppComponent {
 # Imports
 
 install material for angular :
-npm i @angular/cdk @angular/forms @angular/material
+npm i @angular/compile @angular/cdk @angular/forms @angular/material@angular/flex-layout @angular/platform-browser @angular/platform-browser-dynamic
 
 add in src/app.module.ts :
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
@@ -24,6 +25,7 @@ import { MatIconModule } from '@angular/material/icon';
 …
 @NgModule ({....
   imports: [...,
+  FlexLayoutModule
   MatSliderModule,
   MatCardModule,
   MatDividerModule,

@@ -11,15 +11,31 @@
   </mat-menu>
   <!-- <mat-toolbar fxLayout="row" fxLayoutAlign="center center"> -->
   <mat-toolbar>
-    <a [routerLink]="['/home']" title="Home" mat-icon-button><mat-icon fxLayout="column" class="material-icons md-32">home</mat-icon></a>
-    <a [routerLink]="['/sandbox']" title="Sanbox" mat-icon-button><mat-icon fxLayout="column" class="material-icons md-32">construction</mat-icon></a>
-    <a [routerLink]="['/themes/spinner']" title="Themes/Spinner" mat-icon-button><mat-icon fxLayout="column" class="material-icons md-32">refresh</mat-icon></a>
-    <a [routerLink]="['/dashboard']" title="Dashboard" mat-icon-button><mat-icon fxLayout="column" class="material-icons md-32">dashboard</mat-icon></a>
-    <a href="http://www.pfouque.fr/" target="_blank" title="Contact" mat-icon-button><mat-icon fxLayout="column" class="material-icons md-32">contact_page</mat-icon></a>
-    <a (click)="login = !login" [title]="login? 'Logout':'Login'" [color]="login? '':'warn'" mat-mini-fab><mat-icon fxLayout="column" class="material-icons md-32">{{login? 'lock' : 'lock_open'}}</mat-icon></a>
-    <!-- <button mat-icon-button matTooltip="Login" aria-label="Login" color="warn"><mat-icon>lock_open</mat-icon></button> -->
-    <!-- <a color="skillful" [routerLink]="['/']" (click)="logout()" title="Déconnexion" mat-button><mat-icon fxLayout="column" class="material-icons md-32">logout</mat-icon>Déconnexion</a> -->
+    <!-- <ng-template #mainMenu>
+    </ng-template> -->
+    <button [routerLink]="['/home']" title="Home" mat-icon-button><mat-icon fxLayout="column" class="material-icons md-32">home</mat-icon>Home</button>
+    <button [routerLink]="['/sandbox']" title="Sanbox" mat-icon-button><mat-icon fxLayout="column" class="material-icons md-32">construction</mat-icon>Sandbox</button>
+    <button [matMenuTriggerFor]="themeMenu" aria-label="Themes" title="Themes" mat-icon-button><mat-icon fxLayout="column" class="material-icons md-32">category</mat-icon>Themes</button>
+    <button [routerLink]="['/dashboard']" [disabled]="!login" title="Dashboard" mat-icon-button><mat-icon fxLayout="column" class="material-icons md-32">dashboard</mat-icon>Dashboard</button>
+    <button [matMenuTriggerFor]="loginMenu" aria-label="Account menu" title="Account menu" [color]="login? 'warn':''" mat-mini-fab><mat-icon fxLayout="column" class="material-icons md-32">{{login? 'lock' : 'lock_open'}}</mat-icon></button>
   </mat-toolbar>
+  <mat-menu #themeMenu="matMenu">
+    <ng-template matMenuContent>
+      <button mat-menu-item [routerLink]="['/themes/spinner']" title="Themes/Spinner">
+        <mat-icon>refresh</mat-icon>Spinners
+      </button>
+    </ng-template>
+  </mat-menu>
+  <mat-menu #loginMenu="matMenu">
+    <ng-template matMenuContent>
+      <button mat-menu-item (click)="register()" [disabled]="login" [title]="login? '':'Register'">
+        <mat-icon>{{login? 'person' : 'person_add'}}</mat-icon>{{login? (getCurrentUserFullName() | titlecase):'Register'}}
+      </button>
+      <button mat-menu-item (click)="loginToggle()" [title]="login? 'Logout':'Login'">
+        <mat-icon [color]="login? 'warn':'primary'">{{login? 'exit_to_app' : 'login'}}</mat-icon>{{login? 'Logout' : 'Login'}}
+      </button>
+    </ng-template>
+  </mat-menu>
 </header>
 <!-- <header fxLayout="row" fxLayoutAlign="start center">
     <div class="recherche">
