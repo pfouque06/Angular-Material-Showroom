@@ -176,7 +176,13 @@
           Fullstack Restfull API
         </mat-panel-description>
       </mat-expansion-panel-header>
-      checking for koa server availability ... not available yet
+      <p *ngIf="loading">
+        checking for koa server availability ...
+      </p>
+      <p *ngIf="!loading">
+        Restfull Koa server is {{ping ? '' : 'not'}} available
+      </p>
+
     </mat-expansion-panel>
   </mat-accordion>
 
