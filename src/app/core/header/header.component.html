@@ -1,51 +1,50 @@
-<header fxLayout="row" fxLayoutAlign="center center">
+<header fxLayout="row" fxLayoutAlign="space-between center">
   <!-- <a [routerLink]="['/home']"><img src="../../../favicon.ico" alt="logo" style="height: 45px; width: 45px;"></a> -->
-  <a [routerLink]="['/']">{{ title }}</a>
-  <a mat-icon-button color="skillful" [matMenuTriggerFor]="menu" class="buttonMenu"><mat-icon>menu</mat-icon></a>
-  <mat-menu #menu="matMenu">
-    <a mat-menu-item [routerLink]="['/home']"><mat-icon class="material-icons md-24">home</mat-icon>Home</a>
-    <a mat-menu-item [routerLink]="['/sandbox']"><mat-icon class="material-icons md-24">construction</mat-icon>Sanbox</a>
-    <a mat-menu-item [routerLink]="['/dashboard']"><mat-icon class="material-icons md-24">person</mat-icon>Dashboard</a>
-    <!-- <a mat-menu-item [routerLink]="['/theme']"><mat-icon class="material-icons md-24">person</mat-icon>Sanbox</a> -->
-    <!-- <a mat-menu-item [routerLink]="['/']"><mat-icon class="material-icons md-24">logout</mat-icon>Déconnexion</a> -->
-  </mat-menu>
-  <!-- <mat-toolbar fxLayout="row" fxLayoutAlign="center center"> -->
-  <mat-toolbar>
+  <a mat-flat-button [routerLink]="['/']" style="font-size: x-large;">{{ title }}</a>
+
+  <button mat-icon-button color="skillful" [matMenuTriggerFor]="responsiveMenu" class="buttonMenu"><mat-icon>menu</mat-icon></button>
+
+  <mat-toolbar fxLayout="row" fxLayoutAlign="end center">
     <!-- <ng-template #mainMenu>
     </ng-template> -->
-    <button [routerLink]="['/home']" title="Home" mat-icon-button><mat-icon fxLayout="column" class="material-icons md-32">home</mat-icon>Home</button>
-    <button [routerLink]="['/sandbox']" title="Sanbox" mat-icon-button><mat-icon fxLayout="column" class="material-icons md-32">construction</mat-icon>Sandbox</button>
-    <button [matMenuTriggerFor]="themeMenu" aria-label="Themes" title="Themes" mat-icon-button><mat-icon fxLayout="column" class="material-icons md-32">category</mat-icon>Themes</button>
-    <button [routerLink]="['/dashboard']" [disabled]="!isLogged()" title="Dashboard" mat-icon-button><mat-icon fxLayout="column" class="material-icons md-32">dashboard</mat-icon>Dashboard</button>
-    <button [matMenuTriggerFor]="loginMenu" aria-label="Account menu" title="Account menu" [color]="isLogged()? 'warn':''" mat-mini-fab><mat-icon fxLayout="column" class="material-icons md-32">{{isLogged()? 'lock' : 'lock_open'}}</mat-icon></button>
+    <button [routerLink]="['/home']" title="Home" mat-flat-button><mat-icon class="material-icons md-32">home</mat-icon>Home</button>
+    <button [routerLink]="['/sandbox']" title="Sanbox" mat-flat-button><mat-icon class="material-icons md-32">construction</mat-icon>Sandbox</button>
+    <button [matMenuTriggerFor]="themeMenu" aria-label="Themes" title="Themes" mat-flat-button><mat-icon class="material-icons md-32">category</mat-icon>Themes</button>
+    <button [routerLink]="['/dashboard']" [disabled]="!isLogged()" title="Dashboard" mat-flat-button style="background: none;"><mat-icon class="material-icons md-32">dashboard</mat-icon>Dashboard</button>
+    <button [matMenuTriggerFor]="loginMenu" aria-label="Account menu" title="Account menu" [color]="isLogged()? 'warn':''" mat-mini-fab><mat-icon class="material-icons md-32">{{isLogged()? 'lock' : 'lock_open'}}</mat-icon></button>
   </mat-toolbar>
-  <mat-menu #themeMenu="matMenu">
-    <ng-template matMenuContent>
-      <button mat-menu-item [routerLink]="['/themes/spinner']" title="Themes/Spinner">
-        <mat-icon>refresh</mat-icon>Spinners
-      </button>
-    </ng-template>
-  </mat-menu>
-  <mat-menu #loginMenu="matMenu">
-    <ng-template matMenuContent>
-      <button mat-menu-item (click)="register()" [disabled]="isLogged()" [title]="isLogged()? '':'Register'">
-        <mat-icon>{{isLogged()? 'person' : 'person_add'}}</mat-icon>{{isLogged()? (getCurrentUserFullName() | titlecase):'Register'}}
-      </button>
-      <button mat-menu-item (click)="loginToggle()" [title]="isLogged()? 'Logout':'Login'">
-        <mat-icon [color]="isLogged()? 'warn':'primary'">{{isLogged()? 'exit_to_app' : 'login'}}</mat-icon>{{isLogged()? 'Logout' : 'Login'}}
-      </button>
-    </ng-template>
-  </mat-menu>
+
 </header>
-<!-- <header fxLayout="row" fxLayoutAlign="start center">
-    <div class="recherche">
-        <div>
-            <form action=" " class="formulaire">
-                <div fxLayout="row ">
-                    <mat-icon (click)="onSearch()" class="cursor">search</mat-icon>
-                    <div class="input "><input (keydown)="onSearch() " placeholder="Recherche... "> </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</header> -->
+
+
+<mat-menu #responsiveMenu="matMenu">
+  <ng-template matMenuContent>
+    <button mat-menu-item [routerLink]="['/home']" title="Home"><mat-icon class="material-icons md-32">home</mat-icon>Home</button>
+    <button mat-menu-item [routerLink]="['/sandbox']" title="Sanbox"><mat-icon class="material-icons md-32">construction</mat-icon>Sandbox</button>
+    <button mat-menu-item [matMenuTriggerFor]="themeMenu" aria-label="Themes" title="Themes"><mat-icon class="material-icons md-32">category</mat-icon>Themes</button>
+    <button mat-menu-item [routerLink]="['/dashboard']" [disabled]="!isLogged()" title="Dashboard" style="background: none;"><mat-icon class="material-icons md-32">dashboard</mat-icon>Dashboard</button>
+    <button mat-menu-item [matMenuTriggerFor]="loginMenu" aria-label="Account" title="Account menu">
+      <mat-icon class="material-icons md-32" [color]="isLogged()? 'warn':''">{{isLogged()? 'lock' : 'lock_open'}}</mat-icon>
+      Account
+    </button>
+  </ng-template>
+</mat-menu>
+
+<mat-menu #themeMenu="matMenu">
+  <ng-template matMenuContent>
+    <button mat-menu-item [routerLink]="['/themes/spinner']" title="Themes/Spinner">
+      <mat-icon>refresh</mat-icon>Spinners
+    </button>
+  </ng-template>
+</mat-menu>
+
+<mat-menu #loginMenu="matMenu">
+  <ng-template matMenuContent>
+    <button mat-menu-item (click)="register()" [disabled]="isLogged()" [title]="isLogged()? '':'Register'">
+      <mat-icon>{{isLogged()? 'person' : 'person_add'}}</mat-icon>{{isLogged()? (getCurrentUserFullName() | titlecase):'Register'}}
+    </button>
+    <button mat-menu-item (click)="loginToggle()" [title]="isLogged()? 'Logout':'Login'">
+      <mat-icon [color]="isLogged()? 'warn':'primary'">{{isLogged()? 'exit_to_app' : 'login'}}</mat-icon>{{isLogged()? 'Logout' : 'Login'}}
+    </button>
+  </ng-template>
+</mat-menu>

@@ -1,17 +1,27 @@
 <!-- <p>user-modal works!</p> -->
-<h1 mat-dialog-title>{{title}}</h1>
-<div mat-dialog-content>
-  <p>email: </p>
-  <mat-form-field>
-    <input matInput [(ngModel)]="data.email"  placeholder="Enter email">
-  </mat-form-field>
-  <p>password: </p>
-  <mat-form-field>
-    <input matInput [(ngModel)]="data.password"  placeholder="Enter password">
-  </mat-form-field>
-</div>
-<div mat-dialog-actions>
-  <!-- <button mat-button (click)="onNoClick()">No</button> -->
-  <!-- <button mat-button [mat-dialog-close]="data.email" cdkFocusInitial>Yes</button> -->
-  <button mat-button (click)="onSubmitClick()">submit</button>
+<div fxLayout="row" fxLayoutAlign="center center">
+  <div>
+    <h1 mat-dialog-title>{{title}}</h1>
+    <mat-divider></mat-divider>
+    <div mat-dialog-content>
+      <p>
+        <mat-form-field>
+          <mat-label>Enter your email</mat-label>
+          <input matInput [(ngModel)]="data.email"  placeholder="jack.son@mail.com" required>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <mat-label>Enter your email</mat-label>
+          <input matInput [(ngModel)]="data.password"  placeholder="<password>" required>
+        </mat-form-field>
+      </p>
+    </div>
+      <div mat-dialog-actions>
+        <!-- <button mat-button (click)="onNoClick()">No</button> -->
+        <!-- <button mat-button [mat-dialog-close]="data.email" cdkFocusInitial>Yes</button> -->
+        <button mat-raised-button (click)="onSubmitClick()">submit</button>
+      </div>
+  </div>
+
 </div>

@@ -14,11 +14,11 @@ export class UserModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any) {
       switch (data.formType) {
         case 'register': {
-          this.title = "Register new account";
+          this.title = "Register a new account";
           break;
         }
         case 'login': {
-          this.title = "Login a registered account";
+          this.title = "Login";
           break;
         }
       }

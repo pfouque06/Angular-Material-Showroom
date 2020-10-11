@@ -2,36 +2,58 @@
 <mat-spinner *ngIf="loading" [diameter]="50" [strokeWidth]="2"></mat-spinner>
 <mat-list role="list" dense>
   <mat-list-item role="listitem">
-    <a [routerLink]="['/dashboard']" title="Home">
-      {{fullName | titlecase }}
-    </a>
+    <button mat-button [routerLink]="['/dashboard']" title="Home">
+      <mat-icon class="material-icons md-24">home</mat-icon>
+      Home
+    </button>
   </mat-list-item>
   <mat-list-item role="listitem">
-    <a [matMenuTriggerFor]="userMenu" aria-label="User menu" title="User menu">Users...</a>
+    <button mat-button [routerLink]="['/dashboard/users/profile']" title="Home">
+      <mat-icon class="material-icons md-24">person</mat-icon>
+      {{fullName | titlecase }}
+    </button>
+  </mat-list-item>
+  <mat-list-item role="listitem">
+    <button mat-button [matMenuTriggerFor]="userMenu" aria-label="User menu" title="User menu">
+      <mat-icon class="material-icons md-24">people_alt</mat-icon>
+      Users...
+    </button>
   </mat-list-item>
   <mat-list-item role="listitem" *ngIf="isAdmin()">
-    <a [matMenuTriggerFor]="adminMenu" aria-label="Admin menu" title="Admin menu">Admin...</a>
+    <button mat-button [matMenuTriggerFor]="adminMenu" aria-label="Admin menu" title="Admin menu">
+      <mat-icon class="material-icons md-24">engineering</mat-icon>
+      Admin...
+    </button>
   </mat-list-item>
 </mat-list>
 
 <mat-menu #userMenu="matMenu">
   <ng-template matMenuContent>
-    <a mat-menu-item [routerLink]="['/dashboard/users/list']" title="User list">
+    <button mat-menu-item [routerLink]="['/dashboard/users/list']" title="User List">
       Users List
-    </a>
-    <a mat-menu-item [routerLink]="['/dashboard/users/form']" title="User list">
-      User Form
-    </a>
+    </button>
   </ng-template>
 </mat-menu>
 
 <mat-menu #adminMenu="matMenu">
   <ng-template matMenuContent>
-    <button mat-menu-item (click)="usersReset()" title="User Table Reset">
-      User Table Reset
+    <button mat-menu-item [matMenuTriggerFor]="userAdminMenu" aria-label="User admin menu" title="User admin menu">
+      <mat-icon class="material-icons md-24">people_alt</mat-icon>
+      Users...
     </button>
     <button mat-menu-item (click)="authReset()" title="Authenticated session Reset">
       Authenticated session Reset
+    </button>
+  </ng-template>
+</mat-menu>
+
+<mat-menu #userAdminMenu="matMenu">
+  <ng-template matMenuContent>
+    <button mat-menu-item [routerLink]="['/dashboard/users/form']" title="User list">
+      User Form
+    </button>
+    <button mat-menu-item (click)="usersReset()" title="User table Reset">
+      User Table Reset
     </button>
   </ng-template>
 </mat-menu>

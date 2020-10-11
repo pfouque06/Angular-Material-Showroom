@@ -45,7 +45,7 @@ export class SideBarComponent implements OnInit {
     let userForm: any = { formType: formType, password: "secret"  };
 
     const dialogRef = this.dialog.open(ConfirmationModalComponent, {
-      width: '600px',
+      width: '500px',
       //data: {}
       data: userForm
     });

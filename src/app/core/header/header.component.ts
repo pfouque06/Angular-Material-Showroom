@@ -61,7 +61,7 @@ export class HeaderComponent implements OnInit {
       userForm = { ...userForm, email: "sam.va@gmail.com"};
 
     const dialogRef = this.dialog.open(UserModalComponent, {
-      width: '600px',
+      width: '300px',
       //data: {}
       data: userForm
     });

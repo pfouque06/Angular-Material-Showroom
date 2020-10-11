@@ -8,10 +8,18 @@ import { UserListComponent } from './user-list/user-list.component';
 import { HomeComponent } from './home/home.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { UserFormComponent } from './user-form/user-form.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 
 @NgModule({
-  declarations: [DashboardComponent, SideBarComponent, UserListComponent, HomeComponent, UserFormComponent],
+  declarations: [
+    DashboardComponent,
+    SideBarComponent,
+    UserListComponent,
+    HomeComponent,
+    UserFormComponent,
+    UserProfileComponent
+  ],
   imports: [
     CommonModule,
     DashboardRoutingModule,
