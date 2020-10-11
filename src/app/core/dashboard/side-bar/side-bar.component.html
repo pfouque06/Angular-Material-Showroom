@@ -15,9 +15,13 @@
     </button>
   </mat-list-item>
   <mat-list-item role="listitem">
-    <button mat-button [matMenuTriggerFor]="userMenu" aria-label="User menu" title="User menu">
+    <!-- <button mat-button [matMenuTriggerFor]="userMenu" aria-label="User menu" title="User menu">
       <mat-icon class="material-icons md-24">people_alt</mat-icon>
       Users...
+    </button> -->
+    <button mat-button [routerLink]="['/dashboard/users/list']" title="User List">
+      <mat-icon class="material-icons md-24">people_alt</mat-icon>
+      Users ...
     </button>
   </mat-list-item>
   <mat-list-item role="listitem" *ngIf="isAdmin()">
@@ -40,10 +44,11 @@
   <ng-template matMenuContent>
     <button mat-menu-item [matMenuTriggerFor]="userAdminMenu" aria-label="User admin menu" title="User admin menu">
       <mat-icon class="material-icons md-24">people_alt</mat-icon>
-      Users...
+      Users menu
     </button>
-    <button mat-menu-item (click)="authReset()" title="Authenticated session Reset">
-      Authenticated session Reset
+    <button mat-menu-item [matMenuTriggerFor]="authAdminMenu" aria-label="Authenticated session Reset" title="Authenticated session Reset">
+      <mat-icon class="material-icons md-24">lock</mat-icon>
+      Sessions menu
     </button>
   </ng-template>
 </mat-menu>
@@ -55,6 +60,17 @@
     </button>
     <button mat-menu-item (click)="usersReset()" title="User table Reset">
       User Table Reset
+    </button>
+  </ng-template>
+</mat-menu>
+
+<mat-menu #authAdminMenu="matMenu">
+  <ng-template matMenuContent>
+    <button mat-menu-item [routerLink]="['/dashboard/sessions/list']" title="Sessions List">
+      Sessions List
+    </button>
+    <button mat-menu-item (click)="authReset()" title="Authenticated session Reset">
+      Authenticated session Reset
     </button>
   </ng-template>
 </mat-menu>

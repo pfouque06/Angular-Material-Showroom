@@ -9,6 +9,7 @@ import { HomeComponent } from './home/home.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { UserFormComponent } from './user-form/user-form.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { SessionListComponent } from './session-list/session-list.component';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     HomeComponent,
     UserFormComponent,
     UserProfileComponent,
+    SessionListComponent,
   ],
   imports: [
     CommonModule,
