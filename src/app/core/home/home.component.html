@@ -14,7 +14,8 @@
     <mat-expansion-panel hideToggle>
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <mat-icon class="check_request" style="color: darkgreen">done</mat-icon>
+          <!-- <mat-icon class="check_request check_ok" style="color: darkgreen">done</mat-icon> -->
+          <mat-icon class="check_request check_ok">done</mat-icon>
           <code>@angular/material</code>
         </mat-panel-title>
         <mat-panel-description>
@@ -45,8 +46,8 @@
     <mat-expansion-panel  hideToggle>
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <mat-spinner *ngIf="loading" class="hello_spinner" [diameter]="16" [strokeWidth]="2"></mat-spinner>
-          <mat-icon *ngIf="!loading" class="check_request" [style]="ping ? 'color: darkgreen':'color: crimson'">{{ping ? 'done' : 'warning'}}</mat-icon>
+          <mat-spinner *ngIf="loading" class="check_request" [diameter]="16" [strokeWidth]="2"></mat-spinner>
+          <mat-icon *ngIf="!loading" class="check_request check_ko"  [class.check_ok]="ping" >{{ping ? 'done' : 'warning'}}</mat-icon>
           <code>koa-typescript-restfull-api</code>
         </mat-panel-title>
         <mat-panel-description>

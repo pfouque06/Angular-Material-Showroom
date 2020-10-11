@@ -12,7 +12,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 export class HeaderComponent implements OnInit {
 
   @Input() public title: string;
-  public login: boolean = false;
+  // public login: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -23,9 +23,9 @@ export class HeaderComponent implements OnInit {
   }
 
   public async loginToggle() {
-    if (this.login) { // logout
+    if (this.isLogged()) { // logout
       if (await this.authService.logout()) {
-        this.login = false;
+        // this.login = false;
         // reroute page if all is fine
         console.log(this.router.url); //  /routename
         if (this.router.url.match('^\/dashboard')) {
@@ -41,7 +41,7 @@ export class HeaderComponent implements OnInit {
   }
 
   public async register() {
-    if (! this.login) { // register
+    if (! this.isLogged()) { // register
       this.openUserFormDialog('register');
       // await this.authService.register( 'sam.va@gmail.com', 'secret');
     }
@@ -76,7 +76,7 @@ export class HeaderComponent implements OnInit {
         }
         case 'login': {
           if (await this.authService.login( userForm.email, userForm.password))
-            this.login = true;
+            // this.login = true;
           // console.log(await this.authService.test(););
           break;
         }

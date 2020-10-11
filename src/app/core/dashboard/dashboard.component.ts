@@ -14,7 +14,11 @@ export class DashboardComponent implements OnInit {
   constructor(private authService: AuthService) { }
 
   async ngOnInit(): Promise<void> {
-    this.ping = await this.authService.ping();
+    await this.authService.ping().then((ping) => {
+      this.ping = ping;
+    }).catch((err) => {
+      this.ping = false;
+    });
     this.loading = false;
   }
 }

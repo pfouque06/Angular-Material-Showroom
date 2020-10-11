@@ -1,21 +1,12 @@
-.hello_spinner {
-  margin: 0px 0px 0px 10px;
-  /* display: flex; */
-  /* align-content: center; */
-  /* align-items: center; */
-  /* height: 15px!; */
-  /* width: 15px!; */
-}
-
 .check_request {
   margin: -5px 10px 0px 0px;
   /* height: 15px!; */
   /* width: 15px!; */
 }
 
-.check_request .ok {
-  color: darkgreen;
+.check_ok {
+  color: rgb(0, 100, 0) !important; /* dargreen */
 }
-.check_request .ko {
-  color: crimson;
+.check_ko {
+  color: rgb(220,20,60); /* crimson */
 }
