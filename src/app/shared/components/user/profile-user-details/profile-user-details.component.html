@@ -1,0 +1,22 @@
+<section>
+  <mat-card>
+    <mat-card-content>
+
+      <div id="headerProfile" fxLayout="row" fxLayout.lt-md="column">
+        <div id="prezProfile" fxFlex="50">
+          <h1>{{userPick.firstName | titlecase }} {{userPick.lastName | titlecase}}</h1>
+        </div>
+      </div>
+      <div id="information">
+        <div class="details" fxLayout="column" fxLayoutAlign="center start">
+          <h3><i class="material-icons md-24" color="skillful">cake</i>
+            {{userPick.birthDate  | date: 'dd-MM-yyyy'}}
+          </h3>
+          <h3><i class="material-icons md-24" color="skillful">email</i>{{userPick.email}}</h3>
+          <h3><i class="material-icons md-24" color="skillful">phone</i>{{userPick.mobile}}</h3>
+        </div>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+</section>

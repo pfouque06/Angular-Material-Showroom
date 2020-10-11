@@ -22,15 +22,20 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 
-import { ListComponent } from './components/list/list.component';
 import { ConfirmationModalComponent } from './modals/confirmation-modal/confirmation-modal.component';
 import { UserModalComponent } from './modals/user-modal/user-modal.component';
 
-const SHARED_ENTITIES = []
+import { ListComponent } from './components/list/list.component';
+import { ProfileUserDetailsComponent } from './components/user/profile-user-details/profile-user-details.component';
 
 const SHARED_MODALS = [
   UserModalComponent,
   ConfirmationModalComponent,
+]
+
+const SHARED_ENTITIES = [
+  ProfileUserDetailsComponent,
+  ListComponent,
 ]
 
 const SHARED_MODULES = [
@@ -60,13 +65,13 @@ const SHARED_MODULES = [
   declarations: [
     ...SHARED_ENTITIES,
     ...SHARED_MODALS,
-    ListComponent,
   ],
   imports: [
     CommonModule,
     ...SHARED_MODULES,
   ],
   exports: [
+    ...SHARED_ENTITIES,
     ...SHARED_MODULES,
   ],
   entryComponents: [

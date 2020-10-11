@@ -75,9 +75,12 @@ export class HeaderComponent implements OnInit {
           break;
         }
         case 'login': {
-          if (await this.authService.login( userForm.email, userForm.password))
-            // this.login = true;
-          // console.log(await this.authService.test(););
+          await this.authService.login( userForm.email, userForm.password).then( (user) => {
+            // console.log(await this.authService.test(););
+            this.router.navigate(['/dashboard']);
+          }).catch((err) => {
+            console.log(err);
+          })
           break;
         }
       }

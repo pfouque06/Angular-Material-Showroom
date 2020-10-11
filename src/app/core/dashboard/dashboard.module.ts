@@ -18,7 +18,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     UserListComponent,
     HomeComponent,
     UserFormComponent,
-    UserProfileComponent
+    UserProfileComponent,
   ],
   imports: [
     CommonModule,

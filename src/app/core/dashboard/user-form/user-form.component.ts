@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from 'src/app/shared/models/class/user';
+import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
   selector: 'app-user-form',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserFormComponent implements OnInit {
 
-  constructor() { }
+  public loading: boolean = true;
+  public user: User = null;
 
-  ngOnInit(): void {
+  constructor(private userService: UserService) { }
+
+  async ngOnInit(): Promise<void> {
+    // this.user =  await this.userService.getById(......);
+    // console.log(this.user);
+
+    this.loading = false;
   }
 
 }
