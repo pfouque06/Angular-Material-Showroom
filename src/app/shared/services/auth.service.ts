@@ -51,8 +51,22 @@ export class AuthService {
     return result;
   }
 
+  public async reset(): Promise<boolean> {
+    const result: boolean =(await this.api.post({ endpoint: '/reset' }));
+    if (result) {
+      console.log('reset: ' + result);
+      this._user = undefined;
+    }
+    return result ;
+  }
+
   public async whoami() : Promise<User> {
     return await this.api.get({ endpoint: "/whoami" });
+  }
+
+  public isLogged(): boolean {
+    if (this._user) return true;
+    return false;
   }
 
   public getCurrentJWT(): string {
@@ -61,6 +75,14 @@ export class AuthService {
     } else {
       return null
     }
+  }
+
+  public getCurrentUserFullName() : string {
+    let result: string = "none";
+    if (this._user && ( (this._user.firstName != "none") || ( this._user.lastName != "none") ) ) {
+      result = this._user.firstName + ' ' + this._user.lastName;
+    }
+    return result;
   }
 
   public getCurrentUser(): User {

@@ -44,8 +44,7 @@ export class UserService {
     return await this.api.delete({ endpoint: ROOT_ENDPOINT + user.id });
   }
 
-
   public async reset(): Promise<boolean> {
-    return await this.api.delete({ endpoint: ROOT_ENDPOINT + 'reset' });
+    return await this.api.post({ endpoint: ROOT_ENDPOINT + 'reset' });
   }
 }

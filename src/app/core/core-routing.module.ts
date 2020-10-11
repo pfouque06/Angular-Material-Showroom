@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: 'sandbox', component: SandboxComponent },
   { path: 'themes/spinner', component: SpinnerComponent },
   // { path: 'dashboard', component: DashboardComponent },
-  { path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) },
+  { path: 'dashboard', component: DashboardComponent, loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) },
   { path: '**', component: HomeComponent },
 ];
 

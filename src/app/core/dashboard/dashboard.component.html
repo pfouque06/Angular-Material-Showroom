@@ -1,11 +1,32 @@
-<!-- <div fxLayout="row">
+<mat-accordion>
+  <mat-expansion-panel  hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <mat-spinner *ngIf="loading" class="hello_spinner" [diameter]="16" [strokeWidth]="2"></mat-spinner>
+        <mat-icon *ngIf="!loading" class="check_request" [style]="ping ? 'color: darkgreen':'color: crimson'">{{ping ? 'done' : 'warning'}}</mat-icon>
+        <code>koa-typescript-restfull-api</code>
+      </mat-panel-title>
+      <mat-panel-description>
+        Fullstack Restfull API
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <p *ngIf="loading">
+      checking for koa server availability ...
+    </p>
+    <p *ngIf="!loading">
+      Restfull Koa server is {{ping ? '' : 'not'}} available
+    </p>
+
+  </mat-expansion-panel>
+</mat-accordion>
+<mat-divider></mat-divider>
+<div fxLayout="row">
   <div fxFlex="20" class="borderProfile">
     <app-side-bar></app-side-bar>
   </div>
   <div fxFlex="80">
     <router-outlet></router-outlet>
   </div>
-</div> -->
-<app-side-bar></app-side-bar>
-<p>dashboard works!</p>
-<router-outlet></router-outlet>
+</div>
+<!-- <app-side-bar></app-side-bar> -->
+<!-- <router-outlet></router-outlet> -->

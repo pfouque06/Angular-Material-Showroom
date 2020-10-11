@@ -17,13 +17,12 @@ import { JwtHttpInterceptorInterceptor } from './shared/interceptors/jwt-http-in
   declarations: [
     AppComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    // FlexLayoutModule,
     HttpClientModule, // Requit pour injecter la D.I. HttpClient qui nous permettra de requêter un serveur distant
     SharedModule,
     CoreModule
@@ -33,6 +32,8 @@ import { JwtHttpInterceptorInterceptor } from './shared/interceptors/jwt-http-in
     // à chaque requête sortante de notre application Angular
     { provide: HTTP_INTERCEPTORS, useClass: JwtHttpInterceptorInterceptor, multi: true }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+  ]
 })
 export class AppModule { }

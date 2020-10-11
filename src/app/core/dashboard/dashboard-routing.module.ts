@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { DashboardComponent } from './dashboard.component';
+import { HomeComponent } from './home/home.component';
+import { UserFormComponent } from './user-form/user-form.component';
 import { UserListComponent } from './user-list/user-list.component';
 
 const routes: Routes = [
-  { path: '', component: DashboardComponent },
-  // { path: '', redirectTo: 'dashboard/users', pathMatch: 'full' },
-  { path: 'users', component: UserListComponent },
-  // { path: 'dashboard/users', component: UserListComponent }
+  { path: '', component: HomeComponent },
+  { path: 'home', component: HomeComponent },
+  { path: 'users/list', component: UserListComponent },
+  { path: 'users/form', component: UserFormComponent },
 ];
 
 @NgModule({

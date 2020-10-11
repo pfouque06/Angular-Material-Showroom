@@ -17,5 +17,4 @@ export class HomeComponent implements OnInit {
     this.ping = await this.authService.ping();
     this.loading = false;
   }
-
 }
