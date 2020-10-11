@@ -43,7 +43,7 @@
 <mat-menu #loginMenu="matMenu">
   <ng-template matMenuContent>
     <button mat-menu-item (click)="register()" [disabled]="isLogged()" [title]="isLogged()? '':'Register'">
-      <mat-icon>{{isLogged()? 'person' : 'person_add'}}</mat-icon>{{isLogged()? (getCurrentUserFullName() | titlecase):'Register'}}
+      <mat-icon>{{isLogged()? 'person' : 'person_add'}}</mat-icon>{{isLogged()? getCurrentUserFullName():'Register'}}
     </button>
     <button mat-menu-item (click)="loginToggle()" [title]="isLogged()? 'Logout':'Login'">
       <mat-icon [color]="isLogged()? 'warn':'primary'">{{isLogged()? 'exit_to_app' : 'login'}}</mat-icon>{{isLogged()? 'Logout' : 'Login'}}

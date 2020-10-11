@@ -1,3 +1,4 @@
+import { TitleCasePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { User } from '../models/class/user';
 import { ApiHelperService } from './api-helper.service';
@@ -9,6 +10,7 @@ export class AuthService {
 
   // private _user: User = new User({ id: -1 });
   private _user: User = undefined;
+  private titleCasePipe=new TitleCasePipe();
 
   constructor(private api: ApiHelperService) { }
 
@@ -78,9 +80,13 @@ export class AuthService {
   }
 
   public getCurrentUserFullName() : string {
-    let result: string = "none";
-    if (this._user && ( (this._user.firstName != "none") || ( this._user.lastName != "none") ) ) {
-      result = this._user.firstName + ' ' + this._user.lastName;
+    let result: string = "";
+    if (this._user) {
+      result = this._user.email;
+      if (this._user && ( (this._user.firstName != "none") || ( this._user.lastName != "none") ) ) {
+        result = this._user.firstName + ' ' + this._user.lastName;
+        result = this.titleCasePipe.transform(result);
+      }
     }
     return result;
   }
