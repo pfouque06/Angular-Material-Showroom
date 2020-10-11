@@ -21,7 +21,7 @@ export class ConfirmationModalComponent implements OnInit {
         break;
       }
       case 'authReset': {
-        this.title = "Authenticated Sessions Reset confirmed ?";
+        this.title = "Authenticated Sessions Reset confirmed ?\nYou will be logged out after reset.";
         break;
       }
     }
