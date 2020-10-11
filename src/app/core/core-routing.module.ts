@@ -7,8 +7,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
   // { path: '', redirectTo: 'home', pathMatch: 'full' },
+  // { path: 'home', component: HomeComponent },
   { path: '', component: HomeComponent },
-  { path: 'home', component: HomeComponent },
+  { path: 'home', redirectTo: '', pathMatch: 'full' },
   { path: 'sandbox', component: SandboxComponent },
   { path: 'themes/spinner', component: SpinnerComponent },
   // { path: 'dashboard', component: DashboardComponent },

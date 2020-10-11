@@ -51,6 +51,7 @@ export class SideBarComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(async result => {
+      if (! result) return;
       const confirmFeedback = result;
       if (confirmFeedback.confirmed) {
         switch (confirmFeedback.formType) {

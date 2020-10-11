@@ -67,6 +67,7 @@ export class HeaderComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(async result => {
+      if (!result) return;
       userForm = result;
       switch (formType) {
         case 'register': {
