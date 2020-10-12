@@ -17,16 +17,15 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatListModule } from '@angular/material/list';
-import { MatSidenavModule } from '@angular/material/sidenav'
-import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 
 import { ConfirmationModalComponent } from './modals/confirmation-modal/confirmation-modal.component';
 import { UserModalComponent } from './modals/user-modal/user-modal.component';
 
 import { ListComponent } from './components/list/list.component';
 import { ProfileUserDetailsComponent } from './components/user/profile-user-details/profile-user-details.component';
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 const SHARED_MODALS = [
   UserModalComponent,
@@ -55,10 +54,9 @@ const SHARED_MODULES = [
   MatExpansionModule,
   MatProgressSpinnerModule,
   MatListModule,
-  // MatSidenavModule,
-  // MatTableDataSource,
-  // MatSort,
-  // MatPaginator
+  MatTableModule,
+  MatSortModule,
+  MatPaginatorModule,
 ]
 
 @NgModule({

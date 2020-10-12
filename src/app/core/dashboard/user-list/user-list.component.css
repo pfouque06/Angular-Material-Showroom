@@ -2,3 +2,16 @@ section {
   /* background-color: #d8d8d8; */
   margin-top: 1rem;
 }
+
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td, th {
+  width: 25%;
+}
