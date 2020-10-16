@@ -11,8 +11,11 @@ import { User } from 'src/app/shared/models/class/user';
 })
 export class ProfileUserDetailsComponent implements OnInit {
 
-  @Input() readOnly: boolean;
-  @Input() userLogged: User;
+  public isLoading: boolean = true;
+
+  @Input() readOnly: boolean = true;
+  @Input() user: User = null;
+  @Input() userId: number = null;
 
   public cardRef: TemplateRef<any>;
   public title: string = "User profile";
@@ -24,43 +27,54 @@ export class ProfileUserDetailsComponent implements OnInit {
     private authService: AuthService,
     private userService: UserService,
     private route: ActivatedRoute,
-  ) {}
+    ) {}
 
-  async ngOnInit(){
-    console.log("ngOninit");
+    async ngOnInit(){
+      console.log("ProfileUserDetailsComponent.ngOninit()");
 
-    // retrive currentUser
-    this.userLogged = this.userService.getCurrentUser();
-    this.userPick = this.userLogged;
+      // retrieve user if id provided in incoming route
+      this.userPickId = this.route.snapshot.params.id;
+      if (!this.userPickId) {
+        // retrive user if id is provided within directive [userId]
+        this.userPickId = this.userId;
+        if (!this.userPickId) {
+          // retrive user if user is provided within directive [user]
+          this.userPick = this.user;
+          if (!this.userPick) {
+            // retreive user from currentUser
+            // this.user = this.userService.getCurrentUser();
+            try {
+              this.userPick = await this.authService.myself();
+            } catch (error) {
+              console.log("Error: no id provided");
+              throw Error("Error:  no id provided")
+            }
+          }
+          this.isLoading = false;
+          return;
+        }
+      }
+      await this.getUser(this.userPickId);
+      this.isLoading = false;
+    }
 
-    // retrieve user if id provided in incoming route
-    this.userPickId = this.route.snapshot.params.id;
-    if (this.userPickId) {
-      await this.getUser(this.userPickId).then((user) => {
-        this.userPick = new User(user);
-      }).catch((err) => {
-        console.log(err);
+    ngAfterViewInit(){
+      console.log("afterInit");
+    }
+
+    async getUser(id: number) {
+      console.log(`ProfileUserDetailsComponent.getUser(id: ${id})`);
+      await this.userService.getById(id).then((data) => {
+        this.userPick = new User(data);
+        return this.userPick;
+      }).catch((error) => {
+        console.log(error);
       });
     }
 
+
+
+
   }
-
-  ngAfterViewInit(){
-    console.log("afterInit");
-  }
-
-  async getUser(id: number) {
-    await this.userService.getById(id).then((data) => {
-      this.userPick = data;
-      return this.userPick;
-    }).catch((error) => {
-      console.log(error);
-    });
-  }
-
-
-
-
-}
 
 

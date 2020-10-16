@@ -53,6 +53,12 @@ export class AuthService {
     return result;
   }
 
+  public async myself() : Promise<User> {
+    const myself: any = await this.api.get({ endpoint: "/myself" });
+    console.log('myself(): ', myself);
+    return myself;
+  }
+
   public async reset(): Promise<boolean> {
     const result: boolean =(await this.api.post({ endpoint: '/reset' }));
     if (result) {
@@ -60,10 +66,6 @@ export class AuthService {
       this._user = undefined;
     }
     return result ;
-  }
-
-  public async whoami() : Promise<User> {
-    return await this.api.get({ endpoint: "/whoami" });
   }
 
   public isLogged(): boolean {

@@ -1,7 +1,9 @@
-<div class="progressBarDiv" *ngIf="isLoading">
+<!-- <div class="progressBarDiv" *ngIf="isLoading">
   <mat-spinner [diameter]="50" [strokeWidth]="2"></mat-spinner>
   <mat-progress-spinner class="is-loading" mode="indeterminate"></mat-progress-spinner>
 </div>
 <div *ngIf="!isLoading">
-  <app-profile-user-details [readOnly]="true" [userLogged]="this.user"></app-profile-user-details>
-</div>
+</div> -->
+<!-- <app-profile-user-details [readOnly]="true" [user]="this.user"></app-profile-user-details> -->
+<!-- <app-profile-user-details [readOnly]="true" [userId]="this.user.id"></app-profile-user-details> -->
+<app-profile-user-details [readOnly]="true"></app-profile-user-details>

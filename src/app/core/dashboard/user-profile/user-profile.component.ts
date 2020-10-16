@@ -10,17 +10,19 @@ import { UserService } from 'src/app/shared/services/user.service';
 })
 export class UserProfileComponent implements OnInit {
 
-  public isLoading: boolean = false;
-  public user: User = null;
+  // public isLoading: boolean = false;
+  // public user: User;
 
   constructor(
     private authService: AuthService,
-    private userService: UserService
+    // private userService: UserService
   ) { }
 
-  ngOnInit(): void {
-    this.user = this.userService.getCurrentUser();
-    this.isLoading = false;
+  async ngOnInit(): Promise<void> {
+    // this.user = this.userService.getCurrentUser();
+    // this.user = await this.authService.myself();
+    // console.log(this.user);
+    // this.isLoading = false;
   }
 
 }

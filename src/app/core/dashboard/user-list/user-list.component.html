@@ -1,12 +1,17 @@
-<mat-spinner *ngIf="loading" [diameter]="50" [strokeWidth]="2"></mat-spinner>
-<div *ngIf="!loading">
-  <!-- <app-list title="Utilisateurs" [displayedColumns]=displayedColumns [listElements]=listElements [service]=service type=user></app-list> -->
-  <section>
-    <mat-card>
-      <mat-card-content>
+<!-- <app-list title="Utilisateurs" [displayedColumns]=displayedColumns [listElements]=listElements [service]=service type=user></app-list> -->
+<section>
+  <mat-card>
+    <mat-card-content>
 
-        <!-- <p>user-list available yet!</p> -->
+      <!-- <p>user-list available yet!</p> -->
+      <h1 fxLayout="column" fxLayoutAlign="center center">{{ title }}</h1>
 
+      <div *ngIf="loading" class="progressBarDiv" fxLayout="column" fxLayoutAlign="center center">
+        <!-- <mat-spinner [diameter]="50" [strokeWidth]="2"></mat-spinner> -->
+        <mat-progress-spinner  [diameter]="100" [strokeWidth]="4" mode="indeterminate"></mat-progress-spinner>
+      </div>
+
+      <div *ngIf="!loading">
         <mat-form-field>
           <mat-label>Filter</mat-label>
           <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
@@ -56,9 +61,8 @@
 
           <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
         </div>
+      </div>
 
-
-      </mat-card-content>
-    </mat-card>
-  </section>
-</div>
+    </mat-card-content>
+  </mat-card>
+</section>

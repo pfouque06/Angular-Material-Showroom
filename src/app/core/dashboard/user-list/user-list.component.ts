@@ -25,6 +25,8 @@ const MOCK_DATA: mockUser[] = [
 export class UserListComponent implements OnInit, AfterViewInit {
 
   public loading: boolean = true;
+  public title: string = "User list";
+
   // public users: User[] = [];
 
   // displayedColumns: string[] = ['firstName', 'lastName', 'profile', 'id'];
