@@ -14,47 +14,35 @@ export class ProfileUserDetailsComponent implements OnInit {
   public isLoading: boolean = true;
 
   @Input() readOnly: boolean = true;
-  @Input() user: User = null;
   @Input() userId: number = null;
 
   public cardRef: TemplateRef<any>;
-  public title: string = "User profile";
 
-  userPickId: number;
-  userPick: User = new User({});
+  user: User = new User({});
 
   constructor(
     private authService: AuthService,
     private userService: UserService,
     private route: ActivatedRoute,
+    private router: Router
     ) {}
 
     async ngOnInit(){
-      console.log("ProfileUserDetailsComponent.ngOninit()");
+      console.log(`ProfileUserDetailsComponent.ngOninit(readOnly: ${this.readOnly}, userId: ${this.userId})`);
 
-      // retrieve user if id provided in incoming route
-      this.userPickId = this.route.snapshot.params.id;
-      if (!this.userPickId) {
-        // retrive user if id is provided within directive [userId]
-        this.userPickId = this.userId;
-        if (!this.userPickId) {
-          // retrive user if user is provided within directive [user]
-          this.userPick = this.user;
-          if (!this.userPick) {
-            // retreive user from currentUser
-            // this.user = this.userService.getCurrentUser();
-            try {
-              this.userPick = await this.authService.myself();
-            } catch (error) {
-              console.log("Error: no id provided");
-              throw Error("Error:  no id provided")
-            }
-          }
-          this.isLoading = false;
-          return;
+      // retrive user if id is provided within directive [userId]
+      if (this.userId) {
+        await this.getUser(this.userId);
+      } else {
+        // retrieve user from currentUser
+        try {
+          this.user = await this.authService.myself();
+        } catch (error) {
+          console.log("Error: no id provided");
+          throw Error("Error:  no id provided")
         }
+        console.log("get myself, my Id: ", this.user.id);
       }
-      await this.getUser(this.userPickId);
       this.isLoading = false;
     }
 
@@ -65,13 +53,28 @@ export class ProfileUserDetailsComponent implements OnInit {
     async getUser(id: number) {
       console.log(`ProfileUserDetailsComponent.getUser(id: ${id})`);
       await this.userService.getById(id).then((data) => {
-        this.userPick = new User(data);
-        return this.userPick;
+        this.user = new User(data);
+        return this.user;
       }).catch((error) => {
         console.log(error);
       });
     }
 
+    editProfile() {
+      console.log(`ProfileUserDetailsComponent.editProfile()`);
+      // [routerLink]="['/users/form/${userPick.id}']" [queryParams]="{user: user}"
+      // this.router.navigate([`/users/form/${this.userPickId}`], { queryParams: { id:  this.userPickId }});
+      const url = `dashboard/users/form/${this.user.id}`;
+      console.log(`--> route to: ${url}`);
+      this.router.navigate([url]);
+    }
+
+    submit() {
+      console.log(`ProfileUserDetailsComponent.submit()`);
+      const url = `dashboard/users/profile/${this.userId}`;
+      console.log(`--> route to: ${url}`);
+      this.router.navigate([url]);
+    }
 
 
 

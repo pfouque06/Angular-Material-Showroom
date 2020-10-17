@@ -2,42 +2,90 @@
   <mat-card>
     <mat-card-content fxLayout="column" fxLayoutAlign="center center">
 
-      <h1>{{ title }}</h1>
+      <div *ngIf="!readOnly; else elseUserForm">
 
-      <div *ngIf="isLoading" class="progressBarDiv" fxLayout="column" fxLayoutAlign="center center">
-        <!-- <mat-spinner [diameter]="50" [strokeWidth]="2"></mat-spinner> -->
-        <mat-progress-spinner  [diameter]="100" [strokeWidth]="4"mode="indeterminate"></mat-progress-spinner>
-      </div>
+        <h1>User Form not available yet!</h1>
 
-      <div *ngIf="!isLoading" class="mat-elevation-z8">
+        <div *ngIf="isLoading" class="progressBarDiv" fxLayout="column" fxLayoutAlign="center center">
+          <!-- <mat-spinner [diameter]="50" [strokeWidth]="2"></mat-spinner> -->
+          <mat-progress-spinner  [diameter]="100" [strokeWidth]="4"mode="indeterminate"></mat-progress-spinner>
+        </div>
 
-        <mat-card>
-          <mat-card-content>
-            <mat-card-header  id="prezProfile">
-              <mat-card-title>
-                <h1>{{userPick.firstName | titlecase }} {{userPick.lastName | titlecase}}</h1>
-              </mat-card-title>
-              <mat-card-subtitle>
-              </mat-card-subtitle>
-            </mat-card-header>
+        <div *ngIf="!isLoading" class="mat-elevation-z8">
 
-            <mat-card-content id="information">
-              <div class="details" fxLayout="column" fxLayoutAlign="center start">
-                <h3 *ngIf="userPick.profile == 'admin'"><mat-icon class="material-icons md-24" color="skillful">engineering</mat-icon>Admin</h3>
-                <h3 *ngIf="userPick.profile == 'user'"><mat-icon class="material-icons md-24" color="skillful">person</mat-icon>User</h3>
-                <!-- <h3><mat-icon class="material-icons md-24" color="skillful">cake</mat-icon>{{userPick.birthDate  | date: 'dd/MM/yyyy'}}</h3> -->
-                <h3><mat-icon class="material-icons md-24" color="skillful">email</mat-icon>{{userPick.email}}</h3>
-                <h3><mat-icon class="material-icons md-24" color="skillful">phone</mat-icon>{{userPick.mobile}}</h3>
-              </div>
+          <mat-card>
+            <mat-card-content>
+              <p *ngIf="userId; else elseUserForm">provided Id : {{userId}}</p>
+              <ng-template #elseUserForm>
+                <p>no Id provided : creating new User</p>
+              </ng-template>
+              <!-- <mat-card-header  id="prezProfile">
+                <mat-card-title>
+                  <h1>{{userPick.firstName | titlecase }} {{userPick.lastName | titlecase}}</h1>
+                </mat-card-title>
+                <mat-card-subtitle>
+                </mat-card-subtitle>
+              </mat-card-header>
+
+              <mat-card-content id="information">
+                <div class="details" fxLayout="column" fxLayoutAlign="center start">
+                  <h3 *ngIf="user.profile == 'admin'"><mat-icon class="material-icons md-24" color="skillful">engineering</mat-icon>Admin</h3>
+                  <h3 *ngIf="user.profile == 'user'"><mat-icon class="material-icons md-24" color="skillful">person</mat-icon>User</h3>
+                  <h3><mat-icon class="material-icons md-24" color="skillful">cake</mat-icon>{{userPick.birthDate  | date: 'dd/MM/yyyy'}}</h3>
+                  <h3><mat-icon class="material-icons md-24" color="skillful">email</mat-icon>{{user.email}}</h3>
+                  <h3><mat-icon class="material-icons md-24" color="skillful">phone</mat-icon>{{user.mobile}}</h3>
+                </div>
+              </mat-card-content>
+              <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
+                <button mat-icon-button (click)="submit()" matTooltip="Edit" aria-label="Edit"><mat-icon>check</mat-icon></button>
+              </mat-card-actions> -->
+
             </mat-card-content>
-            <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
-              <button mat-icon-button matTooltip="Edit" aria-label="Edit"><mat-icon>edit</mat-icon></button>
-            </mat-card-actions>
+          </mat-card>
 
-          </mat-card-content>
-        </mat-card>
+        </div>
 
       </div>
+
+      <ng-template #elseUserForm>
+
+        <h1>User profile</h1>
+
+        <div *ngIf="isLoading" class="progressBarDiv" fxLayout="column" fxLayoutAlign="center center">
+          <!-- <mat-spinner [diameter]="50" [strokeWidth]="2"></mat-spinner> -->
+          <mat-progress-spinner  [diameter]="100" [strokeWidth]="4"mode="indeterminate"></mat-progress-spinner>
+        </div>
+
+        <div *ngIf="!isLoading" class="mat-elevation-z8">
+
+          <mat-card>
+            <mat-card-content>
+              <mat-card-header  id="prezProfile">
+                <mat-card-title>
+                  <h1>{{user.firstName | titlecase }} {{user.lastName | titlecase}}</h1>
+                </mat-card-title>
+                <mat-card-subtitle>
+                </mat-card-subtitle>
+              </mat-card-header>
+
+              <mat-card-content id="information">
+                <div class="details" fxLayout="column" fxLayoutAlign="center start">
+                  <h3 *ngIf="user.profile == 'admin'"><mat-icon class="material-icons md-24" color="skillful">engineering</mat-icon>Admin</h3>
+                  <h3 *ngIf="user.profile == 'user'"><mat-icon class="material-icons md-24" color="skillful">person</mat-icon>User</h3>
+                  <!-- <h3><mat-icon class="material-icons md-24" color="skillful">cake</mat-icon>{{userPick.birthDate  | date: 'dd/MM/yyyy'}}</h3> -->
+                  <h3><mat-icon class="material-icons md-24" color="skillful">email</mat-icon>{{user.email}}</h3>
+                  <h3><mat-icon class="material-icons md-24" color="skillful">phone</mat-icon>{{user.mobile}}</h3>
+                </div>
+              </mat-card-content>
+              <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
+                <button mat-icon-button (click)="editProfile()" matTooltip="Edit" aria-label="Edit"><mat-icon>edit</mat-icon></button>
+              </mat-card-actions>
+
+            </mat-card-content>
+          </mat-card>
+
+        </div>
+      </ng-template>
 
     </mat-card-content>
   </mat-card>

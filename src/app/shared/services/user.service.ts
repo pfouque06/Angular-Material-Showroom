@@ -40,8 +40,8 @@ export class UserService {
     return await this.api.put({ endpoint: ROOT_ENDPOINT + user.id, data: user });
   }
 
-  public async deleteById(user: User): Promise<User> {
-    return await this.api.delete({ endpoint: ROOT_ENDPOINT + user.id });
+  public async deleteById(id: number): Promise<User> {
+    return await this.api.delete({ endpoint: ROOT_ENDPOINT + id });
   }
 
   public async reset(): Promise<boolean> {

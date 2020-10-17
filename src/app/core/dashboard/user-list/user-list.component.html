@@ -44,10 +44,23 @@
               <td mat-cell *matCellDef="let row"> {{row.email}} </td>
             </ng-container>
 
-            <!-- Colprofileor Column -->
+            <!-- profile Column -->
             <ng-container matColumnDef="profile">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Profile </th>
               <td mat-cell *matCellDef="let row" > {{row.profile}} </td>
+            </ng-container>
+
+            <!-- operation Column -->
+            <ng-container matColumnDef="operations" >
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Operations </th>
+              <td mat-cell *matCellDef="let row">
+                <button (click)="view(row)" mat-icon-button title="View user">
+                  <mat-icon class="material-icons">folder_shared</mat-icon>
+                </button>
+                <button  *ngIf="isRemovable(row)" (click)="remove(row)" mat-icon-button title="Remove user">
+                  <mat-icon color="warn" class="material-icons">person_remove</mat-icon>
+                </button>
+              </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

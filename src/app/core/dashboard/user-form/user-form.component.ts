@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { User } from 'src/app/shared/models/class/user';
-import { UserService } from 'src/app/shared/services/user.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-user-form',
@@ -9,16 +8,24 @@ import { UserService } from 'src/app/shared/services/user.service';
 })
 export class UserFormComponent implements OnInit {
 
-  public loading: boolean = true;
-  public user: User = null;
+  // public loading: boolean = true;
+  @Input() userId: number = null;
 
-  constructor(private userService: UserService) { }
+  constructor(private route: ActivatedRoute) { }
 
   async ngOnInit(): Promise<void> {
-    // this.user =  await this.userService.getById(......);
-    // console.log(this.user);
+    console.log("UserFormComponent.ngOnInit()");
 
-    this.loading = false;
+    console.log("this.userId: ", this.userId);
+    if (!this.userId) {
+      // retrieve user if id provided in incoming route
+      this.userId = this.route.snapshot.params.id;
+      console.log("this.route.snapshot.params.id: ", this.userId);
+      if (!this.userId) {
+        console.log("no id provided : create a new User");
+        // this.loading = false;
+      }
+    }
+    // this.loading = false;
   }
-
 }

@@ -56,21 +56,42 @@ export class SideBarComponent implements OnInit {
       if (confirmFeedback.confirmed) {
         switch (confirmFeedback.formType) {
           case 'usersReset': {
-            await this.userService.reset();
+            if (await this.userService.reset()) {
+              // reload route
+              this.reloadCurrentRoute();
+              // // reroute page if all is fine
+              // console.log(this.router.url); //  /routename
+              // if (this.router.url.match('^\/dashboard')) {
+              //   this.router.navigate(['/home']);
+              // }
+            }
             break;
           }
           case 'authReset': {
             if (await this.authService.reset()) {
               // reroute page if all is fine
-              console.log(this.router.url); //  /routename
-              if (this.router.url.match('^\/dashboard')) {
-                this.router.navigate(['/home']);
-              }
+              this.reloadCurrentRoute("dashboard");
+              // console.log(this.router.url); //  /routename
+              // if (this.router.url.match('^\/dashboard')) {
+              //   this.router.navigate(['/home']);
+              // }
             }
             break;
           }
         }
       }
     });
+  }
+
+  reloadCurrentRoute(exceptIfMatch?: string ) {
+    let currentUrl = this.router.url;
+    console.log(currentUrl); //  /routename
+    if (this.router.url.match(`^\/${exceptIfMatch}`)) {
+      this.router.navigate(['/home']);
+    } else {
+      this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+          this.router.navigate([currentUrl]);
+      });
+    }
   }
 }

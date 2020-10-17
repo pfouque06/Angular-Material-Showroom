@@ -9,7 +9,7 @@
   </mat-list-item>
   <mat-list-item role="listitem">
     <button mat-button [routerLink]="['/dashboard/users/profile']" title="Home">
-      <mat-icon class="material-icons md-24">person</mat-icon>
+      <mat-icon class="material-icons md-24">folder_shared</mat-icon>
       <!-- {{fullName | titlecase }} -->
       {{fullName}}
     </button>
@@ -56,10 +56,11 @@
 <mat-menu #userAdminMenu="matMenu">
   <ng-template matMenuContent>
     <button mat-menu-item [routerLink]="['/dashboard/users/form']" title="User list">
-      User Form
+      <mat-icon class="material-icons md-24">person_add</mat-icon>
+      add a User
     </button>
     <button mat-menu-item (click)="usersReset()" title="User table Reset">
-      User Table Reset
+      <mat-icon class="material-icons md-24">restore</mat-icon>User Table Reset
     </button>
   </ng-template>
 </mat-menu>
@@ -67,10 +68,10 @@
 <mat-menu #authAdminMenu="matMenu">
   <ng-template matMenuContent>
     <button mat-menu-item [routerLink]="['/dashboard/sessions/list']" title="Sessions List">
-      Sessions List
+      <mat-icon class="material-icons md-24">people_alt</mat-icon>Sessions List
     </button>
     <button mat-menu-item (click)="authReset()" title="Authenticated session Reset">
-      Authenticated session Reset
+      <mat-icon class="material-icons md-24">restore</mat-icon>Authenticated session Reset
     </button>
   </ng-template>
 </mat-menu>

@@ -1,8 +1,10 @@
 <header fxLayout="row" fxLayoutAlign="space-between center">
-  <!-- <a [routerLink]="['/home']"><img src="../../../favicon.ico" alt="logo" style="height: 45px; width: 45px;"></a> -->
-  <a mat-flat-button [routerLink]="['/']" class="header_title">{{ title }}</a>
+  <div fxLayout="row" fxLayoutAlign="start center">
+    <button mat-icon-button color="skillful" [matMenuTriggerFor]="responsiveMenu" class="buttonMenu"><mat-icon>menu</mat-icon></button>
 
-  <button mat-icon-button color="skillful" [matMenuTriggerFor]="responsiveMenu" class="buttonMenu"><mat-icon>menu</mat-icon></button>
+    <!-- <a [routerLink]="['/home']"><img src="../../../favicon.ico" alt="logo" style="height: 45px; width: 45px;"></a> -->
+    <a mat-flat-button [routerLink]="['/']" class="header_title">{{ title }}</a>
+  </div>
 
   <mat-toolbar fxLayout="row" fxLayoutAlign="end center">
     <!-- <ng-template #mainMenu>

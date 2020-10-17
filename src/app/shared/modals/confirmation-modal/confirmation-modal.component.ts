@@ -24,6 +24,10 @@ export class ConfirmationModalComponent implements OnInit {
         this.title = "Authenticated Sessions Reset confirmed ?\nYou will be logged out after reset.";
         break;
       }
+      case 'userRemove': {
+        this.title = "User removal confirmed ?";
+        break;
+      }
     }
   }
 

@@ -1,14 +1,2 @@
 <!-- <p>user-form works!</p> -->
-<mat-spinner *ngIf="loading" [diameter]="50" [strokeWidth]="2"></mat-spinner>
-<div *ngIf="!loading">
-  <!-- <app-list title="Utilisateurs" [displayedColumns]=displayedColumns [listElements]=listElements [service]=service type=user></app-list> -->
-  <section>
-    <mat-card>
-      <mat-card-content>
-
-        <p>user-form available yet!</p>
-
-      </mat-card-content>
-    </mat-card>
-  </section>
-</div>
+<app-profile-user-details [readOnly]="false" [userId]='userId'></app-profile-user-details>

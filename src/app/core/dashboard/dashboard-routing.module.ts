@@ -11,8 +11,10 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
   { path: 'users/profile', component: UserProfileComponent },
+  { path: 'users/profile/:id', component: UserProfileComponent },
   { path: 'users/list', component: UserListComponent },
   { path: 'users/form', component: UserFormComponent },
+  { path: 'users/form/:id', component: UserFormComponent },
   { path: 'sessions/list', component: SessionListComponent },
 ];
 
