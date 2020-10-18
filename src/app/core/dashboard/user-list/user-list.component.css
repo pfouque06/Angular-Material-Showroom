@@ -12,6 +12,12 @@ table {
   width: 100%;
 }
 
-td, th {
+/* td, th {
   width: 25%;
+}*/
+
+.mat-column-operations {
+  /* flex: 0 0 10%; */
+  flex: none;
+  width: 120px;
 }
