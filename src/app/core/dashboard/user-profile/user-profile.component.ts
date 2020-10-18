@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -9,25 +8,21 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class UserProfileComponent implements OnInit {
 
-  // public isLoading: boolean = false;
   @Input() userId: number = null;
 
   constructor(private route: ActivatedRoute) { }
 
   async ngOnInit(): Promise<void> {
-    console.log("UserProfileComponent.ngOnInit()");
+    console.log(`UserProfileComponent.ngOnInit(userId: ${this.userId})`);
 
-    console.log("this.userId: ", this.userId);
     if (!this.userId) {
       // retrieve user if id provided in incoming route
       this.userId = this.route.snapshot.params.id;
-      console.log("this.route.snapshot.params.id: ", this.userId);
+      console.log(`--> params.id: ${this.userId}`);
       if (!this.userId) {
-        console.log("no id provided : create a new User");
-        // this.loading = false;
+        console.log("no id provided : shifting to current User");
       }
     }
-    // this.isLoading = false;
   }
 
 }

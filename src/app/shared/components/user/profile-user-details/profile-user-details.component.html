@@ -13,36 +13,97 @@
 
         <div *ngIf="!isLoading" class="mat-elevation-z8">
 
-          <mat-card>
-            <mat-card-content>
-              <p *ngIf="userId; else elseUserForm">provided Id : {{userId}}</p>
-              <ng-template #elseUserForm>
-                <p>no Id provided : creating new User</p>
-              </ng-template>
-              <!-- <mat-card-header  id="prezProfile">
+          <!--
+          <mat-card-content id="information">
+            <div class="details" fxLayout="column" fxLayoutAlign="center start">
+              <h3 *ngIf="user.profile == 'admin'"><mat-icon class="material-icons md-24" color="skillful">engineering</mat-icon>Admin</h3>
+              <h3 *ngIf="user.profile == 'user'"><mat-icon class="material-icons md-24" color="skillful">person</mat-icon>User</h3>
+              <h3><mat-icon class="material-icons md-24" color="skillful">cake</mat-icon>{{userPick.birthDate  | date: 'dd/MM/yyyy'}}</h3>
+              <h3><mat-icon class="material-icons md-24" color="skillful">email</mat-icon>{{user.email}}</h3>
+              <h3><mat-icon class="material-icons md-24" color="skillful">phone</mat-icon>{{user.mobile}}</h3>
+            </div>
+          </mat-card-content>
+          -->
+
+          <section id="infoFollow">
+            <mat-card>
+              <mat-card-header id="prezProfile">
                 <mat-card-title>
-                  <h1>{{userPick.firstName | titlecase }} {{userPick.lastName | titlecase}}</h1>
+                  <h1 *ngIf="userId; else elseUserForm">{{user.firstName | titlecase }} {{user.lastName | titlecase}}</h1>
+                  <ng-template #elseUserForm>
+                    <p>Creating a new User</p>
+                  </ng-template>
                 </mat-card-title>
                 <mat-card-subtitle>
                 </mat-card-subtitle>
               </mat-card-header>
 
-              <mat-card-content id="information">
-                <div class="details" fxLayout="column" fxLayoutAlign="center start">
-                  <h3 *ngIf="user.profile == 'admin'"><mat-icon class="material-icons md-24" color="skillful">engineering</mat-icon>Admin</h3>
-                  <h3 *ngIf="user.profile == 'user'"><mat-icon class="material-icons md-24" color="skillful">person</mat-icon>User</h3>
-                  <h3><mat-icon class="material-icons md-24" color="skillful">cake</mat-icon>{{userPick.birthDate  | date: 'dd/MM/yyyy'}}</h3>
-                  <h3><mat-icon class="material-icons md-24" color="skillful">email</mat-icon>{{user.email}}</h3>
-                  <h3><mat-icon class="material-icons md-24" color="skillful">phone</mat-icon>{{user.mobile}}</h3>
-                </div>
+              <form [formGroup]="userFormGroup" novalidate >
+              <!-- <mat-card-content class="details" fxLayout="column" fxLayoutAlign="center start"> -->
+              <mat-card-content class="details" fxLayout="column" fxLayoutAlign="center start">
+                <mat-form-field>
+                  <mat-label>First name</mat-label>
+                  <input matInput formControlName="firstName" placeholder="Your firstName" class="form-control">
+                  <mat-hint align="end">First name</mat-hint>
+                  <mat-icon matSuffix>account_circle</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <mat-label>Last name</mat-label>
+                  <input matInput formControlName="lastName" placeholder="Your lastName" class="form-control">
+                  <mat-hint align="end">Last name</mat-hint>
+                  <mat-icon matSuffix>account_box</mat-icon>
+                </mat-form-field>
+
+                <!-- <mat-form-field>
+                  <mat-label>birthDate</mat-label>
+                  <input matInput [matDatepicker]="myDatepicker" [formControlName]="user.birthDate" matInput
+                  [placeholder]="birthDate" class="form-control">
+                  <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+                  <mat-datepicker #myDatepicker></mat-datepicker>
+                </mat-form-field> -->
+
+                <mat-form-field>
+                  <mat-label>email</mat-label>
+                  <input matInput formControlName="email" placeholder="Your email" class="form-control">
+                  <mat-hint align="end">Email</mat-hint>
+                  <mat-icon matSuffix>email</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <mat-label>Mobile</mat-label>
+                  <input matInput formControlName="mobile" placeholder="Your mobile number" class="form-control">
+                  <mat-hint align="end">Mobile number</mat-hint>
+                  <mat-icon matSuffix>local_phone</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field *ngIf="isAdmin()">
+                  <mat-label>Profile type</mat-label>
+                  <mat-select formControlName="profile" placeholder="Your profile type" class="form-control">
+                    <mat-option value="user">User</mat-option>
+                    <mat-option value="admin">Admin</mat-option>
+                  </mat-select>
+                  <mat-hint align="end">Profile type</mat-hint>
+                  <mat-icon matSuffix>business_center</mat-icon>
+                </mat-form-field>
+
+
+                <mat-form-field *ngIf="isNew()">
+                  <mat-label>Password</mat-label>
+                  <input matInput formControlName="password" placeholder="Your password" class="form-control">
+                  <mat-hint align="end">Password</mat-hint>
+                  <mat-icon matSuffix>vpn_key</mat-icon>
+                </mat-form-field>
               </mat-card-content>
-              <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
-                <button mat-icon-button (click)="submit()" matTooltip="Edit" aria-label="Edit"><mat-icon>check</mat-icon></button>
-              </mat-card-actions> -->
 
-            </mat-card-content>
-          </mat-card>
+                <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
+                  <button mat-icon-button (click)="submit()" matTooltip="Submit" aria-label="Submit"><mat-icon>check</mat-icon></button>
+                </mat-card-actions>
 
+              </form>
+
+            </mat-card>
+          </section>
         </div>
 
       </div>

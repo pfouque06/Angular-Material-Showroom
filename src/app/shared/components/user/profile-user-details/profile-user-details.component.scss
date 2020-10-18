@@ -49,3 +49,20 @@ section {
     padding-top:10px;
   }
 }
+
+#infoFollow .mat-card{
+  // background-color: #5b7787;
+  margin:auto;
+  min-width:600px;
+}
+
+#infoFollow button{
+  margin-left:5px;
+  margin-right:5px;
+}
+
+mat-form-field {
+  width: 90%;
+  padding-right: 5%;
+  padding-left: 5%;
+}

@@ -29,15 +29,17 @@ export class UserService {
   }
 
   public async create(user: User): Promise<User> {
-    return await this.api.put({ endpoint: ROOT_ENDPOINT, data: user });
+    return await this.api.post({ endpoint: ROOT_ENDPOINT, data: user });
   }
 
   public async getById(id: number): Promise<User> {
     return await this.api.get({ endpoint: ROOT_ENDPOINT + id })
   }
 
-  public async updateById(user: User): Promise<User> {
-    return await this.api.put({ endpoint: ROOT_ENDPOINT + user.id, data: user });
+  public async updateById(id: number, user: User): Promise<User> {
+    console.log(`UserService.updateByUser(id: ${id})`);
+    console.log("user: ", user);
+    return await this.api.put({ endpoint: ROOT_ENDPOINT + id, data: user });
   }
 
   public async deleteById(id: number): Promise<User> {
