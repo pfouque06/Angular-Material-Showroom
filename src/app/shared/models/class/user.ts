@@ -21,7 +21,11 @@ export class User {
     this.mobile = data.mobile;
     this.email = data.email;
     this.password = data.password;
-    this.profile = data.profile;
+    if (data.profile) {
+      this.profile = data.profile;
+    } else {
+      this.profile = "user";
+    }
     this.accessToken = data.accessToken;
     // this.posts= data.posts.map(..);
   }

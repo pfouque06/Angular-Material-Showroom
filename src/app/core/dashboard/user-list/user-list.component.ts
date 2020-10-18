@@ -105,6 +105,11 @@ export class UserListComponent implements OnInit, AfterViewInit {
     this.router.navigate([url]);
   }
 
+  isEditable(row: any): boolean {
+    // console.log('profile:' , this.authService.getCurrentUser().profile);
+    return (this.authService.getCurrentUser().profile == "admin") || (this.authService.getCurrentUser().id == row.id) ;
+  }
+
   isRemovable(row: any): boolean {
     // console.log('profile:' , this.authService.getCurrentUser().profile);
     return (this.authService.getCurrentUser().profile == "admin") && (this.authService.getCurrentUser().id != row.id) ;

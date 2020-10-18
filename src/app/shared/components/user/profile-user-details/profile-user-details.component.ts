@@ -60,11 +60,11 @@ export class ProfileUserDetailsComponent implements OnInit {
       // instantiate Form
       this.userForm = new User({});
       this.userFormGroup = new FormGroup({
-        firstName: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(25)]),
-        lastName: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(25)]),
+        firstName: new FormControl('', [Validators.minLength(2), Validators.maxLength(25)]),
+        lastName: new FormControl('', [Validators.minLength(2), Validators.maxLength(25)]),
         // birthDate: new FormControl(moment(), Validators.required),
         email: new FormControl('', [Validators.required, Validators.email]),
-        mobile: new FormControl('', [Validators.required, Validators.minLength(10)]), // add numeric pattern
+        mobile: new FormControl('', [Validators.minLength(10)]), // add numeric pattern
         profile: new FormControl('', [Validators.required, Validators.minLength(3)]), /// attention , c'est un select !!!
         password: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]),
       });
@@ -101,6 +101,12 @@ export class ProfileUserDetailsComponent implements OnInit {
           profile: this.user.profile,
           password: ""
         });
+      } else {
+        // initialize formGroup
+        console.log(" -->initialize userFormGroup with a new user");
+        // this.userFormGroup.setValue({
+        //   profile: "user";
+        // });
       }
       // } else {
       //   this.userFormGroup.disable();
@@ -136,9 +142,11 @@ export class ProfileUserDetailsComponent implements OnInit {
     console.log("user: ", this.user);
     console.log("userForm: ", this.userForm);
 
-    if (this.userId) {
 
-      if (this.userChanged()) {
+    if (this.userChanged()) { // any change done ?
+
+      if (this.userId) { /// userForm for an existing User
+
         console.log("USER CHANGED !!!");
 
         try {
@@ -147,31 +155,42 @@ export class ProfileUserDetailsComponent implements OnInit {
             console.log(error);
             throw Error(error)
           }
+          // remove password from data ( handled separately)
+          let { password, ...newUserData} = this.userForm;
+          console.log("removing PASSWORD -> newUserData: ", newUserData);
+
+          let newUser = new User(newUserData);
+          // remove email if not changed
           if (this.userForm.email == this.user.email) {
-            // let newUserData : Exclude<User, { email: string }>;
-            const { email, ...newUserData} = this.userForm;
-            console.log("newUserData: ", newUserData);
-            const newUser = new User(newUserData);
-            console.log("newUser: ", newUser);
-            this.user = await this.userService.updateById(this.user.id, newUser);
-          } else {
-            this.user = await this.userService.updateById(this.user.id, this.userForm);
+            let { email, ...newUserData} = newUser;
+            console.log("removing EMAIL -> newUserData: ", newUserData);
+            newUser = new User(newUserData);
           }
+          // update user
+          this.user = await this.userService.updateById(this.user.id, newUser);
         } catch (error) {
           console.log(error);
         }
-      }
-    } else {
-      try {
-        this.user = await this.userService.create(this.userForm);
-      } catch (error) {
-        console.log(error);
+      } else { /// userForm for a new User
+        try {
+          this.user = await this.userService.create(this.userForm);
+          this.userId = this.user.id;
+        } catch (error) {
+          console.log(error);
+        }
+
       }
     }
 
-    const url = `dashboard/users/profile/${this.user.id}`;
-    console.log(`--> route to: ${url}`);
-    this.router.navigate([url]);
+    if (this.userId) { /// userForm for an existing User
+      const url = `dashboard/users/profile/${this.user.id}`;
+      console.log(`--> route to: ${url}`);
+      this.router.navigate([url]);
+    } else {
+      // const url = `dashboard/users/list`;
+      // console.log(`--> route to: ${url}`);
+      // this.router.navigate([url]);
+    }
   }
 
   userChanged(): boolean {

@@ -4,7 +4,7 @@
 
       <div *ngIf="!readOnly; else elseUserForm">
 
-        <h1>User Form not available yet!</h1>
+        <h1>User Form</h1>
 
         <div *ngIf="isLoading" class="progressBarDiv" fxLayout="column" fxLayoutAlign="center center">
           <!-- <mat-spinner [diameter]="50" [strokeWidth]="2"></mat-spinner> -->
@@ -77,9 +77,9 @@
                   <mat-icon matSuffix>local_phone</mat-icon>
                 </mat-form-field>
 
-                <mat-form-field *ngIf="isAdmin()">
+                <mat-form-field *ngIf="isNew() || isAdmin() && !isMyself()">
                   <mat-label>Profile type</mat-label>
-                  <mat-select formControlName="profile" placeholder="Your profile type" class="form-control">
+                  <mat-select formControlName="profile" value='profile' placeholder="Your profile type" class="form-control">
                     <mat-option value="user">User</mat-option>
                     <mat-option value="admin">Admin</mat-option>
                   </mat-select>
