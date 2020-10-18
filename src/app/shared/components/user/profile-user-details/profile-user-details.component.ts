@@ -69,8 +69,8 @@ export class ProfileUserDetailsComponent implements OnInit {
         password: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]),
       });
       this.userFormGroup.valueChanges.subscribe(data => {
-        this.userForm.lastName = data.lastName;
-        this.userForm.firstName = data.firstName;
+        this.userForm.lastName = data.lastName.toLowerCase();
+        this.userForm.firstName = data.firstName.toLowerCase();
         // this.userForm.birthDate = data.birthDate;
         this.userForm.email = data.email;
         this.userForm.mobile = data.mobile;
@@ -79,8 +79,8 @@ export class ProfileUserDetailsComponent implements OnInit {
       });
 
       let onChangeFunction = data => {
-        this.userForm.lastName = data.lastName;
-        this.userForm.firstName = data.firstName;
+        this.userForm.lastName = data.lastName.toLowerCase();
+        this.userForm.firstName = data.firstName.toLowerCase();
         // this.userForm.birthDate = data.birthDate;
         this.userForm.email = data.email;
         this.userForm.mobile = data.mobile;
@@ -136,9 +136,11 @@ export class ProfileUserDetailsComponent implements OnInit {
     console.log("user: ", this.user);
     console.log("userForm: ", this.userForm);
 
-    if (this.readOnly) {
+    if (this.userId) {
 
       if (this.userChanged()) {
+        console.log("USER CHANGED !!!");
+
         try {
           if (this.isMyself() && this.userForm.profile != this.user.profile) {
             const error: string = "Error: can't change own profile type";
@@ -174,17 +176,17 @@ export class ProfileUserDetailsComponent implements OnInit {
 
   userChanged(): boolean {
     return this.user && this.userForm && (
-      this.user.lastName !== this.userForm.lastName ||
-      this.user.firstName !== this.userForm.firstName ||
-      this.user.email !== this.userForm.email ||
+      this.user.lastName != this.userForm.lastName ||
+      this.user.firstName != this.userForm.firstName ||
+      this.user.email != this.userForm.email ||
       // this.user.birthDate !== this.userForm.birthDate ||
-      this.user.mobile !== this.userForm.mobile ||
-      this.user.profile!== this.userForm.profile
+      this.user.mobile != this.userForm.mobile ||
+      this.user.profile!= this.userForm.profile
     );
   }
 
   isMyself() {
-    return ( !this.userId || this.authService.getCurrentUser().id === this.user.id);
+    return ( !this.userId || this.authService.getCurrentUser().id == this.user.id);
   }
 
   isAdmin() {

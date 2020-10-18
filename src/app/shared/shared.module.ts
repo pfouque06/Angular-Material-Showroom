@@ -26,7 +26,6 @@ import {MatSelectModule} from '@angular/material/select';
 import { ConfirmationModalComponent } from './modals/confirmation-modal/confirmation-modal.component';
 import { UserModalComponent } from './modals/user-modal/user-modal.component';
 
-import { ListComponent } from './components/list/list.component';
 import { ProfileUserDetailsComponent } from './components/user/profile-user-details/profile-user-details.component';
 
 const SHARED_MODALS = [
@@ -36,7 +35,6 @@ const SHARED_MODALS = [
 
 const SHARED_ENTITIES = [
   ProfileUserDetailsComponent,
-  ListComponent,
 ]
 
 const REACTIVE_FORM_DIRECTIVES = [

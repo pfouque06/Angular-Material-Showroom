@@ -98,6 +98,13 @@ export class UserListComponent implements OnInit, AfterViewInit {
     this.router.navigate([url]);
   }
 
+  edit(row: any) {
+    console.log(`UserListComponent.edit()`);
+    const url = `dashboard/users/form/${row.id}`;
+    console.log(`--> route to: ${url}`);
+    this.router.navigate([url]);
+  }
+
   isRemovable(row: any): boolean {
     // console.log('profile:' , this.authService.getCurrentUser().profile);
     return (this.authService.getCurrentUser().profile == "admin") && (this.authService.getCurrentUser().id != row.id) ;

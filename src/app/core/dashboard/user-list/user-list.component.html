@@ -57,6 +57,9 @@
                 <button (click)="view(row)" mat-icon-button title="View user">
                   <mat-icon class="material-icons">folder_shared</mat-icon>
                 </button>
+                <button (click)="edit(row)" mat-icon-button title="Edit user">
+                  <mat-icon class="material-icons">edit</mat-icon>
+                </button>
                 <button  *ngIf="isRemovable(row)" (click)="remove(row)" mat-icon-button title="Remove user">
                   <mat-icon color="warn" class="material-icons">person_remove</mat-icon>
                 </button>
