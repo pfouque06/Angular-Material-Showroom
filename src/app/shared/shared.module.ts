@@ -21,16 +21,18 @@ import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import {MatSelectModule} from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
 
 import { ConfirmationModalComponent } from './modals/confirmation-modal/confirmation-modal.component';
 import { UserModalComponent } from './modals/user-modal/user-modal.component';
+import { PasswordChangeModalComponent } from './modals/password-change-modal/password-change-modal.component';
 
 import { ProfileUserDetailsComponent } from './components/user/profile-user-details/profile-user-details.component';
 
 const SHARED_MODALS = [
   UserModalComponent,
   ConfirmationModalComponent,
+  PasswordChangeModalComponent,
 ]
 
 const SHARED_ENTITIES = [
@@ -69,6 +71,7 @@ const SHARED_MODULES = [
   declarations: [
     ...SHARED_ENTITIES,
     ...SHARED_MODALS,
+    PasswordChangeModalComponent,
   ],
   imports: [
     CommonModule,

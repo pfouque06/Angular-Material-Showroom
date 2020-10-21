@@ -13,18 +13,6 @@
 
         <div *ngIf="!isLoading" class="mat-elevation-z8">
 
-          <!--
-          <mat-card-content id="information">
-            <div class="details" fxLayout="column" fxLayoutAlign="center start">
-              <h3 *ngIf="user.profile == 'admin'"><mat-icon class="material-icons md-24" color="skillful">engineering</mat-icon>Admin</h3>
-              <h3 *ngIf="user.profile == 'user'"><mat-icon class="material-icons md-24" color="skillful">person</mat-icon>User</h3>
-              <h3><mat-icon class="material-icons md-24" color="skillful">cake</mat-icon>{{userPick.birthDate  | date: 'dd/MM/yyyy'}}</h3>
-              <h3><mat-icon class="material-icons md-24" color="skillful">email</mat-icon>{{user.email}}</h3>
-              <h3><mat-icon class="material-icons md-24" color="skillful">phone</mat-icon>{{user.mobile}}</h3>
-            </div>
-          </mat-card-content>
-          -->
-
           <section id="infoFollow">
             <mat-card>
               <mat-card-header id="prezProfile">
@@ -39,7 +27,7 @@
               </mat-card-header>
 
               <form [formGroup]="userFormGroup" novalidate >
-              <!-- <mat-card-content class="details" fxLayout="column" fxLayoutAlign="center start"> -->
+
               <mat-card-content class="details" fxLayout="column" fxLayoutAlign="center start">
                 <mat-form-field>
                   <mat-label>First name</mat-label>
@@ -96,8 +84,11 @@
                 </mat-form-field>
               </mat-card-content>
 
-                <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
-                  <button mat-icon-button (click)="submit()" matTooltip="Submit" aria-label="Submit"><mat-icon>check</mat-icon></button>
+                <mat-card-actions fxLayout="row" fxLayoutAlign="end center">
+                  <button mat-raised-button (click)="submit()" matTooltip="Submit" aria-label="Submit">
+                    <!-- <mat-icon>check</mat-icon> -->
+                    Submit
+                  </button>
                 </mat-card-actions>
 
               </form>
@@ -138,8 +129,15 @@
                   <h3><mat-icon class="material-icons md-24" color="skillful">phone</mat-icon>{{user.mobile}}</h3>
                 </div>
               </mat-card-content>
-              <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
-                <button mat-icon-button (click)="editProfile()" matTooltip="Edit" aria-label="Edit"><mat-icon>edit</mat-icon></button>
+              <mat-card-actions fxLayout="row" fxLayoutAlign="end center">
+                <button *ngIf="isAdmin() || isMyself()" mat-raised-button (click)="editProfile()" matTooltip="Edit Profile" aria-label="Edit" Profile>
+                  <!-- <mat-icon>edit</mat-icon> -->
+                  Edit Profile
+                </button>
+                <button *ngIf="isMyself()" mat-raised-button (click)="changePassword()" matTooltip="Change password" aria-label="Change password">
+                  <!-- <mat-icon>vpn_key</mat-icon> -->
+                  change password
+                </button>
               </mat-card-actions>
 
             </mat-card-content>

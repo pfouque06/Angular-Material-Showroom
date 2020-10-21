@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/shared/services/user.service';
 import { User } from 'src/app/shared/models/class/user';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { PasswordChangeModalComponent } from 'src/app/shared/modals/password-change-modal/password-change-modal.component';
 
 @Component({
   selector: 'app-profile-user-details',
@@ -26,7 +28,7 @@ export class ProfileUserDetailsComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private userService: UserService,
-    // private route: ActivatedRoute,
+    public dialog: MatDialog,
     private router: Router
     ) {}
 
@@ -127,7 +129,7 @@ export class ProfileUserDetailsComponent implements OnInit {
     });
   }
 
-  editProfile() {
+  public editProfile() {
     console.log(`ProfileUserDetailsComponent.editProfile()`);
     // [routerLink]="['/users/form/${userPick.id}']" [queryParams]="{user: user}"
     // this.router.navigate([`/users/form/${this.userPickId}`], { queryParams: { id:  this.userPickId }});
@@ -136,7 +138,7 @@ export class ProfileUserDetailsComponent implements OnInit {
     this.router.navigate([url]);
   }
 
-  async submit() {
+  public async submit() {
     console.log(`ProfileUserDetailsComponent.submit()`);
 
     console.log("user: ", this.user);
@@ -193,7 +195,7 @@ export class ProfileUserDetailsComponent implements OnInit {
     }
   }
 
-  userChanged(): boolean {
+  public userChanged(): boolean {
     return this.user && this.userForm && (
       this.user.lastName != this.userForm.lastName ||
       this.user.firstName != this.userForm.firstName ||
@@ -204,18 +206,43 @@ export class ProfileUserDetailsComponent implements OnInit {
     );
   }
 
-  isMyself() {
+  public isMyself() {
     return ( !this.userId || this.authService.getCurrentUser().id == this.user.id);
   }
 
-  isAdmin() {
+  public isAdmin() {
     console.log("this.authService.getCurrentUser().profile: ", this.authService.getCurrentUser().profile);
 
     return (this.authService.getCurrentUser().profile == "admin");
   }
 
-  isNew() {
+  public isNew() {
     return (!this.userId);
+  }
+
+  public async changePassword() {
+    //get modal with previous password and new password in 2 steps !!
+    this.openPasswordChangeDialog();
+  }
+
+  public openPasswordChangeDialog(): void {
+    // let userForm: any = { formType: formType, password: "secret"  };
+    // if (formType == "login")
+    //   userForm = { ...userForm, email: "sam.va@gmail.com"};
+
+    const dialogRef = this.dialog.open(PasswordChangeModalComponent, {
+      width: '400px',
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(async data => {
+      if (!data) return;
+      try {
+        await this.authService.changePassword(data.password, data.newPassword);
+      } catch (error) {
+        console.log(error);
+      }
+    });
   }
 }
 

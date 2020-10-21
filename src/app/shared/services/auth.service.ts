@@ -59,6 +59,11 @@ export class AuthService {
     return myself;
   }
 
+  public async changePassword(password: string, newPassword: string): Promise<boolean> {
+    console.log(`AuthService.changePassword(password: ${password}, newPassword: ${newPassword})`);
+    return await this.api.put({ endpoint: "/changePassword", data: { password: password, newPassword: newPassword } });
+  }
+
   public async reset(): Promise<boolean> {
     const result: boolean =(await this.api.post({ endpoint: '/reset' }));
     if (result) {

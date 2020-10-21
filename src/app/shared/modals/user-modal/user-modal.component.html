@@ -6,22 +6,29 @@
     <div mat-dialog-content>
       <p>
         <mat-form-field>
-          <mat-label>Enter your email</mat-label>
+          <mat-label>Your email</mat-label>
           <input matInput [(ngModel)]="data.email"  placeholder="jack.son@mail.com" required>
+          <mat-hint align="end">Your email</mat-hint>
+          <mat-icon matSuffix>email</mat-icon>
         </mat-form-field>
       </p>
       <p>
         <mat-form-field>
-          <mat-label>Enter your email</mat-label>
-          <input matInput [(ngModel)]="data.password"  placeholder="<password>" required>
-        </mat-form-field>
-      </p>
-    </div>
+          <mat-label>Your password</mat-label>
+          <input matInput [(ngModel)]="data.password" [type]="hidePassword ? 'password' : 'text'" placeholder="<password>" required>
+            <mat-hint align="end">Your password</mat-hint>
+            <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword" type="button">
+              <mat-icon>{{hidePassword? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <!-- <mat-icon matSuffix>vpn_key</mat-icon> -->
+          </mat-form-field>
+        </p>
+      </div>
       <div mat-dialog-actions>
         <!-- <button mat-button (click)="onNoClick()">No</button> -->
         <!-- <button mat-button [mat-dialog-close]="data.email" cdkFocusInitial>Yes</button> -->
         <button mat-raised-button (click)="onSubmitClick()">submit</button>
       </div>
-  </div>
+    </div>
 
-</div>
+  </div>

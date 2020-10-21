@@ -9,6 +9,7 @@ import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 export class UserModalComponent implements OnInit {
 
   @Input() public title: string;
+  public hidePassword: boolean = true;
 
   constructor(public dialogRef: MatDialogRef<UserModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
