@@ -22,6 +22,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { ConfirmationModalComponent } from './modals/confirmation-modal/confirmation-modal.component';
 import { UserModalComponent } from './modals/user-modal/user-modal.component';
@@ -64,7 +65,8 @@ const SHARED_MODULES = [
   MatTableModule,
   MatSortModule,
   MatPaginatorModule,
-  MatSelectModule
+  MatSelectModule,
+  MatSnackBarModule,
 ]
 
 @NgModule({
