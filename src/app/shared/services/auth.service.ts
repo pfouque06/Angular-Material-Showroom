@@ -1,7 +1,7 @@
 import { TitleCasePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
-import { Observable, Subscription, timer } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { from, interval, Observable, Subscription, timer } from 'rxjs';
+import { distinctUntilChanged, map, mergeMap, scan, switchMap, timeInterval } from 'rxjs/operators';
 import { User } from '../models/class/user';
 import { ApiHelperService } from './api-helper.service';
 
@@ -15,16 +15,24 @@ export class AuthService {
   private titleCasePipe=new TitleCasePipe();
 
   // KeepAlive observable
-  private pingService: Observable<boolean>;
+  private pingService: Observable<any>;
+  private pingListener: Subscription;
   private _pong: boolean = false;
 
   constructor(private api: ApiHelperService) {
     // pingService init
     this.pingService = timer(1000, 10000) // or interval(10000)
       .pipe(
-        switchMap(() => this.ping()
+        switchMap((value) => this.ping()
           .then((pong) => pong)
           .catch((error) => error)));
+
+    // pingListener init
+    this.pingListener = this.pingService.subscribe(
+      (pong) => { this._pong = pong;},
+      (error) => { this._pong = false;},
+      // () => { this.setPong(false);},
+    );
   }
 
   public async ping() : Promise<boolean> {
@@ -34,6 +42,7 @@ export class AuthService {
       return false;
     }
   }
+
 
   public async register(email: string, password: string): Promise<User> {
     console.log('register(mail: ' + email + ', password: ' + password);
