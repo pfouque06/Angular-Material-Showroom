@@ -1,5 +1,7 @@
 import { TitleCasePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
+import { Observable, Subscription, timer } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { User } from '../models/class/user';
 import { ApiHelperService } from './api-helper.service';
 
@@ -12,12 +14,25 @@ export class AuthService {
   private _user: User = undefined;
   private titleCasePipe=new TitleCasePipe();
 
-  constructor(private api: ApiHelperService) { }
+  // KeepAlive observable
+  private pingService: Observable<boolean>;
+  private _pong: boolean = false;
+
+  constructor(private api: ApiHelperService) {
+    // pingService init
+    this.pingService = timer(1000, 10000) // or interval(10000)
+      .pipe(
+        switchMap(() => this.ping()
+          .then((pong) => pong)
+          .catch((error) => error)));
+  }
 
   public async ping() : Promise<boolean> {
-    console.log('ping()');
-    const result: boolean = await this.api.get({ endpoint: "/ping" });
-    return result;
+    try {
+      return await this.api.get({ endpoint: "/ping" });
+    } catch (error) { // TODO : can improve error handling ???
+      return false;
+    }
   }
 
   public async register(email: string, password: string): Promise<User> {
@@ -98,15 +113,7 @@ export class AuthService {
     return result;
   }
 
-  public getCurrentUser(): User {
-    return this._user;
-  }
-
-  public set user(user: User) {
-    this._user = user;
-  }
-
-  public get user() : User {
-    return this._user;
-  }
+  public getCurrentUser(): User {  return this._user; }
+  // public set pong(pong: boolean) { this._pong = pong; }
+	public get pong(): boolean { return this._pong; }
 }

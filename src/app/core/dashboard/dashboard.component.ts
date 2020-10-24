@@ -8,17 +8,15 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class DashboardComponent implements OnInit {
 
-  public ping: boolean = false;
   public loading: boolean = true;
 
   constructor(private authService: AuthService) { }
 
   async ngOnInit(): Promise<void> {
-    await this.authService.ping().then((ping) => {
-      this.ping = ping;
-    }).catch((err) => {
-      this.ping = false;
-    });
     this.loading = false;
+  }
+
+  public ping(): boolean {
+    return this.authService.pong;
   }
 }

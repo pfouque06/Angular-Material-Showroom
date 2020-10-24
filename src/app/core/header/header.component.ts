@@ -12,20 +12,22 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 export class HeaderComponent implements OnInit {
 
   @Input() public title: string;
-  // public login: boolean = false;
 
   constructor(
     private authService: AuthService,
     public dialog: MatDialog,
     private router: Router ) { }
 
-  ngOnInit(): void {
-  }
+    ngOnInit(): void {
+    }
 
-  public async loginToggle() {
-    if (this.isLogged()) { // logout
-      if (await this.authService.logout()) {
-        // this.login = false;
+    public ping(): boolean {
+      return this.authService.pong;
+    }
+
+    public async loginToggle() {
+      if (this.isLogged()) { // logout
+        if (await this.authService.logout()) {
         // reroute page if all is fine
         console.log(this.router.url); //  /routename
         if (this.router.url.match('^\/dashboard')) {
@@ -34,9 +36,6 @@ export class HeaderComponent implements OnInit {
       }
     } else { // login
       this.openUserFormDialog('login');
-      // if (await this.authService.login( 'sam.va@gmail.com', 'secret')) this.login = true;
-      // const result: string = await this.authService.test();
-      // console.log(result);
     }
   }
 
@@ -75,7 +74,7 @@ export class HeaderComponent implements OnInit {
           break;
         }
         case 'login': {
-          await this.authService.login( userForm.email, userForm.password).then( (user) => {
+          await this.authService.login( userForm.email, userForm.password).then( () => {
             // console.log(await this.authService.test(););
             this.router.navigate(['/dashboard']);
           }).catch((err) => {
@@ -90,7 +89,7 @@ export class HeaderComponent implements OnInit {
   reloadCurrentRoute() {
     let currentUrl = this.router.url;
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-        this.router.navigate([currentUrl]);
+      this.router.navigate([currentUrl]);
     });
-}
+  }
 }

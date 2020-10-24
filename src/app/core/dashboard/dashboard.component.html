@@ -7,7 +7,7 @@
       <mat-expansion-panel-header>
         <mat-panel-title>
           <mat-spinner *ngIf="loading" class="check_request" [diameter]="16" [strokeWidth]="2"></mat-spinner>
-          <mat-icon *ngIf="!loading" class="check_request check_ko"  [class.check_ok]="ping" >{{ping ? 'done' : 'warning'}}</mat-icon>
+          <mat-icon *ngIf="!loading" class="check_request check_ko"  [class.check_ok]="ping()" >{{ping() ? 'done' : 'warning'}}</mat-icon>
           <code>koa-typescript-restfull-api</code>
         </mat-panel-title>
         <mat-panel-description>
@@ -18,7 +18,7 @@
         checking for koa server availability ...
       </p>
       <p *ngIf="!loading">
-        Restfull Koa server is {{ping ? '' : 'not'}} available
+        Restfull Koa server is {{ping() ? '' : 'not'}} available
       </p>
 
     </mat-expansion-panel>
