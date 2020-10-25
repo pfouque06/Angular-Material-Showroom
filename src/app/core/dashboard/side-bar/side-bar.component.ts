@@ -22,10 +22,7 @@ export class SideBarComponent implements OnInit {
     private router: Router ) { }
 
   ngOnInit() {
-    console.log("SideBarComponent.ngOnInit()");
-
     this.fullName = this.authService.getCurrentUserFullName();
-    console.log('fullName: ' + this.fullName);
     this.loading = false;
   }
 
@@ -46,8 +43,7 @@ export class SideBarComponent implements OnInit {
 
     const dialogRef = this.dialog.open(ConfirmationModalComponent, {
       width: '500px',
-      //data: {}
-      data: userForm
+      data: userForm //data: {}
     });
 
     dialogRef.afterClosed().subscribe(async result => {
@@ -59,11 +55,6 @@ export class SideBarComponent implements OnInit {
             if (await this.userService.reset()) {
               // reload route
               this.reloadCurrentRoute();
-              // // reroute page if all is fine
-              // console.log(this.router.url); //  /routename
-              // if (this.router.url.match('^\/dashboard')) {
-              //   this.router.navigate(['/home']);
-              // }
             }
             break;
           }
@@ -71,10 +62,6 @@ export class SideBarComponent implements OnInit {
             if (await this.authService.reset()) {
               // reroute page if all is fine
               this.reloadCurrentRoute("dashboard");
-              // console.log(this.router.url); //  /routename
-              // if (this.router.url.match('^\/dashboard')) {
-              //   this.router.navigate(['/home']);
-              // }
             }
             break;
           }
@@ -84,8 +71,8 @@ export class SideBarComponent implements OnInit {
   }
 
   reloadCurrentRoute(exceptIfMatch?: string ) {
-    let currentUrl = this.router.url;
-    console.log(currentUrl); //  /routename
+    let currentUrl = this.router.url; //  route name
+    // console.log(currentUrl);
     if (this.router.url.match(`^\/${exceptIfMatch}`)) {
       this.router.navigate(['/home']);
     } else {

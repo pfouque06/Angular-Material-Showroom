@@ -16,8 +16,7 @@ export class SessionListComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.users =  await this.userService.getAllUser();
-    console.log(this.users);
-
+    // console.log(this.users);
     this.loading = false;
   }
 

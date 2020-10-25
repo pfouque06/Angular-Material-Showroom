@@ -45,17 +45,15 @@ export class UserListComponent implements OnInit, AfterViewInit {
     private authService: AuthService,
     private userService: UserService,
     public dialog: MatDialog,
-    private router: Router ) { console.log('constructor', this.dataSource); }
+    private router: Router ) { /* console.log('constructor', this.dataSource); */ }
 
-  async ngOnInit(): Promise<void> {
-    console.log('ngOnInit', this.dataSource);
-  }
+  async ngOnInit(): Promise<void> { /* console.log('ngOnInit', this.dataSource); */ }
 
   async ngAfterViewInit() {
     await this.initDataSource();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    console.log('ngAfterViewInit', this.dataSource);
+    // console.log('ngAfterViewInit', this.dataSource);
     this.loading = false;
   }
 
@@ -70,38 +68,22 @@ export class UserListComponent implements OnInit, AfterViewInit {
 
   async initDataSource() {
     // retrive user lists
-
-    // this.dataSource = new MatTableDataSource(MOCK_DATA);
-
-
     const users =  await this.userService.getAllUser();
-    console.log(users);
+    // console.log(users);
     // Assign the data to the data source for the table to render
     this.dataSource = new MatTableDataSource(users);
-    console.log(this.dataSource);
-
-    // this.userService.getAllUser().then( (users) => {
-    //   console.log(users);
-    //   // Assign the data to the data source for the table to render
-    //   this.dataSource = new MatTableDataSource(users);
-    //   console.log(this.dataSource);
-    // }).catch((err) => {
-    //   console.log(err);
-    // });
-    console.log('initDataSource', this.dataSource);
+    // console.log('initDataSource', this.dataSource);
   }
 
   view(row: any) {
-    console.log(`UserListComponent.view()`);
+    // console.log(`UserListComponent.view()`);
     const url = `dashboard/users/profile/${row.id}`;
-    console.log(`--> route to: ${url}`);
     this.router.navigate([url]);
   }
 
   edit(row: any) {
-    console.log(`UserListComponent.edit()`);
+    // console.log(`UserListComponent.edit()`);
     const url = `dashboard/users/form/${row.id}`;
-    console.log(`--> route to: ${url}`);
     this.router.navigate([url]);
   }
 
@@ -116,7 +98,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
   }
 
   remove(row: any) {
-    console.log(`UserListComponent.remove(id: ${row.id})`);
+    // console.log(`UserListComponent.remove(id: ${row.id})`);
     this.openAdminConfirmationDialog('userRemove', row.id);
   }
 
@@ -135,7 +117,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
       if (confirmFeedback.confirmed) {
         switch (confirmFeedback.formType) {
           case 'userRemove': {
-            console.log('id to remove: ', confirmFeedback.id);
+            // console.log('id to remove: ', confirmFeedback.id);
             try {
               await this.userService.deleteById(confirmFeedback.id as number);
               let currentUrl = this.router.url;
@@ -144,7 +126,6 @@ export class UserListComponent implements OnInit, AfterViewInit {
               });
             } catch (error) {
               console.log(error);
-
             }
             break;
           }

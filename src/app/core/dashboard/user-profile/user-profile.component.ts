@@ -13,14 +13,14 @@ export class UserProfileComponent implements OnInit {
   constructor(private route: ActivatedRoute) { }
 
   async ngOnInit(): Promise<void> {
-    console.log(`UserProfileComponent.ngOnInit(userId: ${this.userId})`);
+    // console.log(`UserProfileComponent.ngOnInit(userId: ${this.userId})`);
 
     if (!this.userId) {
       // retrieve user if id provided in incoming route
       this.userId = this.route.snapshot.params.id;
-      console.log(`--> params.id: ${this.userId}`);
+      // console.log(`--> params.id: ${this.userId}`);
       if (!this.userId) {
-        console.log("no id provided : shifting to current User");
+        // console.log("no id provided : shifting to current User");
       }
     }
   }

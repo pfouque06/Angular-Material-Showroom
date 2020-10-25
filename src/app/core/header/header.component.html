@@ -13,7 +13,7 @@
     <button [routerLink]="['/sandbox']" title="Sanbox" mat-flat-button><mat-icon class="material-icons md-32">construction</mat-icon>Sandbox</button>
     <button [matMenuTriggerFor]="themeMenu" aria-label="Themes" title="Themes" mat-flat-button><mat-icon class="material-icons md-32">category</mat-icon>Themes</button>
     <button [routerLink]="['/dashboard']" [disabled]="!isLogged()" title="Dashboard" mat-flat-button style="background: none;"><mat-icon class="material-icons md-32">dashboard</mat-icon>Dashboard</button>
-    <button [matMenuTriggerFor]="loginMenu" [disabled]="!ping()" aria-label="Account menu" title="Account menu" [color]="isLogged()? 'warn':''" mat-mini-fab><mat-icon class="material-icons md-32">{{isLogged()? 'lock' : 'lock_open'}}</mat-icon></button>
+    <button [matMenuTriggerFor]="loginMenu" aria-label="Account menu" title="Account menu" [color]="isLogged()? 'warn':''" mat-mini-fab><mat-icon class="material-icons md-32">{{isLogged()? 'lock' : 'lock_open'}}</mat-icon></button>
   </mat-toolbar>
 
 </header>
@@ -44,7 +44,7 @@
 
 <mat-menu #loginMenu="matMenu">
   <ng-template matMenuContent>
-    <button mat-menu-item (click)="register()" [disabled]="isLogged()" [title]="isLogged()? '':'Register'">
+    <button mat-menu-item (click)="isLogged()? viewProfile():register()" [title]="isLogged()? 'Your profile':'Register'">
       <mat-icon>{{isLogged()? 'person' : 'person_add'}}</mat-icon>{{isLogged()? getCurrentUserFullName():'Register'}}
     </button>
     <button mat-menu-item (click)="loginToggle()" [title]="isLogged()? 'Logout':'Login'">

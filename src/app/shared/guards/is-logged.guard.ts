@@ -31,14 +31,11 @@ export class IsLoggedGuard implements CanActivate {
         horizontalPosition: this.horizontalPosition,
         verticalPosition: this.verticalPosition,
       });
-      this.currentSnackBar.afterDismissed().subscribe(() => {
-        // console.log(this.router.url); //  current route
-        // reroute to home if current url belongs to admin dashoard
-        // if (this.router.url.match('^\/dashboard')) {
-          // reroute to home page
-          this.router.navigate(['/home']);
-        // }
-      });
+
+      setTimeout(()=>{ this.router.navigate(['/home']); }, 1000)
+      // this.currentSnackBar.afterDismissed().subscribe(() => {
+      //     this.router.navigate(['/home']);
+      // });
       return false;
     }
     return true;

@@ -13,14 +13,12 @@ export class UserFormComponent implements OnInit {
   constructor(private route: ActivatedRoute) { }
 
   async ngOnInit(): Promise<void> {
-    console.log(`UserFormComponent.ngOnInit(userId: ${this.userId})`);
-
+    // console.log(`UserFormComponent.ngOnInit(userId: ${this.userId})`);
     if (!this.userId) {
       // retrieve user if id provided in incoming route
       this.userId = this.route.snapshot.params.id;
-      console.log(`--> params.id: ${this.userId}`);
       if (!this.userId) {
-        console.log("no id provided : creating a new User");
+        // console.log("no id provided : creating a new User");
       }
     }
   }

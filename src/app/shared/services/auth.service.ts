@@ -10,28 +10,63 @@ import { ApiHelperService } from './api-helper.service';
 })
 export class AuthService {
 
-  // private _user: User = new User({ id: -1 });
-  private _user: User = undefined;
   private titleCasePipe=new TitleCasePipe();
 
   // KeepAlive observable
+  private _pong: boolean = false;
   private pingService: Observable<any>;
   private pingListener: Subscription;
-  private _pong: boolean = false;
+
+  // private _user: User = new User({ id: -1 });
+  private _user: User = undefined;
+  public currentUserService: Observable<any>;
+  private currentUserListener: Subscription;
 
   constructor(private api: ApiHelperService) {
     // pingService init
     this.pingService = timer(1000, 10000) // or interval(10000)
-      .pipe(
-        switchMap((value) => this.ping()
-          .then((pong) => pong)
-          .catch((error) => error)));
+    .pipe(
+      switchMap((value) => this.ping()
+      .then((pong) => pong)
+      .catch((error) => error)
+      )
+    );
 
     // pingListener init
     this.pingListener = this.pingService.subscribe(
       (pong) => { this._pong = pong;},
       (error) => { this._pong = false;},
       // () => { this.setPong(false);},
+    );
+
+
+    // currentUserService init
+    this.currentUserService = timer(2000, 10000) // or interval(10000)
+      // .pipe(
+      //   switchMap((value) => {
+      //     // console.log(`currentUserService.logged: `, this.isLogged());
+      //     return this.myself()
+      //     .then((resp) => resp)
+      //     .catch((error) => error);
+      //   }));
+
+    // currentUserListener init
+    this.currentUserListener = this.currentUserService.subscribe(
+      (resp) => {
+        // if (resp.headers && ! resp.headers.ok) {
+        //   if (resp.error) { this._user = undefined; }
+        //   else { this._user = resp; }
+        if (this.isLogged()) this.myself()
+            .then((resp) => {
+              console.log(`user is still logged in`);
+              this._user = resp;
+            })
+            .catch((error) => {
+              console.log(`user is loggef off`);
+              this._user = undefined;
+            });
+      },
+      (error) => { console.log(`userListener: `, error); this._user = undefined;},
     );
   }
 
@@ -54,8 +89,9 @@ export class AuthService {
     console.log('login(mail: ' + email + ', password: ' + password);
     const user = await this.api.post({ endpoint: '/login', data: { email: email, password: password } });
     if (user) {
-      console.log('token: ' + user.accessToken);
+      // console.log('--> token: ' + user.accessToken);
       this._user = user;
+      // console.log(`--> user: `, this._user);
       return user;
     }
     else return undefined;
@@ -65,7 +101,7 @@ export class AuthService {
     console.log('logout(currentUser: ' + this._user.email + ')');
     const result: boolean = await this.api.post({ endpoint: '/logout' });
     if (result) {
-      console.log('logout: ' + result);
+      // console.log('logout: ' + result);
       this._user = undefined;
     }
     return result ;
@@ -79,7 +115,7 @@ export class AuthService {
 
   public async myself() : Promise<User> {
     const myself: any = await this.api.get({ endpoint: "/myself" });
-    console.log('myself(): ', myself);
+    // console.log('myself(): ', myself);
     return myself;
   }
 
@@ -103,11 +139,8 @@ export class AuthService {
   }
 
   public getCurrentJWT(): string {
-    if (this._user) {
-      return this._user.accessToken;
-    } else {
-      return null
-    }
+    if (this._user) return this._user.accessToken;
+    return null
   }
 
   public getCurrentUserFullName() : string {

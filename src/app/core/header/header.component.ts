@@ -1,6 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { Observable, Subscription, timer } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { UserModalComponent } from 'src/app/shared/modals/user-modal/user-modal.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
@@ -9,27 +11,53 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
 
   @Input() public title: string;
+
+  private loggedState: boolean = undefined;
+  private loggedService: Observable<any>;
+  private loggedListener: Subscription;
 
   constructor(
     private authService: AuthService,
     public dialog: MatDialog,
-    private router: Router ) { }
+    private router: Router ) {
 
-    ngOnInit(): void {
-    }
+    // loggedService init
+    this.loggedService = timer(2000, 10000) // or interval(10000)
+      .pipe(
+        switchMap((value) => {
+          // return new Promise((resolve, reject) => { resolve(this.authService.isLogged()); })
+          let state: boolean = this.authService.isLogged();
+          // console.log(`loggedService: state=${this.loggedState} new state= `,state);
+          if (this.loggedState !== state) {
+            console.log(`logged State has changed ... reloading component`);
+            this.loggedState = state;
+            this.reloadCurrentRoute(); // this.ngOnInit();
+          }
+          return new Promise((resolve, reject) => { resolve(state); })
+        })
+      );
 
-    public ping(): boolean {
-      return this.authService.pong;
-    }
+    // loggedService register
+    this.loggedListener = this.loggedService.subscribe()
+  }
 
-    public async loginToggle() {
-      if (this.isLogged()) { // logout
-        if (await this.authService.logout()) {
-        // reroute page if all is fine
-        console.log(this.router.url); //  /routename
+  ngOnDestroy(): void {
+    this.loggedListener.unsubscribe();
+  }
+
+  ngOnInit(): void { }
+
+  public ping(): boolean {
+    return this.authService.pong;
+  }
+
+  public async loginToggle() {
+    if (this.isLogged()) { // logout
+      if (await this.authService.logout()) {
+        // reroute page if all is fine, this.router.url is route name
         if (this.router.url.match('^\/dashboard')) {
           this.router.navigate(['/home']);
         }
@@ -37,6 +65,11 @@ export class HeaderComponent implements OnInit {
     } else { // login
       this.openUserFormDialog('login');
     }
+  }
+
+  public viewProfile() {
+    const url = `dashboard/users/profile/`;
+    this.router.navigate([url]);
   }
 
   public async register() {
@@ -57,7 +90,7 @@ export class HeaderComponent implements OnInit {
   openUserFormDialog(formType: 'login' | 'register'): void {
     let userForm: any = { formType: formType, password: "secret"  };
     if (formType == "login")
-      userForm = { ...userForm, email: "sam.va@gmail.com"};
+    userForm = { ...userForm, email: "sam.va@gmail.com"};
 
     const dialogRef = this.dialog.open(UserModalComponent, {
       width: '300px',

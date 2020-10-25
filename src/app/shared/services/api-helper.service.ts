@@ -38,7 +38,7 @@ export class ApiHelperService {
       params: queryParams
     };
 
-    console.log(method + ' ' + url + ' ' + JSON.stringify(data) + ' ' + JSON.stringify(queryParams));
+    // console.log(method + ' ' + url + ' ' + JSON.stringify(data) + ' ' + JSON.stringify(queryParams));
 
     let req: Observable<any> = null;
     switch (methodWanted) {

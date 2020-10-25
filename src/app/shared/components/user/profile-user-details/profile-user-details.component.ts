@@ -33,7 +33,7 @@ export class ProfileUserDetailsComponent implements OnInit {
     ) {}
 
   async ngOnInit(){
-    console.log(`ProfileUserDetailsComponent.ngOninit(readOnly: ${this.readOnly}, userId: ${this.userId})`);
+    // console.log(`ProfileUserDetailsComponent.ngOninit(readOnly: ${this.readOnly}, userId: ${this.userId})`);
 
     try {
       if (this.userId) {
@@ -41,12 +41,11 @@ export class ProfileUserDetailsComponent implements OnInit {
         this.user = await this.userService.getById(this.userId);
       } else {
         // retrieve user from currentUser
-        console.log("No Id provided");
         if (this.readOnly) {
           this.user = await this.authService.myself();
-          console.log(" --> got myself(Id: " + this.user.id + ")");
+          console.log("No Id provided --> got myself(Id: " + this.user.id + ")");
         } else {
-          console.log(" --> creating New User");
+          console.log("No Id provided --> creating New User");
           this.user = new User({});
         }
       }
@@ -57,8 +56,7 @@ export class ProfileUserDetailsComponent implements OnInit {
 
     // generating form group if needed
     if (!this.readOnly) {
-      console.log(" -->instantiate userFormGroup");
-
+      // console.log(" -->instantiate userFormGroup");
       // instantiate Form
       this.userForm = new User({});
       this.userFormGroup = new FormGroup({
@@ -91,9 +89,8 @@ export class ProfileUserDetailsComponent implements OnInit {
       }
 
       if (this.userId) {
+        // console.log(" -->initialize userFormGroup with provided user");
         // initialize formGroup
-        console.log(" -->initialize userFormGroup with provided user");
-        // this.userForm.id = this.user.id;
         this.userFormGroup.setValue({
           lastName: this.user.lastName,
           firstName: this.user.firstName,
@@ -105,10 +102,7 @@ export class ProfileUserDetailsComponent implements OnInit {
         });
       } else {
         // initialize formGroup
-        console.log(" -->initialize userFormGroup with a new user");
-        // this.userFormGroup.setValue({
-        //   profile: "user";
-        // });
+        // console.log(" -->initialize userFormGroup with a new user");
       }
       // } else {
       //   this.userFormGroup.disable();
@@ -120,7 +114,7 @@ export class ProfileUserDetailsComponent implements OnInit {
   ngAfterViewInit(){}
 
   async getUser(id: number) {
-    console.log(`ProfileUserDetailsComponent.getUser(id: ${id})`);
+    // console.log(`ProfileUserDetailsComponent.getUser(id: ${id})`);
     await this.userService.getById(id).then((data) => {
       this.user = new User(data);
       return this.user;
@@ -130,27 +124,23 @@ export class ProfileUserDetailsComponent implements OnInit {
   }
 
   public editProfile() {
-    console.log(`ProfileUserDetailsComponent.editProfile()`);
+    // console.log(`ProfileUserDetailsComponent.editProfile()`);
     // [routerLink]="['/users/form/${userPick.id}']" [queryParams]="{user: user}"
     // this.router.navigate([`/users/form/${this.userPickId}`], { queryParams: { id:  this.userPickId }});
     const url = `dashboard/users/form/${this.user.id}`;
-    console.log(`--> route to: ${url}`);
+    // console.log(`--> route to: ${url}`);
     this.router.navigate([url]);
   }
 
   public async submit() {
-    console.log(`ProfileUserDetailsComponent.submit()`);
-
-    console.log("user: ", this.user);
-    console.log("userForm: ", this.userForm);
-
-
+    // console.log(`ProfileUserDetailsComponent.submit()`);
+    // console.log("user: ", this.user);
+    // console.log("userForm: ", this.userForm);
     if (this.userChanged()) { // any change done ?
 
       if (this.userId) { /// userForm for an existing User
 
-        console.log("USER CHANGED !!!");
-
+        // console.log("USER CHANGED !!!");
         try {
           if (this.isMyself() && this.userForm.profile != this.user.profile) {
             const error: string = "Error: can't change own profile type";
@@ -159,13 +149,13 @@ export class ProfileUserDetailsComponent implements OnInit {
           }
           // remove password from data ( handled separately)
           let { password, ...newUserData} = this.userForm;
-          console.log("removing PASSWORD -> newUserData: ", newUserData);
+          // console.log("removing PASSWORD -> newUserData: ", newUserData);
 
           let newUser = new User(newUserData);
           // remove email if not changed
           if (this.userForm.email == this.user.email) {
             let { email, ...newUserData} = newUser;
-            console.log("removing EMAIL -> newUserData: ", newUserData);
+            // console.log("removing EMAIL -> newUserData: ", newUserData);
             newUser = new User(newUserData);
           }
           // update user
@@ -186,7 +176,7 @@ export class ProfileUserDetailsComponent implements OnInit {
 
     if (this.userId) { /// userForm for an existing User
       const url = `dashboard/users/profile/${this.user.id}`;
-      console.log(`--> route to: ${url}`);
+      // console.log(`--> route to: ${url}`);
       this.router.navigate([url]);
     } else {
       // const url = `dashboard/users/list`;
@@ -211,8 +201,7 @@ export class ProfileUserDetailsComponent implements OnInit {
   }
 
   public isAdmin() {
-    console.log("this.authService.getCurrentUser().profile: ", this.authService.getCurrentUser().profile);
-
+    // console.log("this.authService.getCurrentUser().profile: ", this.authService.getCurrentUser().profile);
     return (this.authService.getCurrentUser().profile == "admin");
   }
 

@@ -6,16 +6,17 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { UserFormComponent } from './user-form/user-form.component';
 import { SessionListComponent } from './session-list/session-list.component';
+import { IsLoggedGuard } from 'src/app/shared/guards/is-logged.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'users/profile', component: UserProfileComponent },
-  { path: 'users/profile/:id', component: UserProfileComponent },
-  { path: 'users/list', component: UserListComponent },
-  { path: 'users/form', component: UserFormComponent },
-  { path: 'users/form/:id', component: UserFormComponent },
-  { path: 'sessions/list', component: SessionListComponent },
+  { path: 'users/profile', component: UserProfileComponent, canActivate: [IsLoggedGuard] },
+  { path: 'users/profile/:id', component: UserProfileComponent, canActivate: [IsLoggedGuard] },
+  { path: 'users/list', component: UserListComponent, canActivate: [IsLoggedGuard] },
+  { path: 'users/form', component: UserFormComponent, canActivate: [IsLoggedGuard] },
+  { path: 'users/form/:id', component: UserFormComponent, canActivate: [IsLoggedGuard] },
+  { path: 'sessions/list', component: SessionListComponent, canActivate: [IsLoggedGuard] },
 ];
 
 @NgModule({
