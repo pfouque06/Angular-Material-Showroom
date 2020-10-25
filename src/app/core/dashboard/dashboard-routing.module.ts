@@ -6,7 +6,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { UserFormComponent } from './user-form/user-form.component';
 import { SessionListComponent } from './session-list/session-list.component';
-import { IsLoggedGuard } from 'src/app/shared/guards/is-logged.guard';
+import { IsLoggedGuard } from 'src/app/shared/middlewares/guards/is-logged.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },

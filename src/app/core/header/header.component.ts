@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Observable, Subscription, timer } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { UserModalComponent } from 'src/app/shared/modals/user-modal/user-modal.component';
+import { UserModalComponent } from 'src/app/shared/components/modals/user-modal/user-modal.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({

@@ -9,7 +9,7 @@ import { CoreModule } from './core/core.module';
 import { HeaderComponent } from './core/header/header.component';
 import { FooterComponent } from './core/footer/footer.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { JwtHttpInterceptorInterceptor } from './shared/interceptors/jwt-http-interceptor.interceptor';
+import { JwtHttpInterceptorInterceptor } from './shared/middlewares/interceptors/jwt-http-interceptor.interceptor';
 
 
 

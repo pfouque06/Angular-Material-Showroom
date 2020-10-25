@@ -5,7 +5,7 @@ import { UserService } from 'src/app/shared/services/user.service';
 import { User } from 'src/app/shared/models/class/user';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { PasswordChangeModalComponent } from 'src/app/shared/modals/password-change-modal/password-change-modal.component';
+import { PasswordChangeModalComponent } from '../../modals/password-change-modal/password-change-modal.component';
 
 @Component({
   selector: 'app-profile-user-details',

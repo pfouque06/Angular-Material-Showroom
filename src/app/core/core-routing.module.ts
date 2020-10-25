@@ -4,7 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { SandboxComponent } from './sandbox/sandbox.component';
 import { SpinnerComponent } from './themes/spinner/spinner.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { IsLoggedGuard } from '../shared/guards/is-logged.guard';
+import { IsLoggedGuard } from '../shared/middlewares/guards/is-logged.guard';
 
 const routes: Routes = [
   // { path: '', redirectTo: 'home', pathMatch: 'full' },
