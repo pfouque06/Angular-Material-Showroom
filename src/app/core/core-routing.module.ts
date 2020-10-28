@@ -13,10 +13,9 @@ const routes: Routes = [
   { path: 'home', redirectTo: '', pathMatch: 'full' },
   { path: 'sandbox', component: SandboxComponent },
   { path: 'themes/spinner', component: SpinnerComponent },
-  // { path: 'dashboard', component: DashboardComponent },
   { path: 'dashboard',
     component: DashboardComponent, loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule),
-    canActivate: [IsLoggedGuard]},
+    canActivateChild: [IsLoggedGuard]},
   { path: '**', component: HomeComponent },
 ];
 
