@@ -29,13 +29,13 @@
             <!-- fisrtName Column -->
             <ng-container matColumnDef="firstName">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> First name </th>
-              <td mat-cell *matCellDef="let row"> {{row.firstName}} </td>
+              <td mat-cell *matCellDef="let row"> {{row.firstName | titlecase}} </td>
             </ng-container>
 
             <!-- lastName Column -->
             <ng-container matColumnDef="lastName">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Last name </th>
-              <td mat-cell *matCellDef="let row"> {{row.lastName}} </td>
+              <td mat-cell *matCellDef="let row"> {{row.lastName | titlecase}} </td>
             </ng-container>
 
             <!-- email Column -->
