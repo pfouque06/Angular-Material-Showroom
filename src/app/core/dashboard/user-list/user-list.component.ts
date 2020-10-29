@@ -31,15 +31,22 @@ export class UserListComponent implements OnInit, AfterViewInit {
   public loading: boolean = true;
   public title: string = "User list";
 
-  // public users: User[] = [];
 
-  // displayedColumns: string[] = ['firstName', 'lastName', 'profile', 'id'];
   displayedColumns: string[] = ['id', 'firstName', 'lastName', 'email', 'profile', 'operations'];
-  // dataSource: MatTableDataSource<User>;
   dataSource: MatTableDataSource<User>;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+// @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+// @ViewChild(MatSort, { static: false }) sort: MatSort;
+public paginator: MatPaginator;
+@ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
+  this.paginator = mp;
+  this.setDataSourceAttributes();
+}
+public sort: MatSort;
+@ViewChild(MatSort) set matSort(ms: MatSort) {
+  this.sort = ms;
+  this.setDataSourceAttributes();
+}
 
   constructor(
     private authService: AuthService,
@@ -47,14 +54,10 @@ export class UserListComponent implements OnInit, AfterViewInit {
     public dialog: MatDialog,
     private router: Router ) { /* console.log('constructor', this.dataSource); */ }
 
-  async ngOnInit(): Promise<void> { /* console.log('ngOnInit', this.dataSource); */ }
+  ngOnInit() { /* console.log('ngOnInit', this.dataSource); */ }
 
-  async ngAfterViewInit() {
-    await this.initDataSource();
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    // console.log('ngAfterViewInit', this.dataSource);
-    this.loading = false;
+  ngAfterViewInit() {
+    this.initDataSource();
   }
 
   applyFilter(event: Event) {
@@ -66,13 +69,23 @@ export class UserListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  async initDataSource() {
+  initDataSource() {
     // retrive user lists
-    const users =  await this.userService.getAllUser();
-    // console.log(users);
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
-    // console.log('initDataSource', this.dataSource);
+    this.userService.getAllUser().then((users) => {
+      this.loading = false;
+      this.dataSource = new MatTableDataSource(users);
+    })
+  }
+
+  setDataSourceAttributes() {
+    // affect paginator if needed and available
+    if (!this.dataSource.paginator && this.paginator) {
+      this.dataSource.paginator = this.paginator;
+    }
+    // affect sort if needed and available
+    if (!this.dataSource.sort && this.sort) {
+      this.dataSource.sort = this.sort;
+    }
   }
 
   view(row: any) {

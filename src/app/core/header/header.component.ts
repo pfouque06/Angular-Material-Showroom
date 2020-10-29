@@ -57,6 +57,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public async loginToggle() {
     if (this.isLogged()) { // logout
       if (await this.authService.logout()) {
+        this.loggedState = false;
         // reroute page if all is fine, this.router.url is route name
         if (this.router.url.match('^\/dashboard')) {
           this.router.navigate(['/home']);
@@ -108,6 +109,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         }
         case 'login': {
           await this.authService.login( userForm.email, userForm.password).then( () => {
+            this.loggedState = true;
             // console.log(await this.authService.test(););
             this.router.navigate(['/dashboard']);
           }).catch((err) => {
