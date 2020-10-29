@@ -12,12 +12,21 @@
       </div>
 
       <div *ngIf="!loading">
-        <mat-form-field>
-          <mat-label>Filter</mat-label>
-          <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Sam" #input>
-        </mat-form-field>
 
         <div class="mat-elevation-z8">
+
+          <div fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+
+            <div fxLayout="row" fxLayoutAlign="end center">
+              <mat-icon class="material-icons">filter_alt</mat-icon>
+              <mat-form-field style="width: 200px; padding: 0px 10px 0px 10px;">
+                <mat-label>Filter</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Sam" #input>
+              </mat-form-field>
+            </div>
+          </div>
+
           <table mat-table [dataSource]="dataSource" matSort>
 
             <!-- ID Column -->
@@ -75,7 +84,6 @@
             </tr>
           </table>
 
-          <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
         </div>
       </div>
 
