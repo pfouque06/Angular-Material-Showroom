@@ -6,9 +6,11 @@
 > $ cd project_name  
 
 add in src/index.html/head section for window/tab title:  
+
     <title>Angular Material Showroom</title>
 
 inject in src/app.component.html :  
+
     export class AppComponent {  
       title = 'Angular Material Showroom';  
     }  
@@ -16,9 +18,11 @@ inject in src/app.component.html :
 # Imports
 
 install material for angular :
+
 > $ npm i @angular/compile @angular/cdk @angular/forms @angular/material@angular/flex-layout @angular/platform-browser @angular/platform-browser-dynamic
 
 add in src/app.module.ts :  
+
     import { FlexLayoutModule } from '@angular/flex-layout';  
     import { MatSliderModule } from '@angular/material/slider';  
     import { MatCardModule } from '@angular/material/card';  
@@ -43,12 +47,15 @@ add in src/app.module.ts :
 > $ npm install  
 
 add in src/index.html/head section :  
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">  
 
 add in src/stylesheet.css :
+
     @import '~@angular/material/prebuilt-themes/indigo-pink.css';  
 
 inject in src/app.component.html :  
+
     <div class="mat-app-background basic-container">  
       <!-- <hr> -->  
       <mat-divider></mat-divider>  
@@ -82,60 +89,62 @@ inject in src/app.component.html :
 
 Please note that «core works!» mention appears at the bottom of the display. This is due to <router-outlet></router-outlet> instruction which injects core component. 
 
-Move Tierce Modules to shared module : Update app/shared/shared.module.ts file : 
-import { NgModule } from '@angular/core';  
-import { CommonModule } from '@angular/common';  
+Move Tierce Modules to shared module : Update app/shared/shared.module.ts file :  
 
-import { MatSliderModule } from '@angular/material/slider';  
-import { MatCardModule } from '@angular/material/card';  
-import { MatDividerModule } from '@angular/material/divider';  
-import { MatButtonModule } from '@angular/material/button';  
-import { MatIconModule } from '@angular/material/icon';  
-import { MatTooltipModule } from '@angular/material/tooltip';  
+    import { NgModule } from '@angular/core';  
+    import { CommonModule } from '@angular/common';  
 
-const SHARED_ENTITIES = []  
+    import { MatSliderModule } from '@angular/material/slider';  
+    import { MatCardModule } from '@angular/material/card';  
+    import { MatDividerModule } from '@angular/material/divider';  
+    import { MatButtonModule } from '@angular/material/button';  
+    import { MatIconModule } from '@angular/material/icon';  
+    import { MatTooltipModule } from '@angular/material/tooltip';  
 
-const SHARED_MODULES = [  
-  MatSliderModule,  
-  MatCardModule,  
-  MatDividerModule,  
-  MatButtonModule,  
-  MatIconModule,  
-  MatTooltipModule,  
-]  
+    const SHARED_ENTITIES = []  
 
-@NgModule({  
-  declarations: [  
-    ...SHARED_ENTITIES  
-  ],  
-  imports: [  
-    CommonModule,  
-    ...SHARED_MODULES,  
-  ],  
-  exports: [  
-    ...SHARED_MODULES  
-  ]  
-})  
-export class SharedModule { }  
+    const SHARED_MODULES = [  
+      MatSliderModule,  
+      MatCardModule,  
+      MatDividerModule,  
+      MatButtonModule,  
+      MatIconModule,  
+      MatTooltipModule,  
+    ]  
+
+    @NgModule({  
+      declarations: [  
+        ...SHARED_ENTITIES  
+      ],  
+      imports: [  
+        CommonModule,  
+        ...SHARED_MODULES,  
+      ],  
+      exports: [  
+        ...SHARED_MODULES  
+      ]  
+    })  
+    export class SharedModule { }  
 
 update src/app.module.ts :  
-import { SharedModule } from './shared/shared.module';  
-import { CoreModule } from './core/core.module';  
 
-@NgModule({  
-  declarations: [  
-    AppComponent  
-  ],  
-  imports: [  
-    BrowserModule,  
-    AppRoutingModule,  
-    SharedModule,  
-    CoreModule  
-  ],  
-  providers: [],  
-  bootstrap: [AppComponent]  
-})  
-export class AppModule { }  
+    import { SharedModule } from './shared/shared.module';  
+    import { CoreModule } from './core/core.module';  
+
+    @NgModule({  
+      declarations: [  
+        AppComponent  
+      ],  
+      imports: [  
+        BrowserModule,  
+        AppRoutingModule,  
+        SharedModule,  
+        CoreModule  
+      ],  
+      providers: [],  
+      bootstrap: [AppComponent]  
+    })  
+    export class AppModule { }  
 
 
 ## Starters
@@ -165,11 +174,13 @@ Inject in core/header/header.component.ts :
 	  (..)  
 
 update core/header/header.compoenent.html :
+
     <header fxLayout="row" fxLayoutAlign="start center">  
         <p>{{ title }} - header works!</p>  
     </header>  
 
 update core/footer/footer.compoenent.html :
+
     <footer fxLayout="row" fxLayoutAlign="start center">  
       Your footer  
     </footer>  
@@ -227,3 +238,4 @@ or
 > $ ng build --prod  
 > $ cd dist/angular-material-sandbox01  
 front is avialble there !!!
+ 
