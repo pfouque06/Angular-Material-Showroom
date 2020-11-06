@@ -99,22 +99,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
       data: userForm
     });
 
-    dialogRef.afterClosed().subscribe(async result => {
+    dialogRef.afterClosed().subscribe( result => {
       if (!result) return;
       userForm = result;
       switch (formType) {
         case 'register': {
-          await this.authService.register( userForm.email, userForm.password);
+          this.authService.register( userForm.email, userForm.password);
           break;
         }
         case 'login': {
-          await this.authService.login( userForm.email, userForm.password).then( () => {
+          this.authService.login( userForm.email, userForm.password)
+          .then( () => {
             this.loggedState = true;
             // console.log(await this.authService.test(););
             this.router.navigate(['/dashboard']);
-          }).catch((err) => {
-            console.log(err);
           })
+          .catch((err) => console.log(err) );
           break;
         }
       }

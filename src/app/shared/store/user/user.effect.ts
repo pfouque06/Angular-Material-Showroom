@@ -24,20 +24,17 @@ export class UserEffects {
     )
   )
 
-  // @Effect()
-  // public userLogin$ = this.actions$.pipe(
-  //   ofType(UserActionTypes.Login),
-  //   switchMap( (action: Login) =>
-  //     this.backend.login(action)
-  //       .pipe(
-  //         mergeMap( (r) => [
-  //           new Set({user: r.body.data.user, token: r.body.data.token}),
-  //           new SessionSet(r.body.data.sessions)
-  //         ]),
-  //         catchError( (e) => of(new Fail(e)))
-  //       )
-  //   )
-  // );
+  @Effect()
+  public userLogin$ = this.actions$.pipe(
+    ofType(UserActionTypes.Login),
+    switchMap( (action: Login) =>
+      this.api.post({ endpoint: '/login', data: { email: action.payload.email, password: action.payload.password } })
+      .then( (r) => [
+        new Set({user: r.body.data.user, token: r.body.data.token}),
+      ])
+      .catch( (e) => of(new Fail(e)))
+    )
+  );
 
   // @Effect()
   // public userUpdate$ = this.actions$.pipe(

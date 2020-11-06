@@ -88,7 +88,7 @@ export class AuthService {
   }
 
 
-  public async register(email: string, password: string): Promise<void> {
+  public async register(email: string, password: string) {
     console.log('register(mail: ' + email + ', password: ' + password);
     this.store.dispatch(new Register({email: email, password: password}));
     this.user$.subscribe(
@@ -98,17 +98,24 @@ export class AuthService {
     // return await this.api.post({ endpoint: '/register', data: { email: email, password: password } });
   }
 
-  public async login(email: string, password: string): Promise<User> {
+  public async login(email: string, password: string) {
     this._user = undefined;
     console.log('login(mail: ' + email + ', password: ' + password);
-    const user = await this.api.post({ endpoint: '/login', data: { email: email, password: password } });
-    if (user) {
-      // console.log('--> token: ' + user.accessToken);
-      this._user = user;
-      // console.log(`--> user: `, this._user);
-      return user;
-    }
-    else return undefined;
+    this.store.dispatch(new Register({email: email, password: password}));
+    this.user$.subscribe(
+      (data) => {
+        console.log('data: ${data}');
+        return data
+      },
+      (error) => console.log(error)
+    );
+    // if (user) {
+    //   // console.log('--> token: ' + user.accessToken);
+    //   this._user = user;
+    //   // console.log(`--> user: `, this._user);
+    //   return user;
+    // }
+    // else return undefined;
   }
 
   public async logout(): Promise<boolean> {
