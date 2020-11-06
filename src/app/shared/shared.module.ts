@@ -31,6 +31,12 @@ import { IsLoggedGuardAlertComponent } from './components/snackbars/is-logged-gu
 
 import { ProfileUserDetailsComponent } from './components/user/profile-user-details/profile-user-details.component';
 
+// helper to bind associated backend according to url (prod/dev)
+import { SERVER_PROTOCOL, SERVER_ADDRESS } from './services/api-helper.service';
+const backends = { 'angular.material.pfouque.fr': { address: 'api.koa.pfouque.f:8443', protocol: 's'}, 'localhost': { address: 'localhost:8443', protocol: 's'} };
+const serverAddress = backends[window.location.hostname].address;
+const serverProtocol = backends[window.location.hostname].protocol;
+
 const SHARED_MODALS = [
   UserModalComponent,
   ConfirmationModalComponent,
@@ -71,6 +77,8 @@ const SHARED_MODULES = [
   MatSnackBarModule,
 ]
 
+const SHARED_IMPORTED_MODULES = []
+
 @NgModule({
   declarations: [
     ...SHARED_ENTITIES,
@@ -82,6 +90,7 @@ const SHARED_MODULES = [
     CommonModule,
     ...REACTIVE_FORM_DIRECTIVES,
     ...SHARED_MODULES,
+    ...SHARED_IMPORTED_MODULES,
   ],
   exports: [
     ...SHARED_ENTITIES,
@@ -89,6 +98,10 @@ const SHARED_MODULES = [
   ],
   entryComponents: [
     ...SHARED_MODALS
+  ],
+  providers: [
+    { provide: SERVER_PROTOCOL, useValue: serverProtocol},
+    { provide: SERVER_ADDRESS,  useValue: serverAddress}
   ]
 })
 export class SharedModule { }

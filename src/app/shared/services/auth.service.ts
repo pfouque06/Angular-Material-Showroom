@@ -1,8 +1,12 @@
 import { TitleCasePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
-import { from, interval, Observable, Subscription, timer } from 'rxjs';
-import { distinctUntilChanged, map, mergeMap, scan, switchMap, timeInterval } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
+import { Observable, Subscription, timer } from 'rxjs';
+import { switchMap, take } from 'rxjs/operators';
 import { User } from '../models/class/user';
+import { State } from '../store/states';
+import { Register } from '../store/user/user.action';
+import { selectUser } from '../store/user/user.selector';
 import { ApiHelperService } from './api-helper.service';
 
 @Injectable({
@@ -17,12 +21,18 @@ export class AuthService {
   private pingService: Observable<any>;
   private pingListener: Subscription;
 
+  public user$: Observable<Partial<User>>;
+
   // private _user: User = new User({ id: -1 });
   private _user: User = undefined;
   public currentUserService: Observable<any>;
   private currentUserListener: Subscription;
 
-  constructor(private api: ApiHelperService) {
+
+  constructor( private api: ApiHelperService, private store: Store<State> ) {
+    // define user from store
+    this.user$ = this.store.pipe(select(selectUser), take(1));
+
     // pingService init
     this.pingService = timer(1000, 10000) // or interval(10000)
     .pipe(
@@ -39,10 +49,9 @@ export class AuthService {
       // () => { this.setPong(false);},
     );
 
-
     // currentUserService init
-    this.currentUserService = timer(2000, 10000) // or interval(10000)
-      // .pipe(
+    this.currentUserService = timer(2000, 10000); // or interval(10000)
+          // .pipe(
       //   switchMap((value) => {
       //     // console.log(`currentUserService.logged: `, this.isLogged());
       //     return this.myself()
@@ -79,9 +88,14 @@ export class AuthService {
   }
 
 
-  public async register(email: string, password: string): Promise<User> {
+  public async register(email: string, password: string): Promise<void> {
     console.log('register(mail: ' + email + ', password: ' + password);
-    return await this.api.post({ endpoint: '/register', data: { email: email, password: password } });
+    this.store.dispatch(new Register({email: email, password: password}));
+    this.user$.subscribe(
+      (user) => user,
+      (error) => console.log(error)
+    );
+    // return await this.api.post({ endpoint: '/register', data: { email: email, password: password } });
   }
 
   public async login(email: string, password: string): Promise<User> {
