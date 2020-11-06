@@ -33,12 +33,20 @@
           </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
-          <code>@angular/material</code> is be installed and operational !!
+          <code>@angular/material</code> is installed and operational !!
         </mat-card-content>
         <mat-card-actions>
           <button mat-icon-button matTooltip="Share" aria-label="Share"><mat-icon>share</mat-icon></button>
           <button mat-icon-button matTooltip="Like" aria-label="Like" color="primary"><mat-icon>thumb_up</mat-icon></button>
           <button mat-icon-button matTooltip="Love" aria-label="Love" color="warn"><mat-icon>favorite</mat-icon></button>
+        </mat-card-actions>
+        <mat-card-content>
+          <code>Fontawesome Icons</code> are installed, registered and operational as well !!
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-icon-button matTooltip="Check" aria-label="Check"><mat-icon fontSet="fa" fontIcon="fa-check"></mat-icon></button>
+          ...
+          <button mat-icon-button matTooltip="Coffee" aria-label="Coffee"><mat-icon fontSet="fa" fontIcon="fa-coffee"></mat-icon></button>
         </mat-card-actions>
       </mat-card>
 
@@ -59,7 +67,14 @@
         checking for koa server availability ...
       </p>
       <p *ngIf="!loading">
-        Restfull Koa server is {{ping() ? '' : 'not'}} available
+        Restfull Koa server is {{ping() ? '' : 'not'}} available - Swagger on
+        <a href="https://api.koa.pfouque.fr:8443/swagger" target="_blank" title="Koa Swagger">
+          <mat-icon class="material-icons md-24">engineering</mat-icon>
+        </a>
+        - Repository on
+        <a href="https://github.com/pfouque06/koa-typescript-restfull-api" target="_blank" title="GitHub">
+          <mat-icon class="material-icons md-24" fontSet="fa" fontIcon="fa-github"></mat-icon>
+        </a>
       </p>
 
     </mat-expansion-panel>

@@ -8,7 +8,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -71,6 +71,10 @@ const SHARED_MODULES = [
   MatSnackBarModule,
 ]
 
+const SHARED_PROVIDED_MODULES = [
+  MatIconRegistry,
+]
+
 @NgModule({
   declarations: [
     ...SHARED_ENTITIES,
@@ -88,7 +92,16 @@ const SHARED_MODULES = [
     ...SHARED_MODULES,
   ],
   entryComponents: [
-    ...SHARED_MODALS
+    ...SHARED_MODALS,
+  ],
+  providers: [
+    ...SHARED_PROVIDED_MODULES,
   ]
 })
 export class SharedModule { }
+
+export class MaterialModule {
+	constructor(public matIconRegistry: MatIconRegistry) {
+    matIconRegistry.registerFontClassAlias('fontawesome', 'fa');
+	}
+}
