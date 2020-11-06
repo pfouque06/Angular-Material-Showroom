@@ -246,12 +246,14 @@ Install the npm package:
 > $ npm i font-awesome --save  
 
 Register fontawesome in the styles section in angular.json:  
+
     "styles": [  
       "src/styles.css",  
       "node_modules/font-awesome/scss/font-awesome.scss"  
     ]  
 
 Import and provide the icon references in shared.module.ts :  
+
     import { MatIconModule, MatIconRegistry } from '@angular/material';  
     imports: [  
       MatIconModule  
@@ -261,6 +263,7 @@ Import and provide the icon references in shared.module.ts :
     ]  
 
 Add fontawesome to the registry :  
+
     export class MaterialModule {  
       constructor(public matIconRegistry: MatIconRegistry) {  
         matIconRegistry.registerFontClassAlias('fontawesome', 'fa');  
@@ -268,6 +271,7 @@ Add fontawesome to the registry :
     }  
 
 Adapt the size of the fontawesome icons to match the size of material icons, in style.scss file :  
+
     .mat-icon.fa {  
       padding-left: 5px;  
       font-size: 20px;  
