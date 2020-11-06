@@ -3,3 +3,8 @@
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 /* @import '~@angular/material/prebuilt-themes/pink-bluegrey.css'; */
 /* @import '~@angular/material/prebuilt-themes/purple-green.css'; */
+
+.mat-icon.fa {
+  padding-left: 5px;
+	font-size: 20px;
+}
