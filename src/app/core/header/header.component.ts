@@ -27,9 +27,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // loggedService init
     this.loggedService = timer(2000, 10000) // or interval(10000)
       .pipe(
-        switchMap((value) => {
+        switchMap(async (value) => {
           // return new Promise((resolve, reject) => { resolve(this.authService.isLogged()); })
-          let state: boolean = this.authService.isLogged();
+          let state: boolean = await this.authService.isLogged();
           // console.log(`loggedService: state=${this.loggedState} new state= `,state);
           if (this.loggedState !== state) {
             console.log(`logged State has changed ... reloading component`);
@@ -80,12 +80,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  public isLogged(): boolean {
-    return this.authService.isLogged();
+  public async isLogged(): Promise<boolean> {
+    return await this.authService.isLogged();
   }
 
-  public getCurrentUserFullName() : string {
-    return this.authService.getCurrentUserFullName();;
+  public async getCurrentUserFullName() : Promise<string> {
+    return await this.authService.getCurrentUserFullName();;
   }
 
   openUserFormDialog(formType: 'login' | 'register'): void {

@@ -21,13 +21,14 @@ export class SideBarComponent implements OnInit {
     public dialog: MatDialog,
     private router: Router ) { }
 
-  ngOnInit() {
-    this.fullName = this.authService.getCurrentUserFullName();
+  async ngOnInit() {
+    this.fullName = await this.authService.getCurrentUserFullName();
     this.loading = false;
   }
 
-  public isAdmin(): boolean {
-    return (this.authService.getCurrentUser().profile == "admin");
+  public async isAdmin(): Promise<boolean> {
+    const user = await this.authService.getCurrentUser();
+    return (user.profile == "admin");
   }
 
   public usersReset() {

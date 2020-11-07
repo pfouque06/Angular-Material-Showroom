@@ -196,13 +196,15 @@ export class ProfileUserDetailsComponent implements OnInit {
     );
   }
 
-  public isMyself() {
-    return ( !this.userId || this.authService.getCurrentUser().id == this.user.id);
+  public async isMyself() {
+    const user = await this.authService.getCurrentUser();
+    return ( !this.userId || user.id == this.user.id);
   }
 
-  public isAdmin() {
+  public async isAdmin() {
     // console.log("this.authService.getCurrentUser().profile: ", this.authService.getCurrentUser().profile);
-    return (this.authService.getCurrentUser().profile == "admin");
+    const user = await this.authService.getCurrentUser();
+    return ( user.profile == "admin" );
   }
 
   public isNew() {

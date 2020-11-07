@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { UserActionTypes, Set, Fail, Login, Update, Register, Delete, Clear } from './user.action';
-import { switchMap, map, catchError, mergeMap } from 'rxjs/operators';
+import { switchMap, map, catchError, mergeMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { ApiHelperService } from '../../services/api-helper.service';
@@ -19,8 +19,11 @@ export class UserEffects {
     ofType(UserActionTypes.Register),
     switchMap( (action: Register) =>
       this.api.post({ endpoint: '/register', data: { email: action.payload.email, password: action.payload.password } })
-      .then((r) => new Set({user: r.body.data}))
-      .catch((e) => of(new Fail(e)))
+      .pipe(
+        tap ( (r) => console.log('effect().register(): ', r)),
+        mergeMap( (r) => [ new Set({user: r.body.data}) ]),
+        catchError( (e) => of(new Fail(e)))
+      )
     )
   )
 
@@ -29,10 +32,11 @@ export class UserEffects {
     ofType(UserActionTypes.Login),
     switchMap( (action: Login) =>
       this.api.post({ endpoint: '/login', data: { email: action.payload.email, password: action.payload.password } })
-      .then( (r) => [
-        new Set({user: r.body.data.user, token: r.body.data.token}),
-      ])
-      .catch( (e) => of(new Fail(e)))
+      .pipe(
+        tap ( (r) => console.log('effect().login(): ', r)),
+        mergeMap( (r) => [ new Set({user: r.body, token: r.body.accessToken}) ]),
+        catchError( (e) => of(new Fail(e)))
+      )
     )
   );
 

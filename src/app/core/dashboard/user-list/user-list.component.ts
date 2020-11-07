@@ -100,14 +100,16 @@ public sort: MatSort;
     this.router.navigate([url]);
   }
 
-  isEditable(row: any): boolean {
+  async isEditable(row: any): Promise<boolean> {
     // console.log('profile:' , this.authService.getCurrentUser().profile);
-    return (this.authService.getCurrentUser().profile == "admin") || (this.authService.getCurrentUser().id == row.id) ;
+    const user = await this.authService.getCurrentUser();
+    return (user.profile == "admin") || (user.id == row.id) ;
   }
 
-  isRemovable(row: any): boolean {
+  async isRemovable(row: any): Promise<boolean> {
     // console.log('profile:' , this.authService.getCurrentUser().profile);
-    return (this.authService.getCurrentUser().profile == "admin") && (this.authService.getCurrentUser().id != row.id) ;
+    const user = await this.authService.getCurrentUser();
+    return (user.profile == "admin") && (user.id != row.id) ;
   }
 
   remove(row: any) {
