@@ -3,6 +3,7 @@ import { UserActions, UserActionTypes } from './user.action';
 import { UserState } from './user.state';
 
 const initialState: UserState = {
+  // user: null,
   user: {},
   token: '',
   status: Status.Ready,
@@ -17,11 +18,13 @@ export function reducer(state = initialState, action: UserActions): UserState {
     case UserActionTypes.Login: {
       return {
         ...initialState,
+        // user: { ...initialState.user, email: action.payload.email },
         user: { email: action.payload.email },
         status: Status.Pending
       };
     }
 
+    case UserActionTypes.Myself:
     case UserActionTypes.Update:
     case UserActionTypes.Delete: {
       return {
@@ -44,6 +47,7 @@ export function reducer(state = initialState, action: UserActions): UserState {
     }
 
     case UserActionTypes.Fail: {
+      console.log('UserActionTypes.Fail', action.payload);
       return {
         ...state,
         status: Status.Ready,

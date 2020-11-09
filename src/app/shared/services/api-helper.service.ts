@@ -17,25 +17,25 @@ export class ApiHelperService {
     @Inject(SERVER_PROTOCOL) public readonly serverProtocol: 's' | '') { }
 
   // public get({ endpoint, data = {}, queryParams = {} }: { endpoint: string, data?: any, queryParams?: any }): Promise<any> {
-  public get({ endpoint, queryParams = {} }: { endpoint: string, data?: any, queryParams?: any }): Promise<any> {
+  public get({ endpoint, queryParams = {} }: { endpoint: string, data?: any, queryParams?: any }): Observable<any> {
     return this.request({ endpoint, method: 'GET', queryParams });
   }
 
-  public post({ endpoint, data = {}, queryParams = {} }: { endpoint: string, data?: any, queryParams?: any }): Promise<any> {
+  public post({ endpoint, data = {}, queryParams = {} }: { endpoint: string, data?: any, queryParams?: any }): Observable<any> {
     // console.log('post/', endpoint, data);
     return this.request({ endpoint, method: 'POST', data, queryParams });
   }
 
-  public put({ endpoint, data = {}, queryParams = {} }: { endpoint: string, data?: any, queryParams?: any }): Promise<any> {
+  public put({ endpoint, data = {}, queryParams = {} }: { endpoint: string, data?: any, queryParams?: any }): Observable<any> {
     return this.request({ endpoint, method: 'PUT', data, queryParams });
   }
 
-  public delete({ endpoint, data = {}, queryParams = {} }: { endpoint: string, data?: any, queryParams?: any }): Promise<any> {
+  public delete({ endpoint, data = {}, queryParams = {} }: { endpoint: string, data?: any, queryParams?: any }): Observable<any> {
     return this.request({ endpoint, method: 'DELETE', data, queryParams });
   }
 
   public request({ endpoint, method = 'GET', data = {}, queryParams = {} }:
-    { endpoint: string; method?: string; data?: object; queryParams?: any; }): Promise<any> {
+    { endpoint: string; method?: string; data?: object; queryParams?: any; }): Observable<any> {
     const methodWanted = method.toLowerCase();
 
     // base_url: 'https://localhost:8443'
@@ -75,9 +75,16 @@ export class ApiHelperService {
 
     // console.log('response', req);
 
-    return req.toPromise().then((res) => {
-      // console.log('body: ', res.body);
-      return res.body;
-    });
+    return req;
+    // return req.toPromise()
+    // .then( (res) => {
+    //   // console.log('body: ', res.body);
+    //   return res.body;
+    // })
+    // .catch( (res) => {
+    //   console.log('api.request().catch(error): ', res);
+    //   throw res.error;
+    //   // throw { errors: res.error };
+    // });
   }
 }

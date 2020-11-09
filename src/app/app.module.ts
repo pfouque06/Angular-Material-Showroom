@@ -8,8 +8,6 @@ import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
 import { HeaderComponent } from './core/header/header.component';
 import { FooterComponent } from './core/footer/footer.component';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { JwtHttpInterceptorInterceptor } from './shared/middlewares/interceptors/jwt-http-interceptor.interceptor';
 
 import { StoreModule, MetaReducer, ActionReducer } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -35,7 +33,6 @@ const metaReducers: Array<MetaReducer<State>> = [localStorageSyncReducer];
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    HttpClientModule, // Requit pour injecter la D.I. HttpClient qui nous permettra de requêter un serveur distant
     SharedModule,
     CoreModule,
     StoreModule.forRoot(reducers, { metaReducers }),
@@ -46,11 +43,7 @@ const metaReducers: Array<MetaReducer<State>> = [localStorageSyncReducer];
     }),
     EffectsModule.forRoot([UserEffects]),
   ],
-  providers: [
-    // Mise en place d'un intercepteur qui permettra d'appliquer le token automatiquement
-    // à chaque requête sortante de notre application Angular
-    { provide: HTTP_INTERCEPTORS, useClass: JwtHttpInterceptorInterceptor, multi: true }
-  ],
+  providers: [],
   bootstrap: [AppComponent],
   entryComponents: [
   ]

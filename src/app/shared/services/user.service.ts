@@ -20,33 +20,43 @@ export class UserService {
   //   return super._getBySearch("users", keyword, page, size, sortOrder, field);
   // }
 
-  public getCurrentUser(): User {
-    return this.authService.getCurrentUser();
+  public async getCurrentUser(): Promise<Partial<User>> {
+    return await this.authService.getCurrentUser();
   }
 
   public async getAllUser(): Promise<Array<User>> {
-    return await this.api.get({ endpoint: ROOT_ENDPOINT })
+    const users = await this.api.get({ endpoint: ROOT_ENDPOINT }).toPromise();
+    console.log('users: ', users.body);
+    return users.body;
   }
 
   public async create(user: User): Promise<User> {
-    return await this.api.post({ endpoint: ROOT_ENDPOINT, data: user });
+    const createdUser = await this.api.post({ endpoint: ROOT_ENDPOINT, data: user }).toPromise();
+    console.log('newUser: ', createdUser.body);
+    return createdUser.body;
   }
 
   public async getById(id: number): Promise<User> {
-    return await this.api.get({ endpoint: ROOT_ENDPOINT + id })
+    const user = await this.api.get({ endpoint: ROOT_ENDPOINT + id }).toPromise();
+    console.log('user: ', user);
+    return user.body;
   }
 
   public async updateById(id: number, user: User): Promise<User> {
     console.log(`UserService.updateByUser(id: ${id})`);
     console.log("user: ", user);
-    return await this.api.put({ endpoint: ROOT_ENDPOINT + id, data: user });
+    const updatedUser =  await this.api.put({ endpoint: ROOT_ENDPOINT + id, data: user }).toPromise();
+    console.log("user: ", updatedUser);
+    return updatedUser;
   }
 
   public async deleteById(id: number): Promise<User> {
-    return await this.api.delete({ endpoint: ROOT_ENDPOINT + id });
+    const deletedUser =  this.api.delete({ endpoint: ROOT_ENDPOINT + id }).toPromise();
+    return deletedUser;
   }
 
   public async reset(): Promise<boolean> {
-    return await this.api.post({ endpoint: ROOT_ENDPOINT + 'reset' });
+    const result = await this.api.post({ endpoint: ROOT_ENDPOINT + 'reset' }).toPromise();
+    return result;
   }
 }

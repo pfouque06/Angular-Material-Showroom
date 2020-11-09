@@ -13,41 +13,46 @@
   <mat-accordion>
     <mat-expansion-panel hideToggle>
       <mat-expansion-panel-header>
-        <mat-panel-title>
-          <!-- <mat-icon class="check_request check_ok" style="color: darkgreen">done</mat-icon> -->
-          <mat-icon class="check_request check_ok">done</mat-icon>
-          <code>@angular/material</code>
-        </mat-panel-title>
-        <mat-panel-description>
-          Material for Angular
-        </mat-panel-description>
+        <mat-panel-title><mat-icon class="check_request check_ok">done</mat-icon><code>@angular/material</code></mat-panel-title>
+        <mat-panel-description>Material for Angular</mat-panel-description>
       </mat-expansion-panel-header>
 
       <mat-card>
         <mat-card-header>
-          <mat-card-title>
-            <code>@angular/material</code>
-          </mat-card-title>
-          <mat-card-subtitle>
-            Material for Angular
-          </mat-card-subtitle>
+          <mat-card-title><code>@angular/material</code></mat-card-title>
+          <mat-card-subtitle>Material for Angular</mat-card-subtitle>
         </mat-card-header>
-        <mat-card-content>
-          <code>@angular/material</code> is installed and operational !!
-        </mat-card-content>
+        <mat-card-content><code>@angular/material</code> is installed and operational !!</mat-card-content>
         <mat-card-actions>
           <button mat-icon-button matTooltip="Share" aria-label="Share"><mat-icon>share</mat-icon></button>
           <button mat-icon-button matTooltip="Like" aria-label="Like" color="primary"><mat-icon>thumb_up</mat-icon></button>
           <button mat-icon-button matTooltip="Love" aria-label="Love" color="warn"><mat-icon>favorite</mat-icon></button>
         </mat-card-actions>
-        <mat-card-content>
-          <code>Fontawesome Icons</code> are installed, registered and operational as well !!
-        </mat-card-content>
+        <mat-card-content><code>Fontawesome Icons</code> are installed, registered and operational as well !!</mat-card-content>
         <mat-card-actions>
           <button mat-icon-button matTooltip="Check" aria-label="Check"><mat-icon fontSet="fa" fontIcon="fa-check"></mat-icon></button>
           ...
           <button mat-icon-button matTooltip="Coffee" aria-label="Coffee"><mat-icon fontSet="fa" fontIcon="fa-coffee"></mat-icon></button>
         </mat-card-actions>
+      </mat-card>
+
+    </mat-expansion-panel >
+
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon class="check_request check_ok">done</mat-icon><code>@ngrx/store @ngrx/effect</code>
+        </mat-panel-title>
+        <mat-panel-description>Redux for Angular</mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title><code>@ngrx/store @ngrx/effect</code></mat-card-title>
+          <mat-card-subtitle>Redux for Angular</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content><code>@ngrx/store @ngrx/effect</code> are effective and estonishing !!</mat-card-content>
+        <mat-card-content>Just check Redux dev tools plugin in your browser ...</mat-card-content>
       </mat-card>
 
     </mat-expansion-panel >
@@ -59,9 +64,7 @@
           <mat-icon *ngIf="!loading" class="check_request check_ko"  [class.check_ok]="ping()" >{{ping() ? 'done' : 'warning'}}</mat-icon>
           <code>koa-typescript-restfull-api</code>
         </mat-panel-title>
-        <mat-panel-description>
-          Fullstack Restfull API
-        </mat-panel-description>
+        <mat-panel-description>Fullstack Restfull API</mat-panel-description>
       </mat-expansion-panel-header>
       <p *ngIf="loading">
         checking for koa server availability ...

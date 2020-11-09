@@ -19,11 +19,10 @@ export class ProfileUserDetailsComponent implements OnInit {
   @Input() readOnly: boolean = true;
   @Input() userId: number = null;
 
-  user: User;
-  userForm: User;
-  userFormGroup: FormGroup;
-  // public cardRef: TemplateRef<any>;
+  public user: Partial<User>;
 
+  public userForm: User;
+  public userFormGroup: FormGroup;
 
   constructor(
     private authService: AuthService,
@@ -33,17 +32,18 @@ export class ProfileUserDetailsComponent implements OnInit {
     ) {}
 
   async ngOnInit(){
-    // console.log(`ProfileUserDetailsComponent.ngOninit(readOnly: ${this.readOnly}, userId: ${this.userId})`);
+    console.log(`ProfileUserDetailsComponent.ngOninit(readOnly: ${this.readOnly}, userId: ${this.userId})`);
 
     try {
-      if (this.userId) {
-        // retrive user if id is provided within directive [userId]
+      if ( this.userId ) {
+        // retrieve user if id is provided within directive [userId]
+        console.log("Id provided --> querying User profile (Id: " + this.userId + ")");
         this.user = await this.userService.getById(this.userId);
       } else {
-        // retrieve user from currentUser
         if (this.readOnly) {
-          this.user = await this.authService.myself();
-          console.log("No Id provided --> got myself(Id: " + this.user.id + ")");
+          // retrieve user from currentUser
+          console.log("No Id provided --> get myself()");
+          this.user = await this.authService.getCurrentUser();
         } else {
           console.log("No Id provided --> creating New User");
           this.user = new User({});
@@ -56,7 +56,6 @@ export class ProfileUserDetailsComponent implements OnInit {
 
     // generating form group if needed
     if (!this.readOnly) {
-      // console.log(" -->instantiate userFormGroup");
       // instantiate Form
       this.userForm = new User({});
       this.userFormGroup = new FormGroup({
@@ -89,7 +88,6 @@ export class ProfileUserDetailsComponent implements OnInit {
       }
 
       if (this.userId) {
-        // console.log(" -->initialize userFormGroup with provided user");
         // initialize formGroup
         this.userFormGroup.setValue({
           lastName: this.user.lastName,
@@ -100,12 +98,7 @@ export class ProfileUserDetailsComponent implements OnInit {
           profile: this.user.profile,
           password: ""
         });
-      } else {
-        // initialize formGroup
-        // console.log(" -->initialize userFormGroup with a new user");
       }
-      // } else {
-      //   this.userFormGroup.disable();
     }
 
     this.isLoading = false;
@@ -124,64 +117,60 @@ export class ProfileUserDetailsComponent implements OnInit {
   }
 
   public editProfile() {
-    // console.log(`ProfileUserDetailsComponent.editProfile()`);
     // [routerLink]="['/users/form/${userPick.id}']" [queryParams]="{user: user}"
     // this.router.navigate([`/users/form/${this.userPickId}`], { queryParams: { id:  this.userPickId }});
     const url = `dashboard/users/form/${this.user.id}`;
-    // console.log(`--> route to: ${url}`);
     this.router.navigate([url]);
   }
 
   public async submit() {
-    // console.log(`ProfileUserDetailsComponent.submit()`);
-    // console.log("user: ", this.user);
-    // console.log("userForm: ", this.userForm);
     if (this.userChanged()) { // any change done ?
 
       if (this.userId) { /// userForm for an existing User
-
-        // console.log("USER CHANGED !!!");
         try {
           if (this.isMyself() && this.userForm.profile != this.user.profile) {
             const error: string = "Error: can't change own profile type";
             console.log(error);
             throw Error(error)
           }
+
           // remove password from data ( handled separately)
           let { password, ...newUserData} = this.userForm;
-          // console.log("removing PASSWORD -> newUserData: ", newUserData);
-
           let newUser = new User(newUserData);
-          // remove email if not changed
+
+          // remove email if not changed because of uniqueness validator of api.koa
           if (this.userForm.email == this.user.email) {
             let { email, ...newUserData} = newUser;
-            // console.log("removing EMAIL -> newUserData: ", newUserData);
             newUser = new User(newUserData);
           }
+
           // update user
-          this.user = await this.userService.updateById(this.user.id, newUser);
+          const updatedUser = await this.userService.updateById(this.user.id, newUser);
+
+          // update myself if needed
+          if (this.isMyself()) { this.authService.myself(); }
         } catch (error) {
           console.log(error);
+          return;
         }
       } else { /// userForm for a new User
         try {
-          this.user = await this.userService.create(this.userForm);
-          this.userId = this.user.id;
+          const newUser = await this.userService.create(this.userForm);
+          console.log('newUser: ', newUser);
+          this.userId = newUser.id;
+          console.log('userId: ', this.userId);
         } catch (error) {
           console.log(error);
+          return;
         }
 
       }
     }
 
-    if (this.userId) { /// userForm for an existing User
-      const url = `dashboard/users/profile/${this.user.id}`;
-      // console.log(`--> route to: ${url}`);
+    // finally route to user profile
+    if (this.userId) { /// userForm for an existing or created User
+      const url = `dashboard/users/profile/${this.userId}`;
       this.router.navigate([url]);
-    } else {
-      // const url = `dashboard/users/list`;
-      // console.log(`--> route to: ${url}`);
-      // this.router.navigate([url]);
     }
   }
 
@@ -196,13 +185,13 @@ export class ProfileUserDetailsComponent implements OnInit {
     );
   }
 
-  public isMyself() {
-    return ( !this.userId || this.authService.getCurrentUser().id == this.user.id);
+  public async isMyself() {
+    // console.log(`profile-user-details.isMyself(${this.userId}, ${this.user.id}): ${!this.userId || this.userId == this.user.id}`);
+    return ( !this.userId || this.userId == this.user.id);
   }
 
-  public isAdmin() {
-    // console.log("this.authService.getCurrentUser().profile: ", this.authService.getCurrentUser().profile);
-    return (this.authService.getCurrentUser().profile == "admin");
+  public async isAdmin() {
+    return ( this.user.profile === "admin" );
   }
 
   public isNew() {
@@ -215,15 +204,12 @@ export class ProfileUserDetailsComponent implements OnInit {
   }
 
   public openPasswordChangeDialog(): void {
-    // let userForm: any = { formType: formType, password: "secret"  };
-    // if (formType == "login")
-    //   userForm = { ...userForm, email: "sam.va@gmail.com"};
-
+    // call dialog
     const dialogRef = this.dialog.open(PasswordChangeModalComponent, {
       width: '400px',
       data: {}
     });
-
+    // wait dialog close event
     dialogRef.afterClosed().subscribe(async data => {
       if (!data) return;
       try {
@@ -231,6 +217,13 @@ export class ProfileUserDetailsComponent implements OnInit {
       } catch (error) {
         console.log(error);
       }
+    });
+  }
+
+  private reloadCurrentRoute() {
+    let currentUrl = this.router.url;
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+      this.router.navigate([currentUrl]);
     });
   }
 }

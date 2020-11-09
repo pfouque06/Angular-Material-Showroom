@@ -13,7 +13,8 @@ import { UserService } from 'src/app/shared/services/user.service';
 export class SideBarComponent implements OnInit {
 
   public loading: boolean = true;
-  public fullName: string = "";
+  public profileType: string = ''
+  public fullName: string = '';
 
   constructor(
     private authService: AuthService,
@@ -22,12 +23,13 @@ export class SideBarComponent implements OnInit {
     private router: Router ) { }
 
   ngOnInit() {
-    this.fullName = this.authService.getCurrentUserFullName();
+    this.authService.getCurrentUser().then ( (user) => this.profileType = user.profile);
+    this.authService.getCurrentUserFullName().then( (fn) => this.fullName = fn);
     this.loading = false;
   }
 
   public isAdmin(): boolean {
-    return (this.authService.getCurrentUser().profile == "admin");
+    return ( this.profileType == "admin" );
   }
 
   public usersReset() {
@@ -39,30 +41,21 @@ export class SideBarComponent implements OnInit {
   }
 
   openAdminConfirmationDialog(formType: 'usersReset' | 'authReset') {
-    let userForm: any = { formType: formType, password: "secret"  };
+    // call dialog
+    const dialogRef = this.dialog.open(ConfirmationModalComponent, { width: '500px', data: { formType: formType } });
 
-    const dialogRef = this.dialog.open(ConfirmationModalComponent, {
-      width: '500px',
-      data: userForm //data: {}
-    });
-
+    // wait dialog close event
     dialogRef.afterClosed().subscribe(async result => {
       if (! result) return;
       const confirmFeedback = result;
       if (confirmFeedback.confirmed) {
         switch (confirmFeedback.formType) {
           case 'usersReset': {
-            if (await this.userService.reset()) {
-              // reload route
-              this.reloadCurrentRoute();
-            }
+            if (await this.userService.reset()) { this.reloadCurrentRoute(); }
             break;
           }
           case 'authReset': {
-            if (await this.authService.reset()) {
-              // reroute page if all is fine
-              this.reloadCurrentRoute("dashboard");
-            }
+            if (await this.authService.reset()) { this.reloadCurrentRoute("dashboard"); }
             break;
           }
         }

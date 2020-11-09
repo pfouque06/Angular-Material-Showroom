@@ -33,7 +33,12 @@ import { ProfileUserDetailsComponent } from './components/user/profile-user-deta
 
 // helper to bind associated backend according to url (prod/dev)
 import { SERVER_PROTOCOL, SERVER_ADDRESS } from './services/api-helper.service';
-const backends = { 'angular.material.pfouque.fr': { address: 'api.koa.pfouque.f:8443', protocol: 's'}, 'localhost': { address: 'localhost:8443', protocol: 's'} };
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtHttpInterceptorInterceptor } from './middlewares/interceptors/jwt-http-interceptor.interceptor';
+const backends = {
+  'angular.material.pfouque.fr': { address: 'api.koa.pfouque.f:8443', protocol: 's'},
+  'localhost': { address: 'localhost:8443', protocol: 's'}
+};
 const serverAddress = backends[window.location.hostname].address;
 const serverProtocol = backends[window.location.hostname].protocol;
 
@@ -54,6 +59,7 @@ const REACTIVE_FORM_DIRECTIVES = [
 ]
 
 const SHARED_MODULES = [
+  HttpClientModule, // Requit pour injecter la D.I. HttpClient qui nous permettra de requêter un serveur distant
   FlexLayoutModule,
   MatSliderModule,
   MatCardModule,
@@ -80,6 +86,10 @@ const SHARED_MODULES = [
 const SHARED_IMPORTED_MODULES = []
 const SHARED_PROVIDED_MODULES = [
   MatIconRegistry,
+  // Mise en place d'un intercepteur qui permettra d'appliquer le token automatiquement à chaque requête sortante de notre application Angular
+  { provide: HTTP_INTERCEPTORS, useClass: JwtHttpInterceptorInterceptor, multi: true },
+  { provide: SERVER_PROTOCOL, useValue: serverProtocol},
+  { provide: SERVER_ADDRESS,  useValue: serverAddress}
 ]
 
 @NgModule({
@@ -104,8 +114,6 @@ const SHARED_PROVIDED_MODULES = [
   ],
   providers: [
     ...SHARED_PROVIDED_MODULES,
-    { provide: SERVER_PROTOCOL, useValue: serverProtocol},
-    { provide: SERVER_ADDRESS,  useValue: serverAddress}
   ]
 })
 export class SharedModule { }

@@ -5,6 +5,7 @@ export enum UserActionTypes {
   Register = '[User] Register',
   Login = '[User] Login',
   Set = '[User] Set',
+  Myself = '[User] Myself',
   Fail = '[User] Fail',
   Update = '[User] Update',
   Delete = '[User] Delete',
@@ -14,6 +15,7 @@ export enum UserActionTypes {
 export type UserActions =
   | Register
   | Login
+  | Myself
   | Set
   | Fail
   | Update
@@ -28,6 +30,11 @@ export class Register implements Action {
 export class Login implements Action {
     public readonly type = UserActionTypes.Login;
     constructor(public payload: {email: string, password: string}) {}
+}
+
+export class Myself implements Action {
+    public readonly type = UserActionTypes.Myself;
+    constructor() {}
 }
 
 export class Set implements Action {
