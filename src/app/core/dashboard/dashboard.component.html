@@ -6,18 +6,18 @@
     <mat-expansion-panel  hideToggle>
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <mat-spinner *ngIf="loading" class="check_request" [diameter]="16" [strokeWidth]="2"></mat-spinner>
-          <mat-icon *ngIf="!loading" class="check_request check_ko"  [class.check_ok]="ping()" >{{ping() ? 'done' : 'warning'}}</mat-icon>
+          <!-- <mat-spinner *ngIf="loading" class="check_request" [diameter]="16" [strokeWidth]="2"></mat-spinner> -->
+          <mat-icon class="check_request check_ko"  [class.check_ok]="ping()" >{{ping() ? 'done' : 'warning'}}</mat-icon>
           <code>koa-typescript-restfull-api</code>
         </mat-panel-title>
         <mat-panel-description>
           Fullstack Restfull API
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <p *ngIf="loading">
+      <!-- <p *ngIf="loading">
         checking for koa server availability ...
-      </p>
-      <p *ngIf="!loading">
+      </p> -->
+      <p>
         Restfull Koa server is {{ping() ? '' : 'not'}} available - Swagger on
         <a href="https://api.koa.pfouque.fr:8443/swagger" target="_blank" title="Koa Swagger">
           <mat-icon class="material-icons md-24">engineering</mat-icon>

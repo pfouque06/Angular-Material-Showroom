@@ -2,7 +2,7 @@
   <mat-card>
     <mat-card-content fxLayout="column" fxLayoutAlign="center center">
 
-      <div *ngIf="!readOnly; else elseUserForm">
+      <div *ngIf="!readOnly; else elseUserProfile">
 
         <h1>User Form</h1>
 
@@ -99,7 +99,7 @@
 
       </div>
 
-      <ng-template #elseUserForm>
+      <ng-template #elseUserProfile>
 
         <h1>User profile</h1>
 

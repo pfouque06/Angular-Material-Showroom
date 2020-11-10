@@ -1,10 +1,14 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { select, Store } from '@ngrx/store';
 import { Observable, Subscription, timer } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { skip, switchMap, take } from 'rxjs/operators';
 import { UserModalComponent } from 'src/app/shared/components/modals/user-modal/user-modal.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { State } from 'src/app/shared/store/states';
+import { selectUserState } from 'src/app/shared/store/user/user.selector';
 
 @Component({
   selector: 'app-header',
@@ -15,77 +19,86 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   @Input() public title: string;
 
-  private loggedState: boolean = undefined;
-  private loggedService: Observable<any>;
-  private loggedListener: Subscription;
+  // private isLogged$: Promise<boolean>;
+  private heartBeatService: Observable<any>;
+  private loggedService: Subscription;
+  private loggedState: boolean = false;
+  public fullName: string = '';
 
   constructor(
+    private store: Store<State>,
     private authService: AuthService,
     public dialog: MatDialog,
-    private router: Router ) {
+    private router: Router
+  ) {
+    // heartBeatService init
+    this.heartBeatService = timer(2000, 10000) // or interval(10000)
 
-    // loggedService init
-    this.loggedService = timer(2000, 10000) // or interval(10000)
-      .pipe(
-        switchMap((value) => {
-          // return new Promise((resolve, reject) => { resolve(this.authService.isLogged()); })
-          let state: boolean = this.authService.isLogged();
-          // console.log(`loggedService: state=${this.loggedState} new state= `,state);
-          if (this.loggedState !== state) {
-            console.log(`logged State has changed ... reloading component`);
-            this.loggedState = state;
-            this.reloadCurrentRoute(); // this.ngOnInit();
-          }
-          return new Promise((resolve, reject) => { resolve(state); })
-        })
-      );
+    // subscriptions
+    // this.isLogged$ = this.authService.isLogged();
 
     // loggedService register
-    this.loggedListener = this.loggedService.subscribe()
+    this.loggedService = this.heartBeatService.subscribe( async () => {
+      // console.log(`header.loggedState=${this.loggedState}`);
+      const state = await this.authService.isLogged();
+      this.authService.getCurrentUserFullName().then( (fn) => this.fullName = fn);
+      // console.log(` -> new state=${state}`)  ;
+      if (this.loggedState !== state) {
+        console.log(`Header: logged State has changed ... reloading component`);
+        this.loggedState = !! state;
+        this.reloadCurrentRoute(); // this.ngOnInit();
+      }
+    });
   }
+
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
-    this.loggedListener.unsubscribe();
+    this.loggedService.unsubscribe();
   }
 
-  ngOnInit(): void { }
+  public get isLogged() {
+    return !!this.loggedState;
+  }
 
-  public ping(): boolean {
-    return this.authService.pong;
+  public async getCurrentUserFullName() {
+    let fullName: string = '';
+    if (this.loggedState) {
+      fullName = await this.authService.getCurrentUserFullName()
+    }
+    return fullName;
   }
 
   public async loginToggle() {
-    if (this.isLogged()) { // logout
-      if (await this.authService.logout()) {
-        this.loggedState = false;
-        // reroute page if all is fine, this.router.url is route name
-        if (this.router.url.match('^\/dashboard')) {
-          this.router.navigate(['/home']);
+    // logout
+    if (this.loggedState) {
+      await this.authService.logout();
+      this.store.pipe( select(selectUserState), skip(1), take(1),
+      // tap( (s) => console.log('AuthService.login().selectUserState: ', s)),
+      ).subscribe(
+        (state) => {
+          if ( !state.errors ) {
+              this.loggedState = false;
+              // reroute page if all is fine, this.router.url is route name
+              if (this.router.url.match('^\/dashboard')) {
+                this.router.navigate(['/home']);
+              // delay navigation because of guard control too quick !!
+              // console.log('Navigating to Koa dashboard in a short moment...');
+              // setTimeout(()=>{ this.router.navigate(['/dashboard']); }, 500)
+            }
+          }
         }
-      }
-    } else { // login
-      this.openUserFormDialog('login');
-    }
+      );
+    } else { this.openUserFormDialog('login'); } // login
   }
 
-  public viewProfile() {
-    const url = `dashboard/users/profile/`;
-    this.router.navigate([url]);
-  }
-
-  public async register() {
-    if (! this.isLogged()) { // register
+  public async profileToggle() {
+    if (this.loggedState) { // view Profile
+      const url = `dashboard/users/profile/`;
+      this.router.navigate([url]);
+    } else { // register
       this.openUserFormDialog('register');
-      // await this.authService.register( 'sam.va@gmail.com', 'secret');
     }
-  }
-
-  public isLogged(): boolean {
-    return this.authService.isLogged();
-  }
-
-  public getCurrentUserFullName() : string {
-    return this.authService.getCurrentUserFullName();;
   }
 
   openUserFormDialog(formType: 'login' | 'register'): void {
@@ -99,22 +112,30 @@ export class HeaderComponent implements OnInit, OnDestroy {
       data: userForm
     });
 
-    dialogRef.afterClosed().subscribe(async result => {
+    dialogRef.afterClosed().subscribe( async result => {
       if (!result) return;
       userForm = result;
       switch (formType) {
         case 'register': {
-          await this.authService.register( userForm.email, userForm.password);
+          this.authService.register( userForm.email, userForm.password);
           break;
         }
         case 'login': {
-          await this.authService.login( userForm.email, userForm.password).then( () => {
-            this.loggedState = true;
-            // console.log(await this.authService.test(););
-            this.router.navigate(['/dashboard']);
-          }).catch((err) => {
-            console.log(err);
-          })
+          await this.authService.login( userForm.email, userForm.password);
+          this.store.pipe( select(selectUserState), skip(1), take(1),
+          // tap( (s) => console.log('AuthService.login().selectUserState: ', s)),
+          ).subscribe(
+            (state) => {
+              if ( !state.errors ) {
+                this.loggedState = true;
+                this.authService.getCurrentUserFullName().then( (fn) => this.fullName = fn);
+                this.router.navigate(['/dashboard']);
+                // delay navigation because of guard control too quick !!
+                // console.log('Navigating to Koa dashboard in a short moment...');
+                // setTimeout(()=>{ this.router.navigate(['/dashboard']); }, 500)
+              }
+            }
+          );
           break;
         }
       }

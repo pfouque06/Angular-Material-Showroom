@@ -31,6 +31,17 @@ import { IsLoggedGuardAlertComponent } from './components/snackbars/is-logged-gu
 
 import { ProfileUserDetailsComponent } from './components/user/profile-user-details/profile-user-details.component';
 
+// helper to bind associated backend according to url (prod/dev)
+import { SERVER_PROTOCOL, SERVER_ADDRESS } from './services/api-helper.service';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtHttpInterceptorInterceptor } from './middlewares/interceptors/jwt-http-interceptor.interceptor';
+const backends = {
+  'angular.material.pfouque.fr': { address: 'api.koa.pfouque.f:8443', protocol: 's'},
+  'localhost': { address: 'localhost:8443', protocol: 's'}
+};
+const serverAddress = backends[window.location.hostname].address;
+const serverProtocol = backends[window.location.hostname].protocol;
+
 const SHARED_MODALS = [
   UserModalComponent,
   ConfirmationModalComponent,
@@ -48,6 +59,7 @@ const REACTIVE_FORM_DIRECTIVES = [
 ]
 
 const SHARED_MODULES = [
+  HttpClientModule, // Requit pour injecter la D.I. HttpClient qui nous permettra de requêter un serveur distant
   FlexLayoutModule,
   MatSliderModule,
   MatCardModule,
@@ -71,8 +83,13 @@ const SHARED_MODULES = [
   MatSnackBarModule,
 ]
 
+const SHARED_IMPORTED_MODULES = []
 const SHARED_PROVIDED_MODULES = [
   MatIconRegistry,
+  // Mise en place d'un intercepteur qui permettra d'appliquer le token automatiquement à chaque requête sortante de notre application Angular
+  { provide: HTTP_INTERCEPTORS, useClass: JwtHttpInterceptorInterceptor, multi: true },
+  { provide: SERVER_PROTOCOL, useValue: serverProtocol},
+  { provide: SERVER_ADDRESS,  useValue: serverAddress}
 ]
 
 @NgModule({
@@ -86,6 +103,7 @@ const SHARED_PROVIDED_MODULES = [
     CommonModule,
     ...REACTIVE_FORM_DIRECTIVES,
     ...SHARED_MODULES,
+    ...SHARED_IMPORTED_MODULES,
   ],
   exports: [
     ...SHARED_ENTITIES,
