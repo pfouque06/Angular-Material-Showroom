@@ -23,6 +23,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private heartBeatService: Observable<any>;
   private loggedService: Subscription;
   private loggedState: boolean = false;
+  public fullName: string = '';
 
   constructor(
     private store: Store<State>,
@@ -40,6 +41,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.loggedService = this.heartBeatService.subscribe( async () => {
       // console.log(`header.loggedState=${this.loggedState}`);
       const state = await this.authService.isLogged();
+      this.authService.getCurrentUserFullName().then( (fn) => this.fullName = fn);
       // console.log(` -> new state=${state}`)  ;
       if (this.loggedState !== state) {
         console.log(`Header: logged State has changed ... reloading component`);
@@ -68,17 +70,26 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   public async loginToggle() {
-    if (this.loggedState) { // logout
-      if (await this.authService.logout()) {
-        this.loggedState = false;
-        // reroute page if all is fine, this.router.url is route name
-        if (this.router.url.match('^\/dashboard')) {
-          this.router.navigate(['/home']);
+    // logout
+    if (this.loggedState) {
+      await this.authService.logout();
+      this.store.pipe( select(selectUserState), skip(1), take(1),
+      // tap( (s) => console.log('AuthService.login().selectUserState: ', s)),
+      ).subscribe(
+        (state) => {
+          if ( !state.errors ) {
+              this.loggedState = false;
+              // reroute page if all is fine, this.router.url is route name
+              if (this.router.url.match('^\/dashboard')) {
+                this.router.navigate(['/home']);
+              // delay navigation because of guard control too quick !!
+              // console.log('Navigating to Koa dashboard in a short moment...');
+              // setTimeout(()=>{ this.router.navigate(['/dashboard']); }, 500)
+            }
+          }
         }
-      }
-    } else { // login
-      this.openUserFormDialog('login');
-    }
+      );
+    } else { this.openUserFormDialog('login'); } // login
   }
 
   public async profileToggle() {
@@ -117,6 +128,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
             (state) => {
               if ( !state.errors ) {
                 this.loggedState = true;
+                this.authService.getCurrentUserFullName().then( (fn) => this.fullName = fn);
                 this.router.navigate(['/dashboard']);
                 // delay navigation because of guard control too quick !!
                 // console.log('Navigating to Koa dashboard in a short moment...');

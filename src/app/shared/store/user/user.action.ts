@@ -4,23 +4,25 @@ import { User } from '../../models/class/user';
 export enum UserActionTypes {
   Register = '[User] Register',
   Login = '[User] Login',
-  Set = '[User] Set',
+  Logout = '[User] Logout',
   Myself = '[User] Myself',
-  Fail = '[User] Fail',
   Update = '[User] Update',
   Delete = '[User] Delete',
+  Set = '[User] Set',
   Clear = '[User] Clear',
+  Fail = '[User] Fail',
 };
 
 export type UserActions =
   | Register
   | Login
+  | Logout
   | Myself
-  | Set
-  | Fail
   | Update
   | Delete
-  | Clear;
+  | Set
+  | Clear
+  | Fail;
 
 export class Register implements Action {
     public readonly type = UserActionTypes.Register;
@@ -30,6 +32,11 @@ export class Register implements Action {
 export class Login implements Action {
     public readonly type = UserActionTypes.Login;
     constructor(public payload: {email: string, password: string}) {}
+}
+
+export class Logout implements Action {
+    public readonly type = UserActionTypes.Logout;
+    constructor() {}
 }
 
 export class Myself implements Action {

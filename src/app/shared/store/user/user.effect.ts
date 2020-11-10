@@ -56,6 +56,20 @@ export class UserEffects {
     )
   );
 
+  @Effect()
+  public userLogout$ = this.actions$.pipe(
+    ofType(UserActionTypes.Logout),
+    tap( _ => console.log('effect().logout .....')),
+    switchMap( (action: Login) =>
+      this.api.post({ endpoint: '/logout' })
+      .pipe(
+        // tap ( (r) => console.log('result: ', r)),
+        mergeMap( (r) => { return [ new Clear() ]; }),
+        catchError( (e) => of(new Fail(e)))
+      )
+    )
+  );
+
   // @Effect()
   // public userUpdate$ = this.actions$.pipe(
   //   ofType(UserActionTypes.Update),

@@ -5,7 +5,7 @@ import { Observable, Subscription, timer } from 'rxjs';
 import { filter, map, skip, switchMap, take, tap } from 'rxjs/operators';
 import { User } from '../models/class/user';
 import { State } from '../store/states';
-import { Clear, Login, Myself, Register, Set } from '../store/user/user.action';
+import { Clear, Login, Logout, Myself, Register, Set } from '../store/user/user.action';
 import { selectUser, selectUserState, selectUserToken } from '../store/user/user.selector';
 import { ApiHelperService } from './api-helper.service';
 
@@ -103,12 +103,20 @@ export class AuthService {
 
   public async logout(): Promise<boolean> {
     console.log('logout()');
-    // const result: boolean = await this.api.post({ endpoint: '/logout' });
-    // if (result) {
-    //   console.log('logout: ' + result);
-    //   this._user = undefined;
-    // }
-    // return result ;
+    this.store.dispatch(new Logout());
+    this.store.pipe( select(selectUserState), skip(1), take(1),
+      // tap( (s) => console.log('AuthService.login().selectUserState: ', s)),
+    ).subscribe(
+      (state) => {
+        if ( !!state.errors && state.errors.error) {
+          const errors = state.errors.error
+          for( const key in errors ) { console.log(`errors[${key}] `, errors[key]); };
+        } else {
+          const user = state.user;
+          console.log('user is logout: ', user.email);
+        }
+      }
+    );
     return null;
   }
 

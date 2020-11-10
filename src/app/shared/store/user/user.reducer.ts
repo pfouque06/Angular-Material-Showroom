@@ -24,6 +24,7 @@ export function reducer(state = initialState, action: UserActions): UserState {
       };
     }
 
+    case UserActionTypes.Logout:
     case UserActionTypes.Myself:
     case UserActionTypes.Update:
     case UserActionTypes.Delete: {
