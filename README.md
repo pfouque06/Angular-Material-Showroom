@@ -319,5 +319,7 @@ or
 > $ npm install  
 > $ ng build --prod  
 > $ cd dist/app-name  
+
 front is available there !!!
+but you might have a look overthere also : https://angular.material.pfouque.fr
  
