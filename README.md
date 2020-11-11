@@ -221,25 +221,8 @@ later ...
 > $ ng g c core/dashboard/userList --module=dashboard --skipTests=true  
 > $ ng g c core/dashboard/userForm --module=dashboard --skipTests=true  
 
-# Deployment
 
-### Common
-> $ git clone git@github.com:pfouque06/Angular-Material-Showroom.git  
-> $ cd Angular-Material-Showroom  
-
-### Dev
-> $ npm install  
-> $ npm run start  
-or 
-> $ ng serve  
-
-### Prod
-> $ npm install  
-> $ ng build --prod  
-> $ cd dist/app-name  
-front is available there !!!
- 
- # Register Fontawesome icons to Material Icon registry for maticon directive
+# Register Fontawesome icons to Material Icon registry for maticon directive
 
 ### Installation
 Install the npm package:  
@@ -281,13 +264,14 @@ Adapt the size of the fontawesome icons to match the size of material icons, in 
 
     <mat-icon fontSet="fa" fontIcon="fa-shopping-bag"></mat-icon>  
 
- # NgRx addon(Redux for Angular)  
+
+# NgRx addon(Redux for Angular)  
 
 ### Installation  
 Install the ngrx packages:  
 > $ npm i @ngrx/store @ngrx/effects @ngrx/store-devtools  
 
-Import pacakages in app.module.ts :  
+Import packages in app.module.ts :  
 
     import { StoreModule, MetaReducer, ActionReducer } from '@ngrx/store';  
     import { StoreDevtoolsModule } from '@ngrx/store-devtools';  
@@ -317,6 +301,7 @@ Import pacakages in app.module.ts :
 
 ### Usage  
 Check /src/store directory tree for examples ...  
+
 
 # Deployment
 
