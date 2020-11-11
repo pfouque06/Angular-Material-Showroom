@@ -287,7 +287,7 @@ Adapt the size of the fontawesome icons to match the size of material icons, in 
 Install the ngrx packages:  
 > $ npm i @ngrx/store @ngrx/effects @ngrx/store-devtools  
 
-Import and provide the icon references in shared.module.ts :  
+Import pacakages in app.module.ts :  
 
     import { StoreModule, MetaReducer, ActionReducer } from '@ngrx/store';  
     import { StoreDevtoolsModule } from '@ngrx/store-devtools';  
