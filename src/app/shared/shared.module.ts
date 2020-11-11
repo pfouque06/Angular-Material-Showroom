@@ -17,6 +17,7 @@ import { MatInputModule } from "@angular/material/input";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
@@ -75,6 +76,7 @@ const SHARED_MODULES = [
   MatFormFieldModule,
   MatExpansionModule,
   MatProgressSpinnerModule,
+  MatProgressBarModule,
   MatListModule,
   MatTableModule,
   MatSortModule,
