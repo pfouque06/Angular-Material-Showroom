@@ -1,0 +1,15 @@
+<!-- <p>modal works!</p> -->
+<mat-card id="card-form-password">
+  <mat-card-title fxLayoutAlign="center center">Materials' modal example</mat-card-title>
+  <mat-card-actions fxLayoutAlign="center center">
+    <button mat-raised-button type="button" (click)="openDialog()">
+      <mat-icon>email</mat-icon>
+      <mat-icon>{{email? 'done' : 'priority_high'}}</mat-icon></button>
+  </mat-card-actions>
+  <!-- <mat-divider></mat-divider> -->
+  <mat-card-content>
+    <!-- <div *ngIf="!email" class="progressBarDiv"><mat-spinner class="is-loading" diameter="30"></mat-spinner></div> -->
+    <div *ngIf="!email" class="progressBarDiv"><mat-progress-bar mode="buffer"></mat-progress-bar></div>
+    <div *ngIf="email">You signed up with: <p> {{email}}</p></div>
+  </mat-card-content>
+</mat-card>

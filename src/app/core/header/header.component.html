@@ -37,6 +37,9 @@
 
 <mat-menu #themeMenu="matMenu">
   <ng-template matMenuContent>
+    <button mat-menu-item [routerLink]="['/themes/modal']" title="Themes/Modal">
+      <mat-icon>flip_to_front</mat-icon>Modals
+    </button>
     <button mat-menu-item [routerLink]="['/themes/spinner']" title="Themes/Spinner">
       <mat-icon>refresh</mat-icon>Spinners
     </button>

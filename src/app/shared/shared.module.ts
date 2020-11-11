@@ -36,6 +36,7 @@ import { ProfileUserDetailsComponent } from './components/user/profile-user-deta
 import { SERVER_PROTOCOL, SERVER_ADDRESS } from './services/api-helper.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtHttpInterceptorInterceptor } from './middlewares/interceptors/jwt-http-interceptor.interceptor';
+import { ThemeModalComponent } from './components/modals/theme-modal/theme-modal.component';
 const backends = {
   'angular.material.pfouque.fr': { address: 'api.koa.pfouque.fr:8443', protocol: 's'},
   'localhost': { address: 'localhost:8443', protocol: 's'}
@@ -48,6 +49,7 @@ const SHARED_MODALS = [
   ConfirmationModalComponent,
   PasswordChangeModalComponent,
   IsLoggedGuardAlertComponent,
+  ThemeModalComponent,
 ]
 
 const SHARED_ENTITIES = [
@@ -98,8 +100,6 @@ const SHARED_PROVIDED_MODULES = [
   declarations: [
     ...SHARED_ENTITIES,
     ...SHARED_MODALS,
-    PasswordChangeModalComponent,
-    IsLoggedGuardAlertComponent,
   ],
   imports: [
     CommonModule,

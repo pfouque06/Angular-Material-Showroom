@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { SandboxComponent } from './sandbox/sandbox.component';
 import { SpinnerComponent } from './themes/spinner/spinner.component';
+import { ModalComponent } from './themes/modal/modal.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { IsLoggedGuard } from '../shared/middlewares/guards/is-logged.guard';
 
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'home', redirectTo: '', pathMatch: 'full' },
   { path: 'sandbox', component: SandboxComponent },
   { path: 'themes/spinner', component: SpinnerComponent },
+  { path: 'themes/modal', component: ModalComponent },
   { path: 'dashboard',
     component: DashboardComponent, loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule),
     canActivateChild: [IsLoggedGuard]},
