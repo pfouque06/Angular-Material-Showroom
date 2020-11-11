@@ -69,17 +69,21 @@
       <p *ngIf="loading">
         checking for koa server availability ...
       </p>
-      <p *ngIf="!loading">
-        Restfull Koa server is {{ping() ? '' : 'not'}} available - Swagger on
-        <a href="https://api.koa.pfouque.fr:8443/swagger" target="_blank" title="Koa Swagger">
-          <mat-icon class="material-icons md-24">engineering</mat-icon>
-        </a>
-        - Repository on
-        <a href="https://github.com/pfouque06/koa-typescript-restfull-api" target="_blank" title="GitHub">
-          <mat-icon class="material-icons md-24" fontSet="fa" fontIcon="fa-github"></mat-icon>
-        </a>
-      </p>
-
+      <div *ngIf="!loading">
+        <p>
+          Restfull Koa server is {{ping() ? '' : 'not'}} available - Play around without limit, the server is daily restarted anyhow .....
+        </p>
+        <p>
+          Swagger on
+          <a href="https://api.koa.pfouque.fr:8443/swagger" target="_blank" title="Koa Swagger">
+            <mat-icon class="material-icons md-24">engineering</mat-icon>
+          </a>
+          - Repository on
+          <a href="https://github.com/pfouque06/koa-typescript-restfull-api" target="_blank" title="GitHub">
+            <mat-icon class="material-icons md-24" fontSet="fa" fontIcon="fa-github"></mat-icon>
+          </a>
+        </p>
+      </div>
     </mat-expansion-panel>
   </mat-accordion>
 
