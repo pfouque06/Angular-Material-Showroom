@@ -8,6 +8,11 @@ export const selectUser = createSelector(
     (s) => s.user
 );
 
+export const selectUserProfile = createSelector(
+    selectUserState,
+    (s) => s.user.profile
+);
+
 export const selectUserToken = createSelector(
     selectUserState,
     (s) => s.token

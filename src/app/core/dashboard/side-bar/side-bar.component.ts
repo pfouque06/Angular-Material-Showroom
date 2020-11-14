@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { filter, skip, take } from 'rxjs/operators';
 import { ConfirmationModalComponent } from 'src/app/shared/components/modals/confirmation-modal/confirmation-modal.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -17,8 +18,8 @@ import { selectUserState } from 'src/app/shared/store/user/user.selector';
 export class SideBarComponent implements OnInit {
 
   public loading: boolean = true;
-  public profileType: string = ''
-  public fullName: string = '';
+  public profileType$: Observable<string>;
+  public fullName$: Observable<string>;
 
   constructor(
     private store: Store<State>,
@@ -28,13 +29,10 @@ export class SideBarComponent implements OnInit {
     private router: Router ) { }
 
   ngOnInit() {
-    this.authService.getCurrentUser().then ( (user) => this.profileType = user.profile);
-    this.authService.getCurrentUserFullName().then( (fn) => this.fullName = fn);
+    // define observers
+    this.profileType$ = this.authService.getCurrentUserProfileType$();
+    this.fullName$ = this.authService.getCurrentUserFullName$();
     this.loading = false;
-  }
-
-  public isAdmin(): boolean {
-    return ( this.profileType == "admin" );
   }
 
   public usersReset() {

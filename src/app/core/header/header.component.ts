@@ -14,13 +14,11 @@ import { selectUserState } from 'src/app/shared/store/user/user.selector';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent {
 
   @Input() public title: string;
 
-  private heartBeatService: Observable<any>;
-  private loggedService: Subscription;
-  public fullName: string = '';
+  public fullName$: Observable<string>;
 
   constructor(
     private store: Store<State>,
@@ -28,29 +26,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private router: Router
   ) {
-    // heartBeatService init
-    this.heartBeatService = timer(2000, 10000) // or interval(10000)
-
-    // loggedService register
-    this.loggedService = this.heartBeatService.subscribe( async () => {
-      if (this.isLogged) { this.getCurrentUserFullName(); }
-    });
-  }
-
-  ngOnInit(): void {}
-
-  ngOnDestroy(): void {
-    this.loggedService.unsubscribe();
+    // define observers
+    this.fullName$ = this.authService.getCurrentUserFullName$();
   }
 
   public get isLogged() { return this.authService.isLogged; }
 
-  public getCurrentUserFullName() {
-    // if (this.isLogged) { fullName = await this.authService.getCurrentUserFullName(); }
-    if (this.isLogged) { this.authService.getCurrentUserFullName().then( (fn) => this.fullName = fn); }
-  }
-
-  public async loginToggle() {
+  public loginToggle() {
     // logout
     if (this.isLogged) {
       this.authService.logout();
@@ -68,7 +50,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     } else { this.openUserFormDialog('login'); } // login
   }
 
-  public async profileToggle() {
+  public profileToggle() {
     if (this.isLogged) { // view Profile
       const url = `dashboard/users/profile/`;
       this.router.navigate([url]);
@@ -102,7 +84,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.store.pipe( select(selectUserState), skip(1), take(1), filter( s => !s.errors),
           ).subscribe(
             () => {
-              this.getCurrentUserFullName();
               this.router.navigate(['/dashboard']);
               // delay navigation because of guard control too quick !!
               // setTimeout(()=>{ this.router.navigate(['/dashboard']); }, 500)

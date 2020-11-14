@@ -3,12 +3,12 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subscription, timer } from 'rxjs';
-import { filter, map, skip, switchMap, take, tap } from 'rxjs/operators';
+import { filter, map, skip, take } from 'rxjs/operators';
 import { GlobalAlertComponent } from '../components/snackbars/global-alert.component';
 import { User } from '../models/class/user';
 import { State } from '../store/states';
-import { changePassword, Clear, Login, Logout, Myself, Register, Reset, Set } from '../store/user/user.action';
-import { selectUser, selectUserState, selectUserToken } from '../store/user/user.selector';
+import { changePassword, Login, Logout, Myself, Register, Reset } from '../store/user/user.action';
+import { selectUser, selectUserProfile, selectUserState, selectUserToken } from '../store/user/user.selector';
 import { ApiHelperService } from './api-helper.service';
 
 @Injectable({ providedIn: 'root' })
@@ -30,18 +30,14 @@ export class AuthService {
     // define user from store
     this.user$ = this.store.pipe(select(selectUser), take(1));
 
-    // heartBeat Service
+    // heartBeat & keepAlive Service
     this.heartBeatService = timer(1000, 10000); // or interval(10000)
-
-    // keepAliveService
     this.keepAliveService = this.heartBeatService.subscribe(
       async () => {
         this._pong = await this.ping();
         if (this._pong && this.isLogged ) {
-          // check logging state by reload user
-          this.myself();
-          if ( this.isLogged ) { console.log(`user is still logged in`) }
-          else { console.log(`user is timed out ...`) }
+          this.myself(); // check logging state by reload user
+          console.log('user is ' + this.isLogged ? 'still logged in' : 'timed out ...');
         }
       }
     )
@@ -68,6 +64,10 @@ export class AuthService {
     });
   }
 
+  public register$(email: string, password: string) {
+    return this.api.post({ endpoint: '/register', data: { email: email, password: password } });
+  }
+
   public register(email: string, password: string) {
     console.log('AuthService.register(mail: ' + email + ', password: ' + password);
     // return await this.api.post({ endpoint: '/register', data: { email: email, password: password } });
@@ -77,6 +77,10 @@ export class AuthService {
       for( const key in errors ) { console.log(`errors[${key}] `, errors[key]); };
       this.fireSnackBar('Register has failed! Please check credentials and retry', 'snack-bar-error' );
     });
+  }
+
+  public login$(email: string, password: string) {
+    return this.api.post({ endpoint: '/login', data: { email: email, password: password } });
   }
 
   public login(email: string, password: string) {
@@ -92,6 +96,8 @@ export class AuthService {
     });
   }
 
+  public myself$() { return this.api.get({ endpoint: "/myself" }); }
+
   public myself() {
     // const myself: any = await this.api.get({ endpoint: "/myself" }).toPromise()
     this.store.dispatch(new Myself());
@@ -101,6 +107,8 @@ export class AuthService {
       else if (state.user) { this._isLogged = !!state.user.id;}
     });
   }
+
+  public logout$() { return this.api.post({ endpoint: "/logout" }); }
 
   public logout() {
     console.log('AuthService.logout()');
@@ -115,6 +123,10 @@ export class AuthService {
     });
   }
 
+  public changePassword$(password: string, newPassword: string) {
+    return this.api.put({ endpoint: '/changePassword', data: { password: password, newPassword: newPassword } });
+  }
+
   public changePassword(password: string, newPassword: string) {
     console.log(`AuthService.changePassword(password: ${password}, newPassword: ${newPassword})`);
     this.store.dispatch(new changePassword({password: password, newPassword: newPassword}));
@@ -124,6 +136,8 @@ export class AuthService {
       this.fireSnackBar('Password change has failed! Please check api.koa logs', 'snack-bar-error' );
     });
   }
+
+  public reset$() { return this.api.post({ endpoint: '/reset' }); }
 
   public reset() {
     console.log('AuthService.reset()');
@@ -139,14 +153,20 @@ export class AuthService {
 
   public async getCurrentUser(): Promise<Partial<User>> {  return await this.user$.toPromise(); }
 
-  public async getCurrentJWT(): Promise<string> {
-    const token = await this.store.pipe(select(selectUserToken), take(1)).toPromise();
-    return token;
+  public getCurrentJWT$(): Observable<string> {
+    return this.store.pipe(select(selectUserToken));
   }
 
-  public async getCurrentUserFullName() : Promise<string> {
+  public getCurrentUserProfileType$(): Observable<string> {
+    return this.store.pipe( select(selectUserProfile));
+  }
+
+  public getCurrentUserFullName$(): Observable<string> {
+    return this.store.pipe( select(selectUser), map( (user) => this.getUserFullName(user) ));
+  }
+
+  private getUserFullName(user: Partial<User>): string {
     let result: string = "";
-    const user = await this.getCurrentUser();
     if (user) {
       result = user.email; // default value
       if (user && ( (user.firstName != "none") || ( user.lastName != "none") ) ) {

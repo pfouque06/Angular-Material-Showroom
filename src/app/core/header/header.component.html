@@ -7,8 +7,6 @@
   </div>
 
   <mat-toolbar fxLayout="row" fxLayoutAlign="end center">
-    <!-- <ng-template #mainMenu>
-    </ng-template> -->
     <button [routerLink]="['/home']" title="Home" mat-flat-button><mat-icon class="material-icons md-32">home</mat-icon>Home</button>
     <button [routerLink]="['/sandbox']" title="Sanbox" mat-flat-button><mat-icon class="material-icons md-32">construction</mat-icon>Sandbox</button>
     <button [matMenuTriggerFor]="themeMenu" aria-label="Themes" title="Themes" mat-flat-button><mat-icon class="material-icons md-32">category</mat-icon>Themes</button>
@@ -49,19 +47,10 @@
 <mat-menu #loginMenu="matMenu">
   <ng-template matMenuContent>
     <button mat-menu-item (click)="profileToggle()" [title]="isLogged? 'Your profile':'Register'">
-      <mat-icon>{{isLogged? 'person' : 'person_add'}}</mat-icon>{{isLogged? fullName:'Register'}}
+      <mat-icon>{{isLogged? 'person' : 'person_add'}}</mat-icon>{{isLogged? (fullName$ | async):'Register'}}
     </button>
     <button mat-menu-item (click)="loginToggle()" [title]="isLogged? 'Logout':'Login'">
       <mat-icon [color]="isLogged? 'warn':'primary'">{{isLogged? 'exit_to_app' : 'login'}}</mat-icon>{{isLogged? 'Logout' : 'Login'}}
     </button>
   </ng-template>
 </mat-menu>
-
-<!-- <mat-menu #logoutMenu="matMenu">
-  <ng-template matMenuContent #logoutMenu>
-    <button mat-menu-item (click)="profileToggle()" title="Register">
-      <mat-icon>person_add</mat-icon>Register
-    </button>
-    <button mat-menu-item (click)="loginToggle()" title="Login"><mat-icon color="primary">login</mat-icon>Login</button>
-  </ng-template>
-</mat-menu> -->

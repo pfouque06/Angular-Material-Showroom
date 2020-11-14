@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/class/user';
 import { ApiHelperService } from './api-helper.service';
-import { AuthService } from './auth.service';
 
 const ROOT_ENDPOINT: string = '/users/';
 
@@ -11,18 +10,12 @@ const ROOT_ENDPOINT: string = '/users/';
 // export class UserService extends SearchService<User> {
 export class UserService {
 
-  constructor(
-    protected api: ApiHelperService,
-    private authService: AuthService) {
+  constructor( protected api: ApiHelperService) {
   }
 
   // public getBySearch(keyword: string, page: number, size: number, sortOrder: string, field: string): Promise<User> {
   //   return super._getBySearch("users", keyword, page, size, sortOrder, field);
   // }
-
-  public async getCurrentUser(): Promise<Partial<User>> {
-    return await this.authService.getCurrentUser();
-  }
 
   public async getAllUser(): Promise<Array<User>> {
     const users = await this.api.get({ endpoint: ROOT_ENDPOINT }).toPromise();
