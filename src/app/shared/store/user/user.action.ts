@@ -7,9 +7,12 @@ export enum UserActionTypes {
   Logout = '[User] Logout',
   Myself = '[User] Myself',
   Update = '[User] Update',
+  changePassword = '[User] changePassword',
   Delete = '[User] Delete',
   Set = '[User] Set',
+  Ready = '[User] Ready',
   Clear = '[User] Clear',
+  Reset = '[User] Reset',
   Fail = '[User] Fail',
 };
 
@@ -19,9 +22,12 @@ export type UserActions =
   | Logout
   | Myself
   | Update
+  | changePassword
   | Delete
   | Set
   | Clear
+  | Ready
+  | Reset
   | Fail;
 
 export class Register implements Action {
@@ -54,12 +60,25 @@ export class Update implements Action {
     constructor(public payload: User) {}
 }
 
+export class changePassword implements Action {
+    public readonly type = UserActionTypes.changePassword;
+    constructor(public payload: {password: string, newPassword: string}) {}
+}
+
 export class Delete implements Action {
     public readonly type = UserActionTypes.Delete;
 }
 
 export class Clear implements Action {
     public readonly type = UserActionTypes.Clear;
+}
+
+export class Reset implements Action {
+    public readonly type = UserActionTypes.Reset;
+}
+
+export class Ready implements Action {
+    public readonly type = UserActionTypes.Ready;
 }
 
 export class Fail implements Action {

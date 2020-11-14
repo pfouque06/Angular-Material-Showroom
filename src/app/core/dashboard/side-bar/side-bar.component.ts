@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { select, Store } from '@ngrx/store';
+import { filter, skip, take } from 'rxjs/operators';
 import { ConfirmationModalComponent } from 'src/app/shared/components/modals/confirmation-modal/confirmation-modal.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { UserService } from 'src/app/shared/services/user.service';
+import { State } from 'src/app/shared/store/states';
+import { selectUserState } from 'src/app/shared/store/user/user.selector';
 
 @Component({
   selector: 'app-side-bar',
@@ -17,6 +21,7 @@ export class SideBarComponent implements OnInit {
   public fullName: string = '';
 
   constructor(
+    private store: Store<State>,
     private authService: AuthService,
     private userService: UserService,
     public dialog: MatDialog,
@@ -55,7 +60,13 @@ export class SideBarComponent implements OnInit {
             break;
           }
           case 'authReset': {
-            if (await this.authService.reset()) { this.reloadCurrentRoute("dashboard"); }
+            this.authService.reset();
+            this.store.pipe( select(selectUserState), skip(1), take(1), filter( s => !s.errors))
+            .subscribe( _ => {
+              this.authService.fireSnackBar('Reset is succefull', 'snack-bar-success');
+              this.reloadCurrentRoute("dashboard");
+            });
+            break;
             break;
           }
         }

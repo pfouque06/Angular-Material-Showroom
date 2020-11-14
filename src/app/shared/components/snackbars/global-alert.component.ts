@@ -1,8 +1,9 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-is-logged-guard-alert',
-  template: `<div>UNAUTHORIZED ACCESS! Sign-in is required there!</div>`,
+  selector: 'app-global-alert',
+  template: `<div>{{data}}</div>`,
   styles: [`
     .snack-bar-success {
       max-width: 600px !important;
@@ -24,8 +25,8 @@ import { Component, ViewEncapsulation } from '@angular/core';
   `],
   encapsulation: ViewEncapsulation.None
 })
-export class IsLoggedGuardAlertComponent {
+export class GlobalAlertComponent {
 
-  constructor() { }
+  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: string) { }
 
 }

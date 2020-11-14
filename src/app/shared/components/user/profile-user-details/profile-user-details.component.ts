@@ -6,6 +6,10 @@ import { User } from 'src/app/shared/models/class/user';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { PasswordChangeModalComponent } from '../../modals/password-change-modal/password-change-modal.component';
+import { select, Store } from '@ngrx/store';
+import { State } from 'src/app/shared/store/states';
+import { selectUserState } from 'src/app/shared/store/user/user.selector';
+import { filter, skip, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile-user-details',
@@ -25,6 +29,7 @@ export class ProfileUserDetailsComponent implements OnInit {
   public userFormGroup: FormGroup;
 
   constructor(
+    private store: Store<State>,
     private authService: AuthService,
     private userService: UserService,
     public dialog: MatDialog,
@@ -32,17 +37,17 @@ export class ProfileUserDetailsComponent implements OnInit {
     ) {}
 
   async ngOnInit(){
-    console.log(`ProfileUserDetailsComponent.ngOninit(readOnly: ${this.readOnly}, userId: ${this.userId})`);
+    // console.log(`ProfileUserDetailsComponent.ngOninit(readOnly: ${this.readOnly}, userId: ${this.userId})`);
 
     try {
       if ( this.userId ) {
         // retrieve user if id is provided within directive [userId]
-        console.log("Id provided --> querying User profile (Id: " + this.userId + ")");
+        // console.log("Id provided --> querying User profile (Id: " + this.userId + ")");
         this.user = await this.userService.getById(this.userId);
       } else {
         if (this.readOnly) {
           // retrieve user from currentUser
-          console.log("No Id provided --> get myself()");
+          // console.log("No Id provided --> get myself()");
           this.user = await this.authService.getCurrentUser();
         } else {
           console.log("No Id provided --> creating New User");
@@ -199,24 +204,19 @@ export class ProfileUserDetailsComponent implements OnInit {
   }
 
   public async changePassword() {
-    //get modal with previous password and new password in 2 steps !!
-    this.openPasswordChangeDialog();
-  }
-
-  public openPasswordChangeDialog(): void {
-    // call dialog
+    console.log(`ProfileUserDetailsComponent.changePassword()`);
+    // get modal with previous password and new password in 2 steps !!
     const dialogRef = this.dialog.open(PasswordChangeModalComponent, {
       width: '400px',
       data: {}
     });
     // wait dialog close event
     dialogRef.afterClosed().subscribe(async data => {
+      console.log(`ProfileUserDetailsComponent.dialogRef.afterClosed(password: ${data.password}, newPassword: ${data.newPassword})`);
       if (!data) return;
-      try {
-        await this.authService.changePassword(data.password, data.newPassword);
-      } catch (error) {
-        console.log(error);
-      }
+      this.authService.changePassword(data.password, data.newPassword);
+      this.store.pipe( select(selectUserState), skip(1), take(1), filter( s => !s.errors))
+      .subscribe( _ => this.authService.fireSnackBar('Password change is succefull, you can now login with your new credential', 'snack-bar-success'));
     });
   }
 

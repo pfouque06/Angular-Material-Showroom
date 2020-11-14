@@ -25,10 +25,12 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { ConfirmationModalComponent } from './components/modals/confirmation-modal/confirmation-modal.component';
+import { ThemeModalComponent } from './components/modals/theme-modal/theme-modal.component';
 import { PasswordChangeModalComponent } from './components/modals/password-change-modal/password-change-modal.component';
+import { ConfirmationModalComponent } from './components/modals/confirmation-modal/confirmation-modal.component';
 import { UserModalComponent } from './components/modals/user-modal/user-modal.component';
-import { IsLoggedGuardAlertComponent } from './components/snackbars/is-logged-guard-alert/is-logged-guard-alert.component';
+import { IsLoggedGuardAlertComponent } from './components/snackbars/is-logged-guard-alert.component';
+import { GlobalAlertComponent } from './components/snackbars/global-alert.component';
 
 import { ProfileUserDetailsComponent } from './components/user/profile-user-details/profile-user-details.component';
 
@@ -36,7 +38,6 @@ import { ProfileUserDetailsComponent } from './components/user/profile-user-deta
 import { SERVER_PROTOCOL, SERVER_ADDRESS } from './services/api-helper.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtHttpInterceptorInterceptor } from './middlewares/interceptors/jwt-http-interceptor.interceptor';
-import { ThemeModalComponent } from './components/modals/theme-modal/theme-modal.component';
 const backends = {
   'angular.material.pfouque.fr': { address: 'api.koa.pfouque.fr:8443', protocol: 's'},
   'localhost': { address: 'localhost:8443', protocol: 's'}
@@ -45,11 +46,12 @@ const serverAddress = backends[window.location.hostname].address;
 const serverProtocol = backends[window.location.hostname].protocol;
 
 const SHARED_MODALS = [
+  ThemeModalComponent,
   UserModalComponent,
   ConfirmationModalComponent,
   PasswordChangeModalComponent,
   IsLoggedGuardAlertComponent,
-  ThemeModalComponent,
+  GlobalAlertComponent,
 ]
 
 const SHARED_ENTITIES = [
@@ -100,6 +102,7 @@ const SHARED_PROVIDED_MODULES = [
   declarations: [
     ...SHARED_ENTITIES,
     ...SHARED_MODALS,
+    GlobalAlertComponent,
   ],
   imports: [
     CommonModule,
