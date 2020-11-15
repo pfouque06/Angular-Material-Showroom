@@ -18,6 +18,7 @@ export class AuthService {
 
   public user$: Observable<Partial<User>>;
   private _isLogged: boolean = false;
+  private previousloggedState = false;
 
   // KeepAlive observable
   private _pong: boolean = false;
@@ -41,7 +42,6 @@ export class AuthService {
         this._pong = await this.ping();
         if (this._pong && this.isLogged ) {
           this.myself(); // check logging state by reload user
-          console.log('user is ' + this.isLogged ? 'still logged in' : 'timed out ...');
         }
       }
     )
@@ -106,13 +106,18 @@ export class AuthService {
     this.store.dispatch(new Myself());
     this.store.pipe( select(selectUserState), skip(1), take(1))
     .subscribe( (state) => {
-      if (state.errors) { this._isLogged = false;}
-      else if (state.user) {
-        this._isLogged = !!state.user.id;
-        // if logout reroute page if all is fine, this.router.url is route name
-        if ( ! this._isLogged && this.router.url.match('^\/dashboard')) {
-          this.router.navigate(['/home']);
+      if (state.errors) {
+        this._isLogged = false;
+        if ( this._isLogged != this.previousloggedState) {
+          console.log('user is timed out ...');
+          this.fireSnackBar('You have been timed out ...', 'snack-bar-info' );
+          // if logout reroute page but to /dashboard
+          if ( this.router.url.match('^\/dashboard')) { this.router.navigate(['/home']); }
         }
+      } else if (state.user) {
+        this._isLogged = !!state.user.id;
+        // if ( this._isLogged ) { console.log('user is still logged in'); }
+        if ( this._isLogged != this.previousloggedState) { this.previousloggedState = this._isLogged; }
       }
     });
   }

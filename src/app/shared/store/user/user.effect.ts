@@ -50,7 +50,7 @@ export class UserEffects {
       .pipe(
         // tap ( (r) => console.log('result: ', r)),
         mergeMap( (r) => { return [ new Set({user: r.body, token: r.body.accessToken}) ]; }),
-        catchError( () => of(new Clear()))
+        catchError( (e) => of(new Fail(e)))
       )
     )
   );
