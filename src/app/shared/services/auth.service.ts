@@ -1,6 +1,7 @@
 import { TitleCasePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subscription, timer } from 'rxjs';
 import { filter, map, skip, take } from 'rxjs/operators';
@@ -26,9 +27,12 @@ export class AuthService {
   private titleCasePipe=new TitleCasePipe();
   public authSnackBar: MatSnackBarRef<any>;
 
-  constructor( private api: ApiHelperService, private store: Store<State>, private snackBarService: MatSnackBar ) {
+  constructor( private api: ApiHelperService, private store: Store<State>, private snackBarService: MatSnackBar, private router: Router ) {
     // define user from store
     this.user$ = this.store.pipe(select(selectUser), take(1));
+
+    // check logging state by reload user with a delay in order to wait @ngrx/init
+    setTimeout(()=>{ this.myself(); }, 500)
 
     // heartBeat & keepAlive Service
     this.heartBeatService = timer(1000, 10000); // or interval(10000)
@@ -69,8 +73,7 @@ export class AuthService {
   }
 
   public register(email: string, password: string) {
-    console.log('AuthService.register(mail: ' + email + ', password: ' + password);
-    // return await this.api.post({ endpoint: '/register', data: { email: email, password: password } });
+    // console.log('AuthService.register(mail: ' + email + ', password: ' + password);
     this.store.dispatch(new Register({email: email, password: password}));
     this.store.pipe( select(selectUserState), skip(1), take(1), filter( (s) => !!s.errors && s.errors.error), map( (s) => s.errors.error))
     .subscribe( (errors) => {
@@ -84,7 +87,7 @@ export class AuthService {
   }
 
   public login(email: string, password: string) {
-    console.log('login(mail: ' + email + ', password: ' + password);
+    // console.log('login(mail: ' + email + ', password: ' + password);
     this.store.dispatch(new Login({email: email, password: password}));
     this.store.pipe( select(selectUserState), skip(1), take(1))
     .subscribe( (state) => {
@@ -104,14 +107,20 @@ export class AuthService {
     this.store.pipe( select(selectUserState), skip(1), take(1))
     .subscribe( (state) => {
       if (state.errors) { this._isLogged = false;}
-      else if (state.user) { this._isLogged = !!state.user.id;}
+      else if (state.user) {
+        this._isLogged = !!state.user.id;
+        // if logout reroute page if all is fine, this.router.url is route name
+        if ( ! this._isLogged && this.router.url.match('^\/dashboard')) {
+          this.router.navigate(['/home']);
+        }
+      }
     });
   }
 
   public logout$() { return this.api.post({ endpoint: "/logout" }); }
 
   public logout() {
-    console.log('AuthService.logout()');
+    // console.log('AuthService.logout()');
     this.store.dispatch(new Logout());
     this.store.pipe( select(selectUserState), skip(1), take(1))
     .subscribe( (state) => {
@@ -128,7 +137,7 @@ export class AuthService {
   }
 
   public changePassword(password: string, newPassword: string) {
-    console.log(`AuthService.changePassword(password: ${password}, newPassword: ${newPassword})`);
+    // console.log(`AuthService.changePassword(password: ${password}, newPassword: ${newPassword})`);
     this.store.dispatch(new changePassword({password: password, newPassword: newPassword}));
     this.store.pipe( select(selectUserState), skip(1), take(1), filter( (s) => !!s.errors && s.errors.error), map( (s) => s.errors.error))
     .subscribe( (errors) => {
@@ -140,7 +149,7 @@ export class AuthService {
   public reset$() { return this.api.post({ endpoint: '/reset' }); }
 
   public reset() {
-    console.log('AuthService.reset()');
+    // console.log('AuthService.reset()');
     this.store.dispatch(new Reset());
     this.store.pipe( select(selectUserState), skip(1), take(1), filter( (s) => !!s.errors && s.errors.error), map( (s) => s.errors.error))
     .subscribe( (errors) => {

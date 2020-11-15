@@ -4,10 +4,14 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { select, Store } from '@ngrx/store';
+import { skip, take } from 'rxjs/operators';
 import { ConfirmationModalComponent } from 'src/app/shared/components/modals/confirmation-modal/confirmation-modal.component';
 import { User } from 'src/app/shared/models/class/user';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { UserService } from 'src/app/shared/services/user.service';
+import { State } from 'src/app/shared/store/states';
+import { selectAllUsers } from 'src/app/shared/store/users/users.selector';
 
 interface mockUser {
   id: number;
@@ -49,13 +53,13 @@ public sort: MatSort;
 }
 
   constructor(
+    private store: Store<State>,
     private authService: AuthService,
     private userService: UserService,
     public dialog: MatDialog,
     private router: Router ) { /* console.log('constructor', this.dataSource); */ }
 
   async ngOnInit() {
-    // console.log('ngOnInit', this.dataSource);
     // retrieve user from currentUser
     this.user = await this.authService.getCurrentUser();
   }
@@ -75,8 +79,10 @@ public sort: MatSort;
   }
 
   initDataSource() {
-    // retrive user lists
-    this.userService.getAllUser().then((users) => {
+    // retrieve user lists
+    this.userService.getAllUser();
+    this.store.pipe( select(selectAllUsers), skip(1), take(1) )
+    .subscribe((users) => {
       this.loading = false;
       this.dataSource = new MatTableDataSource(users);
     })
@@ -94,13 +100,11 @@ public sort: MatSort;
   }
 
   view(row: any) {
-    console.log(`UserListComponent.view(${row.id})`);
     const url = `dashboard/users/profile/${row.id}`;
     this.router.navigate([url]);
   }
 
   edit(row: any) {
-    console.log(`UserListComponent.edit(${row.id})`);
     const url = `dashboard/users/form/${row.id}`;
     this.router.navigate([url]);
   }
@@ -114,7 +118,6 @@ public sort: MatSort;
   }
 
   remove(row: any) {
-    console.log(`UserListComponent.remove(id: ${row.id})`);
     this.openAdminConfirmationDialog('userRemove', row.id);
   }
 
@@ -128,13 +131,10 @@ public sort: MatSort;
         switch (confirmFeedback.formType) {
           case 'userRemove': {
             console.log('id to remove: ', confirmFeedback.id);
-            try {
-              await this.userService.deleteById(confirmFeedback.id as number);
-              this.reloadCurrentRoute();
-            } catch (error) {
-              console.log(error);
-            }
-            break;
+            // await this.userService.deleteById(confirmFeedback.id as number);
+            this.userService.deleteById(confirmFeedback.id);
+            this.store.pipe( select(selectAllUsers), skip(1), take(1) )
+            .subscribe( (users) => { this.reloadCurrentRoute(); });
           }
         }
       }

@@ -16,7 +16,7 @@ export class UserEffects {
   @Effect()
   public userRegister$ = this.actions$.pipe(
     ofType(UserActionTypes.Register),
-    tap( _ => console.log('effect().Register .....')),
+    // tap( _ => console.log('[user]effect().Register .....')),
     switchMap( (action: Register) =>
       this.auth.register$(action.payload.email, action.payload.password )
       .pipe(
@@ -30,7 +30,7 @@ export class UserEffects {
   @Effect()
   public userLogin$ = this.actions$.pipe(
     ofType(UserActionTypes.Login),
-    tap( _ => console.log('effect().login .....')),
+    // tap( _ => console.log('[user]effect().login .....')),
     switchMap( (action: Login) =>
       this.auth.login$(action.payload.email, action.payload.password )
       .pipe(
@@ -44,6 +44,7 @@ export class UserEffects {
   @Effect()
   public userMyself$ = this.actions$.pipe(
     ofType(UserActionTypes.Myself),
+    // tap( _ => console.log('[user]effect().Myself .....')),
     switchMap( () =>
       this.auth.myself$()
       .pipe(
@@ -57,7 +58,7 @@ export class UserEffects {
   @Effect()
   public userLogout$ = this.actions$.pipe(
     ofType(UserActionTypes.Logout),
-    tap( _ => console.log('effect().logout .....')),
+    // tap( _ => console.log('[user]effect().logout .....')),
     switchMap( () =>
       this.auth.logout$()
       .pipe(
@@ -71,7 +72,7 @@ export class UserEffects {
   @Effect()
   public userchangePassword$ = this.actions$.pipe(
     ofType(UserActionTypes.changePassword),
-    tap( _ => console.log('effect().changePassword .....')),
+    // tap( _ => console.log('[user]effect().changePassword .....')),
     switchMap( (action: changePassword) =>
       // this.api.put({ endpoint: '/changePassword', data: { password: action.payload.password, newPassword: action.payload.newPassword } })
       this.auth.changePassword$( action.payload.password, action.payload.newPassword )
@@ -86,7 +87,7 @@ export class UserEffects {
   @Effect()
   public userReset$ = this.actions$.pipe(
     ofType(UserActionTypes.Reset),
-    tap( _ => console.log('effect().Reset .....')),
+    // tap( _ => console.log('[user]effect().Reset .....')),
     switchMap( () =>
       this.auth.reset$()
       .pipe(
@@ -96,28 +97,4 @@ export class UserEffects {
       )
     )
   );
-
-  // @Effect()
-  // public userUpdate$ = this.actions$.pipe(
-  //   ofType(UserActionTypes.Update),
-  //   switchMap( (action: Update) =>
-  //     this.backend.changeAccountProfile(action)
-  //       .pipe(
-  //         mergeMap( (r) => [ new Set({user: r.body.data.user}) ]),
-  //         catchError( (e) => of(new Fail(e)))
-  //       )
-  //   )
-  // );
-
-  // @Effect()
-  // public userDelete$ = this.actions$.pipe(
-  //   ofType(UserActionTypes.Delete),
-  //   switchMap( (action: Delete ) =>
-  //     this.backend.requestQRCode()
-  //     .pipe(
-  //       mergeMap( (r) => [ new Clear() ]),
-  //       catchError( (e) => of(new Fail(e)))
-  //     )
-  //   )
-  // );
 }

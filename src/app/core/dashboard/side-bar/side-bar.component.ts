@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { UserService } from 'src/app/shared/services/user.service';
 import { State } from 'src/app/shared/store/states';
 import { selectUserState } from 'src/app/shared/store/user/user.selector';
+import { selectAllUsers } from 'src/app/shared/store/users/users.selector';
 
 @Component({
   selector: 'app-side-bar',
@@ -54,17 +55,22 @@ export class SideBarComponent implements OnInit {
       if (confirmFeedback.confirmed) {
         switch (confirmFeedback.formType) {
           case 'usersReset': {
-            if (await this.userService.reset()) { this.reloadCurrentRoute(); }
+            // if (await this.userService.reset()) { this.reloadCurrentRoute(); }
+            this.userService.reset();
+            this.store.pipe( select(selectAllUsers), skip(1), take(1) )
+            .subscribe( _ => {
+              this.authService.fireSnackBar('Users Reset is succefull', 'snack-bar-success');
+              this.reloadCurrentRoute();
+            });
             break;
           }
           case 'authReset': {
             this.authService.reset();
             this.store.pipe( select(selectUserState), skip(1), take(1), filter( s => !s.errors))
             .subscribe( _ => {
-              this.authService.fireSnackBar('Reset is succefull', 'snack-bar-success');
+              this.authService.fireSnackBar('Session Reset is succefull', 'snack-bar-success');
               this.reloadCurrentRoute("dashboard");
             });
-            break;
             break;
           }
         }

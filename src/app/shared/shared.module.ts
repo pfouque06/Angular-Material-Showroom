@@ -94,8 +94,8 @@ const SHARED_PROVIDED_MODULES = [
   MatIconRegistry,
   // Mise en place d'un intercepteur qui permettra d'appliquer le token automatiquement à chaque requête sortante de notre application Angular
   { provide: HTTP_INTERCEPTORS, useClass: JwtHttpInterceptorInterceptor, multi: true },
-  { provide: SERVER_PROTOCOL, useValue: serverProtocol},
-  { provide: SERVER_ADDRESS,  useValue: serverAddress}
+  { provide: SERVER_ADDRESS,  useValue: serverAddress},
+  { provide: SERVER_PROTOCOL, useValue: serverProtocol}
 ]
 
 @NgModule({

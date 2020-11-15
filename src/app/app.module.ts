@@ -16,9 +16,10 @@ import { EffectsModule } from '@ngrx/effects';
 import { State } from './shared/store/states';
 import { reducers } from './shared/store/reducers';
 import { UserEffects } from './shared/store/user/user.effect';
+import { UsersEffects } from './shared/store/users/users.effect';
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
-  return localStorageSync({keys: ['user'], rehydrate: true, restoreDates: false})(reducer);
+  return localStorageSync({keys: ['userState', 'userSet'], rehydrate: true, restoreDates: false})(reducer);
 }
 
 const metaReducers: Array<MetaReducer<State>> = [localStorageSyncReducer];
@@ -41,7 +42,7 @@ const metaReducers: Array<MetaReducer<State>> = [localStorageSyncReducer];
       maxAge: false,
       name: 'Koa front app',
     }),
-    EffectsModule.forRoot([UserEffects]),
+    EffectsModule.forRoot([UserEffects, UsersEffects]),
   ],
   providers: [],
   bootstrap: [AppComponent],

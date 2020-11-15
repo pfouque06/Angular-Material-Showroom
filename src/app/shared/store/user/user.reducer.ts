@@ -16,7 +16,7 @@ export function reducer(state = initialState, action: UserActions): UserState {
 
     case UserActionTypes.Register:
     case UserActionTypes.Login: {
-      console.log(`${action.type}.Reducer().Pending ...`);
+      // console.log(`${action.type}.Reducer().Pending ...`);
       return {
         ...initialState,
         // user: { ...initialState.user, email: action.payload.email },
@@ -31,7 +31,7 @@ export function reducer(state = initialState, action: UserActions): UserState {
     case UserActionTypes.changePassword:
     case UserActionTypes.Reset:
     case UserActionTypes.Delete: {
-      console.log(`${action.type}.Reducer().Pending ...`);
+      // console.log(`${action.type}.Reducer().Pending ...`);
       return {
         ...state,
         status: Status.Pending,
@@ -39,7 +39,7 @@ export function reducer(state = initialState, action: UserActions): UserState {
     }
 
     case UserActionTypes.Set: {
-      console.log('Reducer().Set ...');
+      // console.log(`${action.type}.Reducer().Ready ...`);
       return {
         ...initialState,
         user: action.payload.user,
@@ -49,7 +49,7 @@ export function reducer(state = initialState, action: UserActions): UserState {
     }
 
     case UserActionTypes.Ready: {
-      console.log('Reducer().Ready ...');
+      // console.log(`${action.type}.Reducer().Ready ...`);
       return {
         ...state,
         status: Status.Ready,
@@ -57,12 +57,12 @@ export function reducer(state = initialState, action: UserActions): UserState {
     }
 
     case UserActionTypes.Clear: {
-      console.log('Reducer().Clear ...');
+      // console.log(`${action.type}.Reducer().Ready ...`);
       return { ...initialState };
     }
 
     case UserActionTypes.Fail: {
-      console.log('Reducer().Fail ...');
+      // console.log(`${action.type}.Reducer().Ready ...`);
       return {
         ...state,
         status: Status.Ready,

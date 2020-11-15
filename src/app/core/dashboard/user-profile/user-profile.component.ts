@@ -18,9 +18,9 @@ export class UserProfileComponent implements OnInit {
     if (!this.userId) {
       // retrieve user if id provided in incoming route
       this.userId = this.route.snapshot.params.id;
-      if (!this.userId) {
-        console.log("no id provided : shifting to current User");
-      }
+      // if (!this.userId) {
+      //   console.log("no id provided : shifting to current User");
+      // }
     }
   }
 

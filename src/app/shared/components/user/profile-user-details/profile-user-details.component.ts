@@ -10,6 +10,7 @@ import { select, Store } from '@ngrx/store';
 import { State } from 'src/app/shared/store/states';
 import { selectUserState } from 'src/app/shared/store/user/user.selector';
 import { filter, skip, take } from 'rxjs/operators';
+import { selectAllUsers } from 'src/app/shared/store/users/users.selector';
 
 @Component({
   selector: 'app-profile-user-details',
@@ -38,30 +39,24 @@ export class ProfileUserDetailsComponent implements OnInit {
 
   async ngOnInit(){
     // console.log(`ProfileUserDetailsComponent.ngOninit(readOnly: ${this.readOnly}, userId: ${this.userId})`);
-
-    try {
-      if ( this.userId ) {
-        // retrieve user if id is provided within directive [userId]
-        // console.log("Id provided --> querying User profile (Id: " + this.userId + ")");
-        this.user = await this.userService.getById(this.userId);
-      } else {
-        if (this.readOnly) {
-          // retrieve user from currentUser
-          // console.log("No Id provided --> get myself()");
-          this.user = await this.authService.getCurrentUser();
-        } else {
-          console.log("No Id provided --> creating New User");
-          this.user = new User({});
-        }
-      }
-    } catch (error) {
-      console.log("Error: ", error);
-      throw Error(error);
+    if ( this.userId ) { // retrieve user if id is provided within directive [userId]
+      this.userService.getById(this.userId);
+      this.store.pipe( select(selectAllUsers), skip(1), take(1) )
+      .subscribe( (users) => {
+        this.user  = users[0];
+        this.initForm();
+      });
+    } else { // no Id provided
+      // if read only mode, retrieve user from currentUser, else creating New User
+      if (this.readOnly) { this.user = await this.authService.getCurrentUser(); }
+      else { this.user = new User({}); }
+      this.initForm();
     }
+  }
 
+  public initForm() {
     // generating form group if needed
     if (!this.readOnly) {
-      // instantiate Form
       this.userForm = new User({});
       this.userFormGroup = new FormGroup({
         firstName: new FormControl('', [Validators.minLength(2), Validators.maxLength(25)]),
@@ -106,19 +101,8 @@ export class ProfileUserDetailsComponent implements OnInit {
       }
     }
 
+    // inform view that data is ready
     this.isLoading = false;
-  }
-
-  ngAfterViewInit(){}
-
-  async getUser(id: number) {
-    // console.log(`ProfileUserDetailsComponent.getUser(id: ${id})`);
-    await this.userService.getById(id).then((data) => {
-      this.user = new User(data);
-      return this.user;
-    }).catch((error) => {
-      console.log(error);
-    });
   }
 
   public editProfile() {
@@ -128,15 +112,14 @@ export class ProfileUserDetailsComponent implements OnInit {
     this.router.navigate([url]);
   }
 
-  public async submit() {
+  public submit() {
     if (this.userChanged()) { // any change done ?
 
       if (this.userId) { /// userForm for an existing User
-        try {
-          if (this.isMyself() && this.userForm.profile != this.user.profile) {
-            const error: string = "Error: can't change own profile type";
-            console.log(error);
-            throw Error(error)
+        if (this.isMyself() && this.userForm.profile != this.user.profile) {
+          const error: string = "Error: can't change own profile type";
+          console.log(error);
+          throw Error(error)
           }
 
           // remove password from data ( handled separately)
@@ -150,32 +133,32 @@ export class ProfileUserDetailsComponent implements OnInit {
           }
 
           // update user
-          const updatedUser = await this.userService.updateById(this.user.id, newUser);
-
-          // update myself if needed
-          if (this.isMyself()) { this.authService.myself(); }
-        } catch (error) {
-          console.log(error);
-          return;
-        }
-      } else { /// userForm for a new User
-        try {
-          const newUser = await this.userService.create(this.userForm);
-          console.log('newUser: ', newUser);
-          this.userId = newUser.id;
-          console.log('userId: ', this.userId);
-        } catch (error) {
-          console.log(error);
-          return;
-        }
+          this.userService.updateById(this.userId, newUser);
+          this.store.pipe( select(selectAllUsers), skip(1), take(1) )
+          .subscribe( (users) => {
+            // const updatedUser = users[0];
+            // update myself if needed
+            if (this.isMyself()) { this.authService.myself(); }
+            // finally route to user profile
+            this.routeToUserForm(this.userId);
+          });
 
       }
-    }
+      else { /// userForm for a new User
+        this.userService.create(this.userForm);
+        this.store.pipe( select(selectAllUsers), skip(1), take(1) )
+        .subscribe( (users) => {
+          // assign userId
+          this.userId = users[0].id;
 
-    // finally route to user profile
-    if (this.userId) { /// userForm for an existing or created User
-      const url = `dashboard/users/profile/${this.userId}`;
-      this.router.navigate([url]);
+          // throw snack
+          this.authService.fireSnackBar('New user creation is succefull', 'snack-bar-success');
+
+          // finally route to user profile
+          this.routeToUserForm(this.userId);
+        });
+
+      }
     }
   }
 
@@ -225,6 +208,11 @@ export class ProfileUserDetailsComponent implements OnInit {
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       this.router.navigate([currentUrl]);
     });
+  }
+
+  private routeToUserForm(id: number) {
+    const url = `dashboard/users/profile/${id}`;
+    this.router.navigate([url]);
   }
 }
 
