@@ -60,8 +60,7 @@ public sort: MatSort;
     private router: Router ) { /* console.log('constructor', this.dataSource); */ }
 
   async ngOnInit() {
-    // retrieve user from currentUser
-    this.user = await this.authService.getCurrentUser();
+
   }
 
   ngAfterViewInit() {
@@ -78,7 +77,10 @@ public sort: MatSort;
     }
   }
 
-  initDataSource() {
+  async initDataSource() {
+     // retrieve user from currentUser
+    this.user = await this.authService.getCurrentUser();
+
     // retrieve user lists
     this.userService.getAllUser();
     this.store.pipe( select(selectAllUsers), skip(1), take(1) )
@@ -89,12 +91,14 @@ public sort: MatSort;
   }
 
   setDataSourceAttributes() {
+    if ( !this.dataSource ) { return; }
+
     // affect paginator if needed and available
-    if (!this.dataSource.paginator && this.paginator) {
+    if ( !this.dataSource.paginator && this.paginator ) {
       this.dataSource.paginator = this.paginator;
     }
     // affect sort if needed and available
-    if (!this.dataSource.sort && this.sort) {
+    if ( !this.dataSource.sort && this.sort ) {
       this.dataSource.sort = this.sort;
     }
   }

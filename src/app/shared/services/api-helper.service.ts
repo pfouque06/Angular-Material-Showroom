@@ -11,10 +11,19 @@ export const SERVER_PROTOCOL = new InjectionToken<'s' | ''>('server protocol');
 })
 export class ApiHelperService {
 
+  private apiUrl = '';
+
   constructor(
     private http: HttpClient,
     @Inject(SERVER_ADDRESS) public readonly serverAddress: string,
-    @Inject(SERVER_PROTOCOL) public readonly serverProtocol: 's' | '') { }
+    @Inject(SERVER_PROTOCOL) public readonly serverProtocol: 's' | '') {
+      this.apiUrl = `http${this.serverProtocol}://${this.serverAddress}`;
+      console.log('############################');
+      console.log('windows.location: ', window.location);
+      console.log('windows.localStorage: ', window.localStorage);
+      console.log('api.url: ', this.apiUrl);
+      console.log('############################');
+    }
 
   // public get({ endpoint, data = {}, queryParams = {} }: { endpoint: string, data?: any, queryParams?: any }): Promise<any> {
   public get({ endpoint, queryParams = {} }: { endpoint: string, data?: any, queryParams?: any }): Observable<any> {
@@ -41,7 +50,7 @@ export class ApiHelperService {
     // base_url: 'https://localhost:8443'
     // base_url: 'https://api.koa.pfouque.fr:8443'
     // const url = environment.base_url + endpoint;
-    const url = `http${this.serverProtocol}://${this.serverAddress}${endpoint}`;
+    const url = `${this.apiUrl}${endpoint}`;
 
     const requestOptions = {
       params: queryParams
