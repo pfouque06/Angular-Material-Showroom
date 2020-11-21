@@ -17,6 +17,7 @@ import { selectUserState } from 'src/app/shared/store/user/user.selector';
 export class HeaderComponent {
 
   @Input() public title: string;
+  public connecting = false;
 
   public fullName$: Observable<string>;
 
@@ -36,9 +37,11 @@ export class HeaderComponent {
     // logout
     if (this.isLogged) {
       this.authService.logout();
+      this.connecting = true;
       this.store.pipe( select(selectUserState), skip(1), take(1), filter( s => !s.errors),
       ).subscribe(
         () => {
+          this.connecting = false;
           // reroute page if all is fine, this.router.url is route name
           if (this.router.url.match('^\/dashboard')) {
             this.router.navigate(['/home']);
@@ -81,9 +84,11 @@ export class HeaderComponent {
         }
         case 'login': {
           this.authService.login( userForm.email, userForm.password);
+          this.connecting = true;
           this.store.pipe( select(selectUserState), skip(1), take(1), filter( s => !s.errors),
           ).subscribe(
             () => {
+              this.connecting = false;
               this.router.navigate(['/dashboard']);
               // delay navigation because of guard control too quick !!
               // setTimeout(()=>{ this.router.navigate(['/dashboard']); }, 500)

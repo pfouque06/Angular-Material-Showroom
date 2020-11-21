@@ -12,12 +12,16 @@
     <button [matMenuTriggerFor]="themeMenu" aria-label="Themes" title="Themes" mat-flat-button><mat-icon class="material-icons md-32">category</mat-icon>Themes</button>
     <button [routerLink]="['/dashboard']" [disabled]="!isLogged" title="Dashboard" mat-flat-button style="background: none;"><mat-icon class="material-icons md-32">dashboard</mat-icon>Dashboard</button>
     <button [matMenuTriggerFor]="loginMenu" aria-label="Account menu" title="Account menu" [color]="isLogged ? 'warn' : ''" mat-mini-fab>
-      <mat-icon class="material-icons md-32">{{ isLogged ? 'lock':'lock_open'}}</mat-icon>
+      <mat-icon *ngIf="!connecting" class="material-icons md-32">{{ isLogged ? 'lock':'lock_open'}}</mat-icon>
+      <mat-spinner *ngIf="connecting" diameter="25" [color]="isLogged ? 'warn' : 'disabled'"></mat-spinner>
     </button>
   </mat-toolbar>
 
 </header>
 
+<!-- <div [hidden]="!connecting">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div> -->
 <mat-divider></mat-divider>
 <br>
 
