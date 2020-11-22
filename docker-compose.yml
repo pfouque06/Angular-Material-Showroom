@@ -4,15 +4,10 @@ services:
       container_name: webserve_angular.material.pfouque.fr
       image: nginx:alpine
       restart: always
-      build:
-          context: ./
-          dockerfile: ./nginx/Dockerfile
-
       volumes:
         - ./default.conf:/etc/nginx/conf.d/default.conf
         - ./dist/angular-material-sandbox01:/usr/share/nginx/html/
       working_dir: /usr/share/nginx/html
-
       environment:
         - VIRTUAL_HOST=angular.material.pfouque.fr # Enviroment variable needed for nginx proxy
         - LETSENCRYPT_HOST=angular.material.pfouque.fr # Enviroment variables needed for Let's Encrypt companion
