@@ -39,6 +39,9 @@
 
 <mat-menu #themeMenu="matMenu">
   <ng-template matMenuContent>
+    <button mat-menu-item [routerLink]="['/themes/emojis']" title="Themes/Emojis">
+      <angular-emojis [name]="'yum'" size="25" style="margin-right: 7px;"> </angular-emojis>Emojis
+    </button>
     <button mat-menu-item [routerLink]="['/themes/modal']" title="Themes/Modal">
       <mat-icon>flip_to_front</mat-icon>Modals
     </button>

@@ -303,6 +303,38 @@ Import packages in app.module.ts :
 Check /src/store directory tree for examples ...  
 
 
+# Emojis (angular-emojis for Angular)  
+
+### Installation  
+Install the angular-emojis packages:  
+> $ npm i angular-emojis  
+
+
+Import and export AngularEmojisModule in shared.module.ts :  
+
+    import { AngularEmojisModule } from 'angular-emojis';  
+    const SHARED_MODULES = [  
+      (..)  
+      AngularEmojisModule,  
+    ]  
+    @NgModule({  
+    (..)  
+    imports: [  
+      (..)  
+      ...SHARED_MODULES,  
+    ],  
+    exports: [  
+      ...SHARED_MODULES,  
+    ],  
+    })  
+
+
+### Usage  
+iinject directive in view ...  
+
+    <angular-emojis [name]="'smiley'" size="60"> </angular-emojis>  
+
+
 # Deployment
 
 ### Common

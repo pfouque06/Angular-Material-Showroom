@@ -17,6 +17,8 @@ import { State } from './shared/store/states';
 import { reducers } from './shared/store/reducers';
 import { UserEffects } from './shared/store/user/user.effect';
 import { UsersEffects } from './shared/store/users/users.effect';
+// import { IonicLoaderComponent } from 'ionic-loader/lib/ionic-loader.component';
+// import { IonicLoaderModule } from 'ionic-loader';
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
   return localStorageSync({keys: ['userState', 'userSet'], rehydrate: true, restoreDates: false})(reducer);
@@ -29,6 +31,7 @@ const metaReducers: Array<MetaReducer<State>> = [localStorageSyncReducer];
     AppComponent,
     HeaderComponent,
     FooterComponent,
+    // IonicLoaderComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,6 +46,7 @@ const metaReducers: Array<MetaReducer<State>> = [localStorageSyncReducer];
       name: 'Koa front app',
     }),
     EffectsModule.forRoot([UserEffects, UsersEffects]),
+    // IonicLoaderModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

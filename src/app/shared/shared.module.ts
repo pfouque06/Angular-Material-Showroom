@@ -24,7 +24,9 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { AngularEmojisModule } from 'angular-emojis';
 
+// import { IonicLoaderModule } from 'ionic-loader';
 import { ThemeModalComponent } from './components/modals/theme-modal/theme-modal.component';
 import { PasswordChangeModalComponent } from './components/modals/password-change-modal/password-change-modal.component';
 import { ConfirmationModalComponent } from './components/modals/confirmation-modal/confirmation-modal.component';
@@ -87,6 +89,8 @@ const SHARED_MODULES = [
   MatPaginatorModule,
   MatSelectModule,
   MatSnackBarModule,
+  AngularEmojisModule,
+  // IonicLoaderModule
 ]
 
 const SHARED_IMPORTED_MODULES = []
@@ -102,7 +106,6 @@ const SHARED_PROVIDED_MODULES = [
   declarations: [
     ...SHARED_ENTITIES,
     ...SHARED_MODALS,
-    GlobalAlertComponent,
   ],
   imports: [
     CommonModule,

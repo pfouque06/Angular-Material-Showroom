@@ -94,7 +94,7 @@ export class AuthService {
       if ( !!state.errors && state.errors.error ) {
         const errors = state.errors.error;
         for( const key in errors ) { console.log(`errors[${key}] `, errors[key]); };
-        this.fireSnackBar('Login has failed! Please check your credentials', 'snack-bar-error' );
+        // this.fireSnackBar('Login has failed! Please check your credentials', 'snack-bar-error' );
       } else if (state.user) { this._isLogged = !!state.user.id; }
     });
   }
@@ -132,7 +132,7 @@ export class AuthService {
       if ( !!state.errors && state.errors.error ) {
         const errors = state.errors.error;
         for( const key in errors ) { console.log(`errors[${key}] `, errors[key]); };
-        this.fireSnackBar('Logout has failed! please check logs', 'snack-bar-error' );
+        // this.fireSnackBar('Logout has failed! please check logs', 'snack-bar-error' );
       } else { this._isLogged = false; }
     });
   }

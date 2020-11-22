@@ -6,6 +6,7 @@ import { SpinnerComponent } from './themes/spinner/spinner.component';
 import { ModalComponent } from './themes/modal/modal.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { IsLoggedGuard } from '../shared/middlewares/guards/is-logged.guard';
+import { EmojisComponent } from './themes/emojis/emojis.component';
 
 const routes: Routes = [
   // { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -13,8 +14,9 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', redirectTo: '', pathMatch: 'full' },
   { path: 'sandbox', component: SandboxComponent },
-  { path: 'themes/spinner', component: SpinnerComponent },
   { path: 'themes/modal', component: ModalComponent },
+  { path: 'themes/spinner', component: SpinnerComponent },
+  { path: 'themes/emojis', component: EmojisComponent },
   { path: 'dashboard',
     component: DashboardComponent, loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule),
     canActivateChild: [IsLoggedGuard]},

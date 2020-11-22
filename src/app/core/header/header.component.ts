@@ -1,10 +1,12 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subscription, timer } from 'rxjs';
 import { filter, skip, take } from 'rxjs/operators';
 import { UserModalComponent } from 'src/app/shared/components/modals/user-modal/user-modal.component';
+import { GlobalAlertComponent } from 'src/app/shared/components/snackbars/global-alert.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { State } from 'src/app/shared/store/states';
 import { selectUserState } from 'src/app/shared/store/user/user.selector';
@@ -18,6 +20,7 @@ export class HeaderComponent {
 
   @Input() public title: string;
   public connecting = false;
+  public headerSnackBar: MatSnackBarRef<any>;
 
   public fullName$: Observable<string>;
 
@@ -25,6 +28,7 @@ export class HeaderComponent {
     private store: Store<State>,
     private authService: AuthService,
     public dialog: MatDialog,
+    private snackBarService: MatSnackBar,
     private router: Router
   ) {
     // define observers
@@ -38,15 +42,19 @@ export class HeaderComponent {
     if (this.isLogged) {
       this.authService.logout();
       this.connecting = true;
-      this.store.pipe( select(selectUserState), skip(1), take(1), filter( s => !s.errors),
+      this.store.pipe( select(selectUserState), skip(1), take(1),
       ).subscribe(
-        () => {
+        (state) => {
           this.connecting = false;
-          // reroute page if all is fine, this.router.url is route name
-          if (this.router.url.match('^\/dashboard')) {
-            this.router.navigate(['/home']);
-            // delay navigation because of guard control too quick !!
-            // setTimeout(()=>{ this.router.navigate(['/dashboard']); }, 500)
+          if (!state.errors) {
+            // reroute page if all is fine, this.router.url is route name
+            if (this.router.url.match('^\/dashboard')) {
+              this.router.navigate(['/home']);
+              // delay navigation because of guard control too quick !!
+              // setTimeout(()=>{ this.router.navigate(['/dashboard']); }, 500)
+            }
+          } else {
+            this.fireSnackBar('Logout has failed! please check logs', 'snack-bar-error' );
           }
         }
       );
@@ -83,20 +91,34 @@ export class HeaderComponent {
           break;
         }
         case 'login': {
-          this.authService.login( userForm.email, userForm.password);
           this.connecting = true;
-          this.store.pipe( select(selectUserState), skip(1), take(1), filter( s => !s.errors),
+          this.authService.login( userForm.email, userForm.password);
+          this.store.pipe( select(selectUserState), skip(1), take(1),
           ).subscribe(
-            () => {
+            (state) => {
               this.connecting = false;
-              this.router.navigate(['/dashboard']);
-              // delay navigation because of guard control too quick !!
-              // setTimeout(()=>{ this.router.navigate(['/dashboard']); }, 500)
+              if ( ! state.errors) {
+                this.router.navigate(['/dashboard']);
+                // delay navigation because of guard control too quick !!
+                // setTimeout(()=>{ this.router.navigate(['/dashboard']); }, 500)
+              } else {
+                this.fireSnackBar('Login has failed! Please check your credentials', 'snack-bar-error' );
+              }
             }
           );
           break;
         }
       }
+    });
+  }
+
+  fireSnackBar(message: string, style: string ) {
+    this.headerSnackBar =  this.snackBarService.openFromComponent(GlobalAlertComponent, {
+      duration: 2000, // 2 secondds
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: [style], // style
+      data : message // provided message
     });
   }
 

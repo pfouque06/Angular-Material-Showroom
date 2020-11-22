@@ -8,6 +8,7 @@ import { SharedModule } from '../shared/shared.module';
 import { SandboxComponent } from './sandbox/sandbox.component';
 import { SpinnerComponent } from './themes/spinner/spinner.component';
 import { ModalComponent } from './themes/modal/modal.component';
+import { EmojisComponent } from './themes/emojis/emojis.component';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { ModalComponent } from './themes/modal/modal.component';
     SandboxComponent,
     SpinnerComponent,
     ModalComponent,
+    EmojisComponent,
   ],
   imports: [
     CommonModule,

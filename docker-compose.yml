@@ -1,0 +1,33 @@
+version: '3'
+services:
+    nginx:
+      container_name: webserve_angular.material.pfouque.fr
+      image: nginx:alpine
+      restart: always
+      build:
+          context: ./
+          dockerfile: ./nginx/Dockerfile
+
+      volumes:
+        - ./default.conf:/etc/nginx/conf.d/default.conf
+        - ./dist/angular-material-sandbox01:/usr/share/nginx/html/
+      working_dir: /usr/share/nginx/html
+
+      environment:
+        - VIRTUAL_HOST=angular.material.pfouque.fr # Enviroment variable needed for nginx proxy
+        - LETSENCRYPT_HOST=angular.material.pfouque.fr # Enviroment variables needed for Let's Encrypt companion
+        - LETSENCRYPT_EMAIL=pfouque@gmail.com
+      expose:
+        - "80" # Expose http port
+        - "443" # along with https port
+      networks:
+        - nginx-proxy # Connect this container to network named nginx-proxy, that will be described below
+      logging:
+        driver: json-file
+        options:
+          max-size: "10m"
+
+networks:
+    nginx-proxy:
+        external:
+            name: webproxy_nginx-proxy # Reference our network that was created by Docker Compose when we launched our two main containers earlier. Name generated automaticaly. Use `docker network ls` to list all networks and their names.

@@ -27,7 +27,7 @@
       <div mat-dialog-actions>
         <!-- <button mat-button (click)="onNoClick()">No</button> -->
         <!-- <button mat-button [mat-dialog-close]="data.email" cdkFocusInitial>Yes</button> -->
-        <button mat-raised-button (click)="onSubmitClick()">submit</button>
+        <button mat-raised-button (click)="onSubmitClick()">{{data.formType | titlecase}}</button>
       </div>
     </div>
 
