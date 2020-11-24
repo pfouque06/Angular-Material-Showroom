@@ -41,7 +41,7 @@ import { SERVER_PROTOCOL, SERVER_ADDRESS } from './services/api-helper.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtHttpInterceptorInterceptor } from './middlewares/interceptors/jwt-http-interceptor.interceptor';
 const backends = {
-  'angular.material.pfouque.fr': { address: 'api.koa.pfouque.fr:8443', protocol: 's'},
+  'angular.material.pfouque.fr': { address: 'api.koa.pfouque.fr', protocol: 's'},
   'localhost': { address: 'localhost:8443', protocol: 's'}
 };
 const serverAddress = backends[window.location.hostname].address;
