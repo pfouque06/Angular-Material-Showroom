@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { SERVER_ADDRESS, SERVER_PROTOCOL } from 'src/app/shared/services/api-helper.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
@@ -6,12 +7,16 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
 
+  public swagger: string;
 
-  constructor(private authService: AuthService) {}
-
-  async ngOnInit(): Promise<void> {}
+  constructor(
+    @Inject(SERVER_ADDRESS) public readonly serverAddress: string,
+    @Inject(SERVER_PROTOCOL) public readonly serverProtocol: 's' | '',
+    private authService: AuthService) {
+      this.swagger = `http${this.serverProtocol}://${this.serverAddress}/swagger`;
+    }
 
   public ping(): boolean {
     return this.authService.pong;

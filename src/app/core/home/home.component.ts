@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { SERVER_ADDRESS, SERVER_PROTOCOL } from 'src/app/shared/services/api-helper.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
@@ -9,8 +10,14 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 export class HomeComponent implements OnInit {
 
   public loading: boolean = true;
+  public swagger: string;
 
-  constructor(private authService: AuthService) { }
+  constructor(
+    @Inject(SERVER_ADDRESS) public readonly serverAddress: string,
+    @Inject(SERVER_PROTOCOL) public readonly serverProtocol: 's' | '',
+    private authService: AuthService) {
+      this.swagger = `http${this.serverProtocol}://${this.serverAddress}/swagger`;
+    }
 
   ngOnInit() {
     this.loading = false;
