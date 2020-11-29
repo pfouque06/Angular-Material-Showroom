@@ -145,6 +145,46 @@
           }
         }
       }
+    },
+    "koa-services": {
+      "projectType": "library",
+      "root": "projects/koa-services",
+      "sourceRoot": "projects/koa-services/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/koa-services/tsconfig.lib.json",
+            "project": "projects/koa-services/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/koa-services/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/koa-services/src/test.ts",
+            "tsConfig": "projects/koa-services/tsconfig.spec.json",
+            "karmaConfig": "projects/koa-services/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/koa-services/tsconfig.lib.json",
+              "projects/koa-services/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }},
   "defaultProject": "angular-material-sandbox01"
 }
