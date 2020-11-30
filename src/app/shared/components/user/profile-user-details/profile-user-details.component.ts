@@ -209,8 +209,14 @@ export class ProfileUserDetailsComponent implements OnInit {
       console.log(`ProfileUserDetailsComponent.dialogRef.afterClosed(password: ${data.password}, newPassword: ${data.newPassword})`);
       if (!data) return;
       this.authService.changePassword(data.password, data.newPassword);
-      this.store.pipe( select(selectUserState), skip(1), take(1), filter( s => !s.errors))
-      .subscribe( _ => this.UITooling.fireGlobalAlertSnackBar('Password change is succefull, you can now login with your new credential', 'snack-bar-success'));
+      this.store.pipe( select(selectUserState), skip(1), take(1))
+      .subscribe( (state) => {
+        if ( !!state.errors) {
+          this.UITooling.fireGlobalAlertSnackBar('Password change has failed! Please check api.koa logs', 'snack-bar-error' );
+        } else {
+          this.UITooling.fireGlobalAlertSnackBar('Password change is successfull, you can now login with your new credential', 'snack-bar-success');
+        }
+      })
     });
   }
 

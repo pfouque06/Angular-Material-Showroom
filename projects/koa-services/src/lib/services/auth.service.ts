@@ -1,11 +1,9 @@
 import { TitleCasePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
-// import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subscription, timer } from 'rxjs';
 import { filter, map, skip, take } from 'rxjs/operators';
-// import { GlobalAlertComponent } from '../components/snackbars/global-alert.component';
 import { User } from '../models/class/user';
 import { State } from '../store/states';
 import { changePassword, Login, Logout, Myself, Register, Reset } from '../store/user/user.action';
@@ -26,8 +24,6 @@ export class AuthService {
   private keepAliveService: Subscription;
 
   private titleCasePipe=new TitleCasePipe();
-  // public authSnackBar: MatSnackBarRef<any>;
-  // constructor( private api: ApiHelperService, private store: Store<State>, private router: Router, private snackBarService: MatSnackBar ) {
   constructor( private api: ApiHelperService, private store: Store<State>, private router: Router ) {
     // define user from store
     this.user$ = this.store.pipe(select(selectUser), take(1));
@@ -57,16 +53,6 @@ export class AuthService {
   }
 
 	public get pong(): boolean { return this._pong; }
-
-  // fireSnackBar(message: string, style: string ) {
-  //   this.authSnackBar =  this.snackBarService.openFromComponent(GlobalAlertComponent, {
-  //     duration: 2000, // 2 secondds
-  //     horizontalPosition: 'center',
-  //     verticalPosition: 'top',
-  //     panelClass: [style], // style
-  //     data : message // provided message
-  //   });
-  // }
 
   public register$(email: string, password: string) {
     return this.api.post({ endpoint: '/register', data: { email: email, password: password } });

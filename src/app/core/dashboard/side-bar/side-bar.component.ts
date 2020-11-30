@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { AuthService, selectAllUsers, selectUserSetState, selectUserState, State, UserService } from 'koa-services';
+import { AuthService, selectUserSetState, selectUserState, State, UserService } from 'koa-services';
 import { Observable } from 'rxjs';
-import { filter, skip, take } from 'rxjs/operators';
+import { skip, take } from 'rxjs/operators';
 import { ConfirmationModalComponent } from 'src/app/shared/components/modals/confirmation-modal/confirmation-modal.component';
 import { UItoolingService } from 'src/app/shared/services/UITooling.service';
 
@@ -63,18 +63,19 @@ export class SideBarComponent implements OnInit {
                 this.reloadCurrentRoute();
               }
             });
-            this.store.pipe( select(selectAllUsers), skip(1), take(1) )
-            .subscribe( _ => {
-            });
             break;
           }
           case 'authReset': {
             this.authService.reset();
-            this.store.pipe( select(selectUserState), skip(1), take(1), filter( s => !s.errors))
-            .subscribe( _ => {
-              this.UITooling.fireGlobalAlertSnackBar('Session Reset is succefull', 'snack-bar-success');
-              this.reloadCurrentRoute("dashboard");
-            });
+            this.store.pipe( select(selectUserState), skip(1), take(1))
+            .subscribe( (state) => {
+              if ( !!state.errors) {
+                this.UITooling.fireGlobalAlertSnackBar('Reset has failed! Please check api.koa logs', 'snack-bar-error' );
+              } else {
+                this.UITooling.fireGlobalAlertSnackBar('Session Reset is succefull', 'snack-bar-success');
+                this.reloadCurrentRoute("dashboard");
+              }
+            })
             break;
           }
         }

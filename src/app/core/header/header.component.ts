@@ -1,9 +1,9 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { AuthService, selectUserState, State } from 'koa-services';
-import { Observable, Subscription, timer } from 'rxjs';
-import { filter, skip, take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { skip, take } from 'rxjs/operators';
 import { UserModalComponent } from 'src/app/shared/components/modals/user-modal/user-modal.component';
 import { UItoolingService } from 'src/app/shared/services/UITooling.service';
 
@@ -80,8 +80,15 @@ export class HeaderComponent {
       switch (formType) {
         case 'register': {
           this.authService.register( userForm.email, userForm.password);
-          this.store.pipe( select(selectUserState), skip(1), take(1), filter( s => !s.errors))
-          .subscribe( _ => this.UITooling.fireGlobalAlertSnackBar('Registering is succefull, you can now login with your credentials', 'snack-bar-success'));
+          // handle result
+          this.store.pipe( select(selectUserState), skip(1), take(1))
+          .subscribe( (state) => {
+            if ( !!state.errors) {
+                this.UITooling.fireGlobalAlertSnackBar('Register has failed! Please check credentials and retry', 'snack-bar-error' );
+            } else {
+              this.UITooling.fireGlobalAlertSnackBar('Registering is succefull, you can now login with your credentials', 'snack-bar-success');
+            }
+          });
           break;
         }
         case 'login': {
