@@ -11,20 +11,8 @@ import { FooterComponent } from './core/footer/footer.component';
 
 import { StoreModule, MetaReducer, ActionReducer } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { localStorageSync } from 'ngrx-store-localstorage';
 import { EffectsModule } from '@ngrx/effects';
-import { State } from './shared/store/states';
-import { reducers } from './shared/store/reducers';
-import { UserEffects } from './shared/store/user/user.effect';
-import { UsersEffects } from './shared/store/users/users.effect';
-// import { IonicLoaderComponent } from 'ionic-loader/lib/ionic-loader.component';
-// import { IonicLoaderModule } from 'ionic-loader';
-
-export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
-  return localStorageSync({keys: ['userState', 'userSet'], rehydrate: true, restoreDates: false})(reducer);
-}
-
-const metaReducers: Array<MetaReducer<State>> = [localStorageSyncReducer];
+import { metaReducers, reducers, UserEffects, UsersEffects } from 'koa-services';
 
 @NgModule({
   declarations: [
@@ -40,11 +28,7 @@ const metaReducers: Array<MetaReducer<State>> = [localStorageSyncReducer];
     SharedModule,
     CoreModule,
     StoreModule.forRoot(reducers, { metaReducers }),
-    StoreDevtoolsModule.instrument({
-      logOnly: true,
-      maxAge: false,
-      name: 'Koa front app',
-    }),
+    StoreDevtoolsModule.instrument({ logOnly: true, maxAge: false, name: 'Koa front app' }),
     EffectsModule.forRoot([UserEffects, UsersEffects]),
     // IonicLoaderModule,
   ],

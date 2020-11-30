@@ -1,16 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AuthService } from 'src/app/shared/services/auth.service';
 import { Router } from '@angular/router';
-import { UserService } from 'src/app/shared/services/user.service';
-import { User } from 'src/app/shared/models/class/user';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { PasswordChangeModalComponent } from '../../modals/password-change-modal/password-change-modal.component';
 import { select, Store } from '@ngrx/store';
-import { State } from 'src/app/shared/store/states';
-import { selectUserState } from 'src/app/shared/store/user/user.selector';
-import { filter, skip, take } from 'rxjs/operators';
-import { selectAllUsers } from 'src/app/shared/store/users/users.selector';
+import { filter, map, skip, take } from 'rxjs/operators';
+import { PasswordChangeModalComponent } from '../../modals/password-change-modal/password-change-modal.component';
+import { User, AuthService, UserService, State, selectAllUsers, selectUserState, selectUserSetState } from 'koa-services';
+import { UItoolingService } from 'src/app/shared/services/UITooling.service';
 
 @Component({
   selector: 'app-profile-user-details',
@@ -33,7 +28,7 @@ export class ProfileUserDetailsComponent implements OnInit {
     private store: Store<State>,
     private authService: AuthService,
     private userService: UserService,
-    public dialog: MatDialog,
+    private UITooling: UItoolingService,
     private router: Router
     ) {}
 
@@ -41,6 +36,12 @@ export class ProfileUserDetailsComponent implements OnInit {
     // console.log(`ProfileUserDetailsComponent.ngOninit(readOnly: ${this.readOnly}, userId: ${this.userId})`);
     if ( this.userId ) { // retrieve user if id is provided within directive [userId]
       this.userService.getById(this.userId);
+      // handle error
+      this.store.pipe( select(selectUserSetState), skip(1), take(1), filter( (s) => !!s.errors && s.errors.error), map( (s) => s.errors.error))
+      .subscribe( (errors) => {
+        this.UITooling.fireGlobalAlertSnackBar('[GetById] Operation has failed! Please check logs and retry', 'snack-bar-error' );
+      });
+      // get user
       this.store.pipe( select(selectAllUsers), skip(1), take(1) )
       .subscribe( (users) => {
         this.user  = users[0];
@@ -134,26 +135,36 @@ export class ProfileUserDetailsComponent implements OnInit {
 
           // update user
           this.userService.updateById(this.userId, newUser);
-          this.store.pipe( select(selectAllUsers), skip(1), take(1) )
-          .subscribe( (users) => {
-            // const updatedUser = users[0];
-            // update myself if needed
-            if (this.isMyself()) { this.authService.myself(); }
-            // finally route to user profile
-            this.routeToUserForm(this.userId);
+          // handle result
+          this.store.pipe( select(selectUserSetState), skip(1), take(1))
+          .subscribe( (state) => {
+            if (!!state.errors && state.errors.error) {
+              this.UITooling.fireGlobalAlertSnackBar('[UpdateById] Operation has failed! Please check logs and retry', 'snack-bar-error' );
+            } else {
+              // const updatedUser = users[0];
+              // update myself if needed
+              if (this.isMyself()) { this.authService.myself(); }
+              // finally route to user profile
+              this.routeToUserForm(this.userId);
+            }
           });
 
       }
       else { /// userForm for a new User
+        console.log('###### create new user !!###');
+
         this.userService.create(this.userForm);
+        // handle error
+        this.store.pipe( select(selectUserSetState), skip(1), take(1), filter( (s) => !!s.errors && s.errors.error), map( (s) => s.errors.error))
+        .subscribe( (errors) => {
+          // for( const key in errors ) { console.log(`errors[${key}] `, errors[key]); };
+          this.UITooling.fireGlobalAlertSnackBar('[Create] Operation has failed! Please check logs and retry', 'snack-bar-error' );
+        });
+        // get new user
         this.store.pipe( select(selectAllUsers), skip(1), take(1) )
         .subscribe( (users) => {
-          // assign userId
           this.userId = users[0].id;
-
-          // throw snack
-          this.authService.fireSnackBar('New user creation is succefull', 'snack-bar-success');
-
+          this.UITooling.fireGlobalAlertSnackBar('New user creation is successfull', 'snack-bar-success');
           // finally route to user profile
           this.routeToUserForm(this.userId);
         });
@@ -189,7 +200,7 @@ export class ProfileUserDetailsComponent implements OnInit {
   public async changePassword() {
     console.log(`ProfileUserDetailsComponent.changePassword()`);
     // get modal with previous password and new password in 2 steps !!
-    const dialogRef = this.dialog.open(PasswordChangeModalComponent, {
+    const dialogRef = this.UITooling.fireDialog(PasswordChangeModalComponent, {
       width: '400px',
       data: {}
     });
@@ -199,7 +210,7 @@ export class ProfileUserDetailsComponent implements OnInit {
       if (!data) return;
       this.authService.changePassword(data.password, data.newPassword);
       this.store.pipe( select(selectUserState), skip(1), take(1), filter( s => !s.errors))
-      .subscribe( _ => this.authService.fireSnackBar('Password change is succefull, you can now login with your new credential', 'snack-bar-success'));
+      .subscribe( _ => this.UITooling.fireGlobalAlertSnackBar('Password change is succefull, you can now login with your new credential', 'snack-bar-success'));
     });
   }
 

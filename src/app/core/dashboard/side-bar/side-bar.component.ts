@@ -1,15 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
+import { AuthService, selectAllUsers, selectUserSetState, selectUserState, State, UserService } from 'koa-services';
 import { Observable } from 'rxjs';
 import { filter, skip, take } from 'rxjs/operators';
 import { ConfirmationModalComponent } from 'src/app/shared/components/modals/confirmation-modal/confirmation-modal.component';
-import { AuthService } from 'src/app/shared/services/auth.service';
-import { UserService } from 'src/app/shared/services/user.service';
-import { State } from 'src/app/shared/store/states';
-import { selectUserState } from 'src/app/shared/store/user/user.selector';
-import { selectAllUsers } from 'src/app/shared/store/users/users.selector';
+import { UItoolingService } from 'src/app/shared/services/UITooling.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -26,7 +22,7 @@ export class SideBarComponent implements OnInit {
     private store: Store<State>,
     private authService: AuthService,
     private userService: UserService,
-    public dialog: MatDialog,
+    private UITooling: UItoolingService,
     private router: Router ) { }
 
   ngOnInit() {
@@ -46,7 +42,7 @@ export class SideBarComponent implements OnInit {
 
   openAdminConfirmationDialog(formType: 'usersReset' | 'authReset') {
     // call dialog
-    const dialogRef = this.dialog.open(ConfirmationModalComponent, { width: '500px', data: { formType: formType } });
+    const dialogRef = this.UITooling.fireDialog(ConfirmationModalComponent, { width: '500px', data: { formType: formType } });
 
     // wait dialog close event
     dialogRef.afterClosed().subscribe(async result => {
@@ -57,10 +53,18 @@ export class SideBarComponent implements OnInit {
           case 'usersReset': {
             // if (await this.userService.reset()) { this.reloadCurrentRoute(); }
             this.userService.reset();
+            // handle error
+            this.store.pipe( select(selectUserSetState), skip(1), take(1))
+            .subscribe( (state) => {
+              if (!!state.errors && state.errors.error) {
+                this.UITooling.fireGlobalAlertSnackBar('[Reset] Operation has failed! Please check logs and retry', 'snack-bar-error' );
+              } else {
+                this.UITooling.fireGlobalAlertSnackBar('Users Reset is succefull', 'snack-bar-success');
+                this.reloadCurrentRoute();
+              }
+            });
             this.store.pipe( select(selectAllUsers), skip(1), take(1) )
             .subscribe( _ => {
-              this.authService.fireSnackBar('Users Reset is succefull', 'snack-bar-success');
-              this.reloadCurrentRoute();
             });
             break;
           }
@@ -68,7 +72,7 @@ export class SideBarComponent implements OnInit {
             this.authService.reset();
             this.store.pipe( select(selectUserState), skip(1), take(1), filter( s => !s.errors))
             .subscribe( _ => {
-              this.authService.fireSnackBar('Session Reset is succefull', 'snack-bar-success');
+              this.UITooling.fireGlobalAlertSnackBar('Session Reset is succefull', 'snack-bar-success');
               this.reloadCurrentRoute("dashboard");
             });
             break;

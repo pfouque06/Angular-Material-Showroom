@@ -50,7 +50,7 @@ export class UsersEffects {
       .pipe(
         // tap ( (r) => console.log('result: ', r)),
         mergeMap( (r) => [ new Set([{...r.body}]) ]),
-        catchError( () => of(new Clear()))
+        catchError( (e) => of(new Fail(e)))
       )
     )
   );

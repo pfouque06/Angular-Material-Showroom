@@ -1,6 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { SERVER_ADDRESS, SERVER_PROTOCOL } from 'src/app/shared/services/api-helper.service';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService, SERVER_ADDRESS, SERVER_PROTOCOL } from 'koa-services';
 
 @Component({
   selector: 'app-dashboard',

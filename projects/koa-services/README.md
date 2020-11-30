@@ -1,24 +1,35 @@
 # KoaServices
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.7.
+This library is a api helper for my Koa backend server inclugind user models, api services, and rjx stores
 
-## Code scaffolding
+## Installation 
 
-Run `ng generate component component-name --project koa-services` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project koa-services`.
-> Note: Don't forget to add `--project koa-services` or else it will be added to the default project in your `angular.json` file. 
+Run `npm i koa-services` to install the module in your project.
+Then include following lines in your app.module.ts file :
 
-## Build
+    import { StoreModule, MetaReducer, ActionReducer } from '@ngrx/store';
+    import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+    import { EffectsModule } from '@ngrx/effects';
+    import { 
+      KoaServicesModule, 
+      metaReducers, reducers, UserEffects, UsersEffects,
+      serverAddress, serverProtocol, SERVER_ADDRESS, SERVER_PROTOCOL } from 'koa-services';
+    
+    @NgModule({
+      (..)
+      imports: [
+        (..)
+        StoreModule.forRoot(reducers, { metaReducers }),
+        StoreDevtoolsModule.instrument({ logOnly: true, maxAge: false, name: 'Koa front app' }),
+        EffectsModule.forRoot([UserEffects, UsersEffects]),
+      ],
+      providers: [
+        { provide: SERVER_ADDRESS,  useValue: serverAddress},
+        { provide: SERVER_PROTOCOL, useValue: serverProtocol}
+      ]
+      (..)
+    export class AppModule { }
 
-Run `ng build koa-services` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Usage
 
-## Publishing
-
-After building your library with `ng build koa-services`, go to the dist folder `cd dist/koa-services` and run `npm publish`.
-
-## Running unit tests
-
-Run `ng test koa-services` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+n/a yet

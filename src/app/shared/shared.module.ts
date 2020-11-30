@@ -25,6 +25,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AngularEmojisModule } from 'angular-emojis';
+import { KoaServicesModule, serverAddress, serverProtocol, SERVER_ADDRESS, SERVER_PROTOCOL } from 'koa-services';
 
 // import { IonicLoaderModule } from 'ionic-loader';
 import { ThemeModalComponent } from './components/modals/theme-modal/theme-modal.component';
@@ -33,19 +34,7 @@ import { ConfirmationModalComponent } from './components/modals/confirmation-mod
 import { UserModalComponent } from './components/modals/user-modal/user-modal.component';
 import { IsLoggedGuardAlertComponent } from './components/snackbars/is-logged-guard-alert.component';
 import { GlobalAlertComponent } from './components/snackbars/global-alert.component';
-
 import { ProfileUserDetailsComponent } from './components/user/profile-user-details/profile-user-details.component';
-
-// helper to bind associated backend according to url (prod/dev)
-import { SERVER_PROTOCOL, SERVER_ADDRESS } from './services/api-helper.service';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { JwtHttpInterceptorInterceptor } from './middlewares/interceptors/jwt-http-interceptor.interceptor';
-const backends = {
-  'angular.material.pfouque.fr': { address: 'api.koa.pfouque.fr', protocol: 's'},
-  'localhost': { address: 'localhost:8443', protocol: 's'}
-};
-const serverAddress = backends[window.location.hostname].address;
-const serverProtocol = backends[window.location.hostname].protocol;
 
 const SHARED_MODALS = [
   ThemeModalComponent,
@@ -66,7 +55,6 @@ const REACTIVE_FORM_DIRECTIVES = [
 ]
 
 const SHARED_MODULES = [
-  HttpClientModule, // Requit pour injecter la D.I. HttpClient qui nous permettra de requêter un serveur distant
   FlexLayoutModule,
   MatSliderModule,
   MatCardModule,
@@ -90,14 +78,13 @@ const SHARED_MODULES = [
   MatSelectModule,
   MatSnackBarModule,
   AngularEmojisModule,
+  KoaServicesModule,
   // IonicLoaderModule
 ]
 
 const SHARED_IMPORTED_MODULES = []
 const SHARED_PROVIDED_MODULES = [
   MatIconRegistry,
-  // Mise en place d'un intercepteur qui permettra d'appliquer le token automatiquement à chaque requête sortante de notre application Angular
-  { provide: HTTP_INTERCEPTORS, useClass: JwtHttpInterceptorInterceptor, multi: true },
   { provide: SERVER_ADDRESS,  useValue: serverAddress},
   { provide: SERVER_PROTOCOL, useValue: serverProtocol}
 ]

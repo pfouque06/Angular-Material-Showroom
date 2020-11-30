@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-// import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
 import { select, Store } from '@ngrx/store';
 import { filter, map, skip, take } from 'rxjs/operators';
-// import { GlobalAlertComponent } from '../components/snackbars/global-alert.component';
 import { User } from '../models/class/user';
 import { State } from '../store/states';
 import { Create, DeleteById, GetAll, GetById, Reset, UpdateById } from '../store/users/users.action';
@@ -17,9 +15,6 @@ const ROOT_ENDPOINT: string = '/users/';
 // export class UserService extends SearchService<User> {
 export class UserService {
 
-  // public authSnackBar: MatSnackBarRef<any>;
-  // constructor( protected api: ApiHelperService, private store: Store<State>, private snackBarService: MatSnackBar) {
-
   constructor( protected api: ApiHelperService, private store: Store<State>) {
   }
 
@@ -27,15 +22,6 @@ export class UserService {
   //   return super._getBySearch("users", keyword, page, size, sortOrder, field);
   // }
 
-  // fireSnackBar(message: string, style: string ) {
-  //   this.authSnackBar =  this.snackBarService.openFromComponent(GlobalAlertComponent, {
-  //     duration: 2000, // 2 secondds
-  //     horizontalPosition: 'center',
-  //     verticalPosition: 'top',
-  //     panelClass: [style], // style
-  //     data : message // provided message
-  //   });
-  // }
 
   public getAll$() {
     return this.api.get({ endpoint: ROOT_ENDPOINT });

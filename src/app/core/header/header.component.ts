@@ -1,15 +1,11 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
+import { AuthService, selectUserState, State } from 'koa-services';
 import { Observable, Subscription, timer } from 'rxjs';
 import { filter, skip, take } from 'rxjs/operators';
 import { UserModalComponent } from 'src/app/shared/components/modals/user-modal/user-modal.component';
-import { GlobalAlertComponent } from 'src/app/shared/components/snackbars/global-alert.component';
-import { AuthService } from 'src/app/shared/services/auth.service';
-import { State } from 'src/app/shared/store/states';
-import { selectUserState } from 'src/app/shared/store/user/user.selector';
+import { UItoolingService } from 'src/app/shared/services/UITooling.service';
 
 @Component({
   selector: 'app-header',
@@ -20,15 +16,13 @@ export class HeaderComponent {
 
   @Input() public title: string;
   public connecting = false;
-  public headerSnackBar: MatSnackBarRef<any>;
 
   public fullName$: Observable<string>;
 
   constructor(
     private store: Store<State>,
     private authService: AuthService,
-    public dialog: MatDialog,
-    private snackBarService: MatSnackBar,
+    private UITooling: UItoolingService,
     private router: Router
   ) {
     // define observers
@@ -54,7 +48,7 @@ export class HeaderComponent {
               // setTimeout(()=>{ this.router.navigate(['/dashboard']); }, 500)
             }
           } else {
-            this.fireSnackBar('Logout has failed! please check logs', 'snack-bar-error' );
+            this.UITooling.fireGlobalAlertSnackBar('Logout has failed! please check logs', 'snack-bar-error' );
           }
         }
       );
@@ -75,7 +69,7 @@ export class HeaderComponent {
     if (formType == "login")
     userForm = { ...userForm, email: "sam.va@gmail.com"};
 
-    const dialogRef = this.dialog.open(UserModalComponent, {
+    const dialogRef = this.UITooling.fireDialog(UserModalComponent, {
       width: '300px',
       data: userForm //data: {}
     });
@@ -87,7 +81,7 @@ export class HeaderComponent {
         case 'register': {
           this.authService.register( userForm.email, userForm.password);
           this.store.pipe( select(selectUserState), skip(1), take(1), filter( s => !s.errors))
-          .subscribe( _ => this.authService.fireSnackBar('Registering is succefull, you can now login with your credentials', 'snack-bar-success'));
+          .subscribe( _ => this.UITooling.fireGlobalAlertSnackBar('Registering is succefull, you can now login with your credentials', 'snack-bar-success'));
           break;
         }
         case 'login': {
@@ -102,23 +96,13 @@ export class HeaderComponent {
                 // delay navigation because of guard control too quick !!
                 // setTimeout(()=>{ this.router.navigate(['/dashboard']); }, 500)
               } else {
-                this.fireSnackBar('Login has failed! Please check your credentials', 'snack-bar-error' );
+                this.UITooling.fireGlobalAlertSnackBar('Login has failed! Please check your credentials', 'snack-bar-error' );
               }
             }
           );
           break;
         }
       }
-    });
-  }
-
-  fireSnackBar(message: string, style: string ) {
-    this.headerSnackBar =  this.snackBarService.openFromComponent(GlobalAlertComponent, {
-      duration: 2000, // 2 secondds
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-      panelClass: [style], // style
-      data : message // provided message
     });
   }
 

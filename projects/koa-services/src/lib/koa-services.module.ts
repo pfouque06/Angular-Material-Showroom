@@ -1,37 +1,39 @@
 import { NgModule } from '@angular/core';
-import { EffectsModule } from '@ngrx/effects';
-import { ActionReducer, MetaReducer, StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { localStorageSync } from 'ngrx-store-localstorage';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtHttpInterceptorInterceptor } from './middlewares/interceptors/jwt-http-interceptor.interceptor';
+// helper to bind associated backend according to url (prod/dev)
 import { serverAddress, serverProtocol, SERVER_ADDRESS, SERVER_PROTOCOL } from './services/api-helper.service';
 import { AuthService } from './services/auth.service';
 import { UserService } from './services/user.service';
-import { reducers } from './store/reducers';
+import { ActionReducer, MetaReducer } from '@ngrx/store';
+import { localStorageSync } from 'ngrx-store-localstorage';
 import { State } from './store/states';
-import { UserEffects } from './store/user/user.effect';
-import { UsersEffects } from './store/users/users.effect';
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
   return localStorageSync({keys: ['userState', 'userSet'], rehydrate: true, restoreDates: false})(reducer);
 }
 
-const metaReducers: Array<MetaReducer<State>> = [localStorageSyncReducer];
+export const metaReducers: Array<MetaReducer<State>> = [localStorageSyncReducer];
+
+const SHARED_MODULES = [
+  HttpClientModule,  // Requit pour injecter la D.I. HttpClient qui nous permettra de requêter un serveur distant
+]
 
 @NgModule({
   declarations: [],
-  imports: [    StoreModule.forRoot(reducers, { metaReducers }),
-    StoreDevtoolsModule.instrument({
-      logOnly: true,
-      maxAge: false,
-      name: 'Koa front app',
-    }),
-    EffectsModule.forRoot([UserEffects, UsersEffects]),],
+  imports: [
+    SHARED_MODULES,
+  ],
+  exports: [
+    SHARED_MODULES,
+  ],
   providers: [
     AuthService,
     UserService,
+    // Mise en place d'un intercepteur qui permettra d'appliquer le token automatiquement à chaque requête sortante de notre application Angular
+    { provide: HTTP_INTERCEPTORS, useClass: JwtHttpInterceptorInterceptor, multi: true },
     { provide: SERVER_ADDRESS,  useValue: serverAddress},
     { provide: SERVER_PROTOCOL, useValue: serverProtocol},
   ],
-  exports: []
 })
 export class KoaServicesModule { }
