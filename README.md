@@ -354,4 +354,17 @@ or
 
 front is available there !!!
 but you might have a look overthere also : https://angular.material.pfouque.fr
- 
+
+if you need to use onboard docker container to http serve the application, the instrictions to add are :
+> $ npm install  
+> $ ng build --prod  
+> $ sudo docker-compose up -d  
+
+dump logs if needed :
+> $ sudo docker-compose logs -f  
+
+instructions for code level update :
+> $ git pull  
+> $ ng build --prod   
+> $ sudo docker-compose restart; sudo docker-compose logs -f  
+

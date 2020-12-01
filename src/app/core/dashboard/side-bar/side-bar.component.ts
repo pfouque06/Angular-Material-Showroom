@@ -17,6 +17,7 @@ export class SideBarComponent implements OnInit {
   public loading: boolean = true;
   public profileType$: Observable<string>;
   public fullName$: Observable<string>;
+  public adminConnecting = false;
 
   constructor(
     private store: Store<State>,
@@ -53,9 +54,11 @@ export class SideBarComponent implements OnInit {
           case 'usersReset': {
             // if (await this.userService.reset()) { this.reloadCurrentRoute(); }
             this.userService.reset();
+            this.adminConnecting = true;
             // handle error
             this.store.pipe( select(selectUserSetState), skip(1), take(1))
             .subscribe( (state) => {
+              this.adminConnecting = false;
               if (!!state.errors && state.errors.error) {
                 this.UITooling.fireGlobalAlertSnackBar('[Reset] Operation has failed! Please check logs and retry', 'snack-bar-error' );
               } else {
@@ -67,8 +70,10 @@ export class SideBarComponent implements OnInit {
           }
           case 'authReset': {
             this.authService.reset();
+            this.adminConnecting = true;
             this.store.pipe( select(selectUserState), skip(1), take(1))
             .subscribe( (state) => {
+              this.adminConnecting = false;
               if ( !!state.errors) {
                 this.UITooling.fireGlobalAlertSnackBar('Reset has failed! Please check api.koa logs', 'snack-bar-error' );
               } else {

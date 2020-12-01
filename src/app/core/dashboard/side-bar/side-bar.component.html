@@ -22,7 +22,9 @@
   <mat-list-item role="listitem" *ngIf="(profileType$ | async) === 'admin'">
     <button mat-button [matMenuTriggerFor]="adminMenu" aria-label="Admin menu" title="Admin menu">
       <mat-icon class="material-icons md-24">engineering</mat-icon>
-      Admin...
+      Admin
+      <span *ngIf="!adminConnecting">...</span>
+      <mat-spinner *ngIf="adminConnecting" diameter="10" color="warn"></mat-spinner>
     </button>
   </mat-list-item>
 </mat-list>
