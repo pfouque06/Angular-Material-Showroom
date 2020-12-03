@@ -33,3 +33,13 @@ Then include following lines in your app.module.ts file :
 ## Usage
 
 n/a yet
+
+## Development & publishing
+
+development phase :
+> $ ng build koa-services --watch --prod  
+
+production build & NPM publishing:
+> $ ng build koa-services --watch  
+> $ cd dist/koa-services/
+> $ npm publish
