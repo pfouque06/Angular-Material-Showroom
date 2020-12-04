@@ -269,7 +269,7 @@ Adapt the size of the fontawesome icons to match the size of material icons, in 
 
 ### Installation  
 Install the ngrx packages:  
-> $ npm i @ngrx/store @ngrx/effects @ngrx/store-devtools  
+> $ npm i @ngrx/store @ngrx/effects @ngrx/entity @ngrx/store-devtools  
 
 Import packages in app.module.ts :  
 
