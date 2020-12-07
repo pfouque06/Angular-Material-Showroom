@@ -40,6 +40,6 @@ development phase :
 > $ ng build koa-services --watch --prod  
 
 production build & NPM publishing:
-> $ ng build koa-services --watch  
+> $ ng build koa-services --prod  
 > $ cd dist/koa-services/
 > $ npm publish
