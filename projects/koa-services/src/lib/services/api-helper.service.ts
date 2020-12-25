@@ -7,6 +7,7 @@ export const SERVER_PROTOCOL = new InjectionToken<'s' | ''>('server protocol');
 
 const backends = {
   'angular.material.pfouque.fr': { address: 'api.koa.pfouque.fr', protocol: 's'},
+  'ionic.demo.pfouque.fr': { address: 'api.koa.pfouque.fr', protocol: 's'},
   'localhost': { address: 'localhost:8443', protocol: 's'}
 };
 export const serverAddress = backends[window.location.hostname].address;
