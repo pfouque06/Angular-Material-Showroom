@@ -71,7 +71,7 @@ export function reducer(state = initialState, action: UsersActions): UserSet {
   }
 }
 
-export const getselectedUserId = (state: UserSet) => state.selectedUserId;
+export const getSelectedUserId = (state: UserSet) => state.selectedUserId;
 
 export const {
   // select the array of user ids

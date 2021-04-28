@@ -1,6 +1,6 @@
 export class User {
 
-  public id: number = -1;
+  public id = -1;
   public firstName: string;
   public lastName: string;
   public birthDate: Date;
@@ -21,11 +21,7 @@ export class User {
     this.mobile = data.mobile;
     this.email = data.email;
     this.password = data.password;
-    if (data.profile) {
-      this.profile = data.profile;
-    } else {
-      this.profile = "user";
-    }
+    this.profile = data.profile ? data.profile : 'user';
     this.accessToken = data.accessToken;
     // this.posts= data.posts.map(..);
   }

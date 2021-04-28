@@ -161,6 +161,9 @@
           "configurations": {
             "production": {
               "tsConfig": "projects/koa-services/tsconfig.lib.prod.json"
+            },
+            "ivy": {
+              "tsConfig": "projects/koa-services/tsconfig.lib.ivy.json"
             }
           }
         },

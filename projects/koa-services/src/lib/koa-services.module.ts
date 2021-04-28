@@ -30,7 +30,7 @@ const SHARED_MODULES = [
   providers: [
     AuthService,
     UserService,
-    // Mise en place d'un intercepteur qui permettra d'appliquer le token automatiquement à chaque requête sortante de notre application Angular
+    // intercepteur pour appliquer le token automatiquement à chaque requête sortante
     { provide: HTTP_INTERCEPTORS, useClass: JwtHttpInterceptorInterceptor, multi: true },
     { provide: SERVER_ADDRESS,  useValue: serverAddress},
     { provide: SERVER_PROTOCOL, useValue: serverProtocol},

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
-import { UserActionTypes, Set, Fail, Login, Register, Clear, Ready, changePassword } from './user.action';
+import { UserActionTypes, Set, Fail, Login, Register, Clear, Ready, ChangePassword } from './user.action';
 import { switchMap, catchError, mergeMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
@@ -25,7 +25,7 @@ export class UserEffects {
         catchError( (e) => of(new Fail(e)))
       )
     )
-  )
+  );
 
   @Effect()
   public userLogin$ = this.actions$.pipe(
@@ -35,7 +35,7 @@ export class UserEffects {
       this.auth.login$(action.payload.email, action.payload.password )
       .pipe(
         // tap ( (r) => console.log('result: ', r)),
-        mergeMap( (r) => { return [ new Set({user: r.body, token: r.body.accessToken}) ]; }),
+        mergeMap( (r) => [ new Set({user: r.body, token: r.body.accessToken}) ]),
         catchError( (e) => of(new Fail(e)))
       )
     )
@@ -49,7 +49,7 @@ export class UserEffects {
       this.auth.myself$()
       .pipe(
         // tap ( (r) => console.log('result: ', r)),
-        mergeMap( (r) => { return [ new Set({user: r.body, token: r.body.accessToken}) ]; }),
+        mergeMap( (r) => [ new Set({user: r.body, token: r.body.accessToken}) ]),
         catchError( (e) => of(new Fail(e)))
       )
     )
@@ -63,22 +63,21 @@ export class UserEffects {
       this.auth.logout$()
       .pipe(
         // tap ( (r) => console.log('result: ', r)),
-        mergeMap( () => { return [ new Clear() ]; }),
+        mergeMap( () => [ new Clear() ]),
         catchError( (e) => of(new Fail(e)))
       )
     )
   );
 
   @Effect()
-  public userchangePassword$ = this.actions$.pipe(
-    ofType(UserActionTypes.changePassword),
+  public userChangePassword$ = this.actions$.pipe(
+    ofType(UserActionTypes.ChangePassword),
     // tap( _ => console.log('[user]effect().changePassword .....')),
-    switchMap( (action: changePassword) =>
-      // this.api.put({ endpoint: '/changePassword', data: { password: action.payload.password, newPassword: action.payload.newPassword } })
+    switchMap( (action: ChangePassword) =>
       this.auth.changePassword$( action.payload.password, action.payload.newPassword )
       .pipe(
         // tap ( (r) => console.log('result: ', r)),
-        mergeMap( () => { return [ new Ready() ]; }),
+        mergeMap( () => [ new Ready() ]),
         catchError( (e) => of(new Fail(e)))
       )
     )
@@ -92,7 +91,7 @@ export class UserEffects {
       this.auth.reset$()
       .pipe(
         // tap ( (r) => console.log('result: ', r)),
-        mergeMap( () => { return [ new Clear() ]; }),
+        mergeMap( () => [ new Clear() ]),
         catchError( (e) => of(new Fail(e)))
       )
     )

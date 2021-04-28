@@ -1,4 +1,4 @@
-import { Inject, Injectable, InjectionToken } from '@angular/core';
+import { Injectable, InjectionToken } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -8,7 +8,7 @@ export const SERVER_PROTOCOL = new InjectionToken<'s' | ''>('server protocol');
 const backends = {
   'angular.material.pfouque.fr': { address: 'api.koa.pfouque.fr', protocol: 's'},
   'ionic.demo.pfouque.fr': { address: 'api.koa.pfouque.fr', protocol: 's'},
-  'localhost': { address: 'localhost:8443', protocol: 's'}
+  localhost: { address: 'localhost:8443', protocol: 's'}
 };
 export const serverAddress = backends[window.location.hostname].address;
 export const serverProtocol = backends[window.location.hostname].protocol;
@@ -28,9 +28,9 @@ export class ApiHelperService {
       // this.apiUrl = `http${this.serverProtocol}://${this.serverAddress}`;
       this.apiUrl = `http${serverProtocol}://${serverAddress}`;
       console.log('############################');
+      console.log('api.url: ', this.apiUrl);
       console.log('windows.location: ', window.location);
       console.log('windows.localStorage: ', window.localStorage);
-      console.log('api.url: ', this.apiUrl);
       console.log('############################');
     }
 
@@ -40,7 +40,6 @@ export class ApiHelperService {
   }
 
   public post({ endpoint, data = {}, queryParams = {} }: { endpoint: string, data?: any, queryParams?: any }): Observable<any> {
-    // console.log('post/', endpoint, data);
     return this.request({ endpoint, method: 'POST', data, queryParams });
   }
 
@@ -66,7 +65,6 @@ export class ApiHelperService {
     };
 
     // console.log(method + ' ' + url + ' ' + JSON.stringify(data) + ' ' + JSON.stringify(queryParams));
-
     let req: Observable<any> = null;
     switch (methodWanted) {
       case 'get': {
@@ -91,18 +89,9 @@ export class ApiHelperService {
       throw new Error(`error calling ${url} with method ${methodWanted}`);
     }
 
-    // console.log('response', req);
-
     return req;
     // return req.toPromise()
-    // .then( (res) => {
-    //   // console.log('body: ', res.body);
-    //   return res.body;
-    // })
-    // .catch( (res) => {
-    //   console.log('api.request().catch(error): ', res);
-    //   throw res.error;
-    //   // throw { errors: res.error };
-    // });
+    // .then( (res) => { return res.body; })
+    // .catch( (res) => { throw res.error; });
   }
 }

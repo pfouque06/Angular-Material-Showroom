@@ -364,8 +364,8 @@ dump logs if needed :
 > $ sudo docker-compose logs -f  --tail="0"
 
 instructions for code level update :
-> $ git pull
-> $ npm i
+> $ git pull  
+> $ npm i  
 > $ ng build --prod   
 > $ sudo docker-compose restart; sudo docker-compose logs -f  
 

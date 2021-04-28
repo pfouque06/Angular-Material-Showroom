@@ -12,7 +12,7 @@ export enum UsersActionTypes {
   Ready = '[Users] Ready',
   Clear = '[Users] Clear',
   Fail = '[Users] Fail',
-};
+}
 
 export type UsersActions =
   | GetAll
@@ -36,19 +36,19 @@ export class GetById implements Action {
     constructor(public payload: {id: number}) {}
   }
 
-  export class Create implements Action {
-    public readonly type = UsersActionTypes.Create;
-    constructor(public payload: User[]) {}
-  }
+export class Create implements Action {
+  public readonly type = UsersActionTypes.Create;
+  constructor(public payload: User[]) {}
+}
 
-  export class UpdateById implements Action {
-    public readonly type = UsersActionTypes.UpdateById;
-    constructor(public payload: {id: number, users: User[]}) {}
-  }
+export class UpdateById implements Action {
+  public readonly type = UsersActionTypes.UpdateById;
+  constructor(public payload: {id: number, users: User[]}) {}
+}
 
-  export class DeleteById implements Action {
-    public readonly type = UsersActionTypes.DeleteById;
-    constructor(public payload: {id: number}) {}
+export class DeleteById implements Action {
+  public readonly type = UsersActionTypes.DeleteById;
+  constructor(public payload: {id: number}) {}
 }
 
 export class Reset implements Action {

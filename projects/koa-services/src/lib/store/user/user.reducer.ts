@@ -19,7 +19,6 @@ export function reducer(state = initialState, action: UserActions): UserState {
       // console.log(`${action.type}.Reducer().Pending ...`);
       return {
         ...initialState,
-        // user: { ...initialState.user, email: action.payload.email },
         user: { email: action.payload.email },
         status: Status.Pending
       };
@@ -28,13 +27,14 @@ export function reducer(state = initialState, action: UserActions): UserState {
     case UserActionTypes.Logout:
     case UserActionTypes.Myself:
     case UserActionTypes.Update:
-    case UserActionTypes.changePassword:
+    case UserActionTypes.ChangePassword:
     case UserActionTypes.Reset:
     case UserActionTypes.Delete: {
       // console.log(`${action.type}.Reducer().Pending ...`);
       return {
         ...state,
         status: Status.Pending,
+        errors: null,
       };
     }
 

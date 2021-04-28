@@ -27,10 +27,10 @@ export const selectUserTotal = createSelector(
 );
 export const selectCurrentUserId = createSelector(
   selectUserSetState,
-  fromSession.getselectedUserId,
+  fromSession.getSelectedUserId,
 );
 
-export const selectCurrentUser= createSelector(
+export const selectCurrentUser = createSelector(
   selectUserEntities,
   selectCurrentUserId,
   (userEntities, userId) => userEntities[userId]

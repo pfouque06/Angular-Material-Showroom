@@ -7,7 +7,10 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "koa:build": "ng build koa-services --prod",
+    "koa:build:watch": "ng build koa-services --prod --watch",
+    "koa:build:ivy": "ng build koa-services --configuration=ivy"
   },
   "private": true,
   "dependencies": {
